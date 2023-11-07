@@ -3,5 +3,3 @@ numpy
 pandas
 pydeck
 streamlit
-sklearn
-pickle
