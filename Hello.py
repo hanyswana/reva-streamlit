@@ -14,7 +14,7 @@ def load_model(model_file):
 st.title('REVA - Haemoglobin (Hb) Prediction')
 
 # Load the sample
-sample = pd.read_csv('reva-lablink-oridata-40.csv')
+sample = pd.read_csv('reva-lablink-oridata-20.csv')
 # sample = pickle.load(open('reva-lablink-oridata.pkl', 'rb'))
 # st.write('Spectral Data:')
 # st.write(sample)
