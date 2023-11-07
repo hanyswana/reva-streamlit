@@ -1,51 +1,61 @@
-# Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022)
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-
+import pandas as pd
 import streamlit as st
-from streamlit.logger import get_logger
-
-LOGGER = get_logger(__name__)
+import pickle
 
 
-def run():
-    st.set_page_config(
-        page_title="Hello",
-        page_icon="👋",
-    )
-
-    st.write("# Welcome to REVA! 👋")
-
-    st.sidebar.success("Select a demo above.")
-
-    st.markdown(
-        """
-        Streamlit is an open-source app framework built specifically for
-        Machine Learning and Data Science projects.
-        **👈 Select a demo from the sidebar** to see some examples
-        of what Streamlit can do!
-        ### Want to learn more?
-        - Check out [streamlit.io](https://streamlit.io)
-        - Jump into our [documentation](https://docs.streamlit.io)
-        - Ask a question in our [community
-          forums](https://discuss.streamlit.io)
-        ### See more complex demos
-        - Use a neural net to [analyze the Udacity Self-driving Car Image
-          Dataset](https://github.com/streamlit/demo-self-driving)
-        - Explore a [New York City rideshare dataset](https://github.com/streamlit/demo-uber-nyc-pickups)
-    """
-    )
+# Load a model from the pickle file
+def load_model(model_file):
+    with open(model_file, 'rb') as f:
+        model = pickle.load(f)
+    return model
 
 
-if __name__ == "__main__":
-    run()
+# Streamlit UI elements
+st.title('REVA - Haemoglobin (Hb) Prediction')
+
+# Load the sample
+sample = pd.read_csv('reva-lablink-oridata-40.csv')
+# sample = pickle.load(open('reva-lablink-oridata.pkl', 'rb'))
+# st.write('Spectral Data:')
+# st.write(sample)
+
+lr_model = load_model('pipeline  6.csv_lr_ori.pkl')
+dtr_model = load_model('pipeline  64.csv_dtr_ori.pkl')
+lr_iso_model = load_model('pipeline  85.csv_lr_iso.pkl')
+dtr_iso_model = load_model('pipeline  63.csv_dtr_iso.pkl')
+lr_llc_model = load_model('pipeline  78.csv_lr_llc.pkl')
+dtr_llc_model = load_model('pipeline  92.csv_dtr_llc.pkl')
+
+# Apply dimension reduction to the sample using Isomap and LLC
+sample_iso = load_model('pipeline  104.csv_iso.pkl').fit_transform(sample)
+sample_llc = load_model('pipeline  50.csv_llc.pkl').fit_transform(sample)
+
+# Streamlit UI elements
+st.write('Click the "Predict" button to make prediction of Hb.')
+
+# Add button to trigger prediction
+if st.button('Predict'):
+    if len(sample) > 0:
+        lr_prediction = lr_model.predict(sample)
+        dtr_prediction = dtr_model.predict(sample)
+        lr_iso_prediction = lr_iso_model.predict(sample_iso)
+        dtr_iso_prediction = dtr_iso_model.predict(sample_iso)
+        lr_llc_prediction = lr_llc_model.predict(sample_llc)
+        dtr_llc_prediction = dtr_llc_model.predict(sample_llc)
+
+        st.markdown(f"""
+            <style>
+                .hb_prediction {{
+                    font-size: 18px;
+                    font-weight: bold;
+                }}
+            </style>
+            <p class="hb_prediction">Hb prediction (LR): {lr_prediction[0]} g/dl</p>
+            <p class="hb_prediction">Hb prediction (DTR): {dtr_prediction[0]:.1f} g/dl</p>
+            <p class="hb_prediction">Hb prediction (LR-ISOMAP): {lr_iso_prediction[0]:.1f} g/dl</p>
+            <p class="hb_prediction">Hb prediction (DTR-ISOMAP): {dtr_iso_prediction[0]:.1f} g/dl</p>
+            <p class="hb_prediction">Hb prediction (LR-LLC): {lr_llc_prediction[0]:.1f} g/dl</p>
+            <p class="hb_prediction">Hb prediction (DTR-LLC): {dtr_llc_prediction[0]:.1f} g/dl</p>
+        """, unsafe_allow_html=True)
+    else:
+        st.write('The sample is empty. Please load a sample with data.')
