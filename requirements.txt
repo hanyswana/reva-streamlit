@@ -3,5 +3,5 @@ numpy
 pandas
 pydeck
 streamlit
-sklearn
+scikit-learn
 pickle
