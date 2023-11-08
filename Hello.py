@@ -11,7 +11,7 @@ def load_model(model_file):
 
 
 # Streamlit UI elements
-st.title('REVA - Haemoglobin (Hb) Prediction')
+st.title('REVA (Hb Prediction)')
 
 # Load the sample
 sample = pd.read_csv('reva-lablink-oridata-20.csv')
@@ -50,12 +50,12 @@ if st.button('Predict'):
                     font-weight: bold;
                 }}
             </style>
-            <p class="hb_prediction">Hb prediction (LR): {lr_prediction[0]} g/dl</p>
-            <p class="hb_prediction">Hb prediction (DTR): {dtr_prediction[0]:.1f} g/dl</p>
-            <p class="hb_prediction">Hb prediction (LR-ISOMAP): {lr_iso_prediction[0]:.1f} g/dl</p>
-            <p class="hb_prediction">Hb prediction (DTR-ISOMAP): {dtr_iso_prediction[0]:.1f} g/dl</p>
-            <p class="hb_prediction">Hb prediction (LR-LLC): {lr_llc_prediction[0]:.1f} g/dl</p>
-            <p class="hb_prediction">Hb prediction (DTR-LLC): {dtr_llc_prediction[0]:.1f} g/dl</p>
+            <p class="hb_prediction">Hb value (LR): {lr_prediction[0]} g/dl</p>
+            <p class="hb_prediction">Hb value (DTR): {dtr_prediction[0]:.1f} g/dl</p>
+            <p class="hb_prediction">Hb value (LR-ISOMAP): {lr_iso_prediction[0]:.1f} g/dl</p>
+            <p class="hb_prediction">Hb value (DTR-ISOMAP): {dtr_iso_prediction[0]:.1f} g/dl</p>
+            <p class="hb_prediction">Hb value (LR-LLC): {lr_llc_prediction[0]:.1f} g/dl</p>
+            <p class="hb_prediction">Hb value (DTR-LLC): {dtr_llc_prediction[0]:.1f} g/dl</p>
         """, unsafe_allow_html=True)
     else:
         st.write('The sample is empty. Please load a sample with data.')
