@@ -1,6 +1,6 @@
 import pandas as pd
 import streamlit as st
-import pickle
+import joblib
 
 
 # Load a model from the pickle file
@@ -19,16 +19,16 @@ sample = pd.read_csv('reva-lablink-oridata-20.csv')
 # st.write('Spectral Data:')
 # st.write(sample)
 
-lr_model = load_model('pipeline  6.csv_lr_ori.pkl')
-dtr_model = load_model('pipeline  64.csv_dtr_ori.pkl')
-lr_iso_model = load_model('pipeline  85.csv_lr_iso.pkl')
-dtr_iso_model = load_model('pipeline  63.csv_dtr_iso.pkl')
-lr_llc_model = load_model('pipeline  78.csv_lr_llc.pkl')
-dtr_llc_model = load_model('pipeline  92.csv_dtr_llc.pkl')
+lr_model = load_model('pipeline  6.csv_lr_ori.joblib')
+dtr_model = load_model('pipeline  64.csv_dtr_ori.joblib')
+lr_iso_model = load_model('pipeline  85.csv_lr_iso.joblib')
+dtr_iso_model = load_model('pipeline  63.csv_dtr_iso.joblib')
+lr_llc_model = load_model('pipeline  78.csv_lr_llc.joblib')
+dtr_llc_model = load_model('pipeline  92.csv_dtr_llc.joblib')
 
 # Apply dimension reduction to the sample using Isomap and LLC
-sample_iso = load_model('pipeline  104.csv_iso.pkl').fit_transform(sample)
-sample_llc = load_model('pipeline  50.csv_llc.pkl').fit_transform(sample)
+sample_iso = load_model('pipeline  104.csv_iso.joblib').fit_transform(sample)
+sample_llc = load_model('pipeline  50.csv_llc.joblib').fit_transform(sample)
 
 # Streamlit UI elements
 st.write('Click the "Predict" button to make prediction of Hb.')
