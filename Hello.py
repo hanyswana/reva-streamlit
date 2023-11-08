@@ -3,10 +3,10 @@ import streamlit as st
 import joblib
 
 
-# Load a model from the pickle file
+# Load a model from the joblib file
 def load_model(model_file):
     with open(model_file, 'rb') as f:
-        model = pickle.load(f)
+        model = joblib.load(f)
     return model
 
 
