@@ -4,5 +4,4 @@ pandas
 pydeck
 streamlit
 scikit-learn
-pickle
 sklearn
