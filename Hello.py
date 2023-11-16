@@ -1,6 +1,16 @@
 import pandas as pd
 import streamlit as st
 import joblib
+from flask import request 
+
+def receive_data():
+    sample_data = request.get_json() 
+    # Do something with data
+    st.write(sample_data)
+
+if _name_ == '_main_':
+    st.title('My App')
+    # Rest of streamlit app
 
 
 # Load a model from the pickle file
