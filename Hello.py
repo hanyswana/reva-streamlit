@@ -8,7 +8,7 @@ def receive_data():
     # Do something with data
     st.write(sample_data)
 
-if __name__ == '_main_':
+if __name__ == '__main__':
     st.title('My App')
     # Rest of streamlit app
 
