@@ -11,7 +11,7 @@ def receive_data():
 
 if __name__ == '__main__':
     st.title('My App')
-    receive_data()
+
 
 # Load a model from the pickle file
 def load_model(model_file):
