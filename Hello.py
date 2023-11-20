@@ -6,11 +6,7 @@ from flask import request
 
 def receive_data():
     json_data = request.get_json() 
-    if response.status_code == 200:
-        # Do something with data
-        st.write(json_data)
-    else:
-        st.error('Failed to receive data from FlutterFlow')
+    st.write(json_data)
 
 
 if __name__ == '__main__':
