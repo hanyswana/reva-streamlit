@@ -10,7 +10,7 @@ def receive_data():
         # Do something with data
         st.write(json_data)
     else:
-        st.error('Failed to receive data from other application')
+        st.error('Failed to receive data from FlutterFlow')
 
 
 if __name__ == '__main__':
