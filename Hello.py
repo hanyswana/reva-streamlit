@@ -10,7 +10,7 @@ st.title("Streamlit CORS Example")
 # Enable CORS
 Server.enableCORS = True
 
-def receive_data():
+def Hello():
     json_data = request.get_json() 
     st.write('Json data')
     st.write(json_data)
