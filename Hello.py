@@ -7,11 +7,8 @@ from streamlit.web.server.server import Server
 
 st.title("Streamlit CORS Example")
 
-# Create a server object
-server = st.Server
 # Enable CORS
-server.enableCORS = True
-
+Server.enableCORS = True
 
 def receive_data():
     json_data = request.get_json() 
