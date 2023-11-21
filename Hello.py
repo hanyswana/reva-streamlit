@@ -16,10 +16,6 @@ def receive_data():
     st.write(json_data)
 
 
-if __name__ == '__main__':
-    st.title('My App')
-
-
 # Load a model from the pickle file
 def load_model(model_file):
     with open(model_file, 'rb') as f:
