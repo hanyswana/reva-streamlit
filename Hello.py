@@ -3,6 +3,15 @@ import streamlit as st
 import joblib
 from flask import request 
 
+
+st.title("Streamlit CORS Example")
+
+# Create a server object
+server = st.server
+# Enable CORS
+server.enableCORS = True
+
+
 def receive_data():
     json_data = request.get_json() 
     st.write('Json data')
