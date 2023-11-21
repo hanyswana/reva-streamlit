@@ -3,9 +3,10 @@ import streamlit as st
 import joblib
 from flask import request 
 
-
-json_data = request.get_json() 
-st.write(json_data)
+def receive_data():
+    json_data = request.get_json() 
+    st.write('Json data')
+    st.write(json_data)
 
 
 if __name__ == '__main__':
