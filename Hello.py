@@ -18,10 +18,10 @@ def enable_cors(response):
     return response
 
 
-def receive_data():
-    data = request.get_json() 
-    st.write('Json data')
-    st.write(data)
+# def receive_data():
+data = request.get_json() 
+st.write('Json data')
+st.write(data)
 
 
 # Load a model from the pickle file
