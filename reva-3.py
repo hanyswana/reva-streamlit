@@ -14,11 +14,11 @@ from flask import request
 #     return response
 
 
-def receive_data(name):
-    data = request.get_json(name) 
+def receive_data(sendData):
+    data = request.get_json(sendData) 
     st.write(data)
 
-ff_data = receive_data(name)
+ff_data = receive_data()
 print('Json data')
 print(ff_data)
 
