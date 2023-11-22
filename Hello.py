@@ -22,9 +22,9 @@ def sendData():
     data = request.get_json() 
     st.write(data)
 
-ff_data = sendData()
-print('Json data')
-print(ff_data)
+# ff_data = sendData()
+# print('Json data')
+# print(ff_data)
     
 
 # if __name__ == "__main__":
