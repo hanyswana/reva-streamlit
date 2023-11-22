@@ -18,11 +18,11 @@ def enable_cors(response):
     return response
 
 
-def receive_data():
+def sendData():
     data = request.get_json() 
     st.write(data)
 
-ff_data = receive_data()
+ff_data = sendData()
 print('Json data')
 print(ff_data)
     
