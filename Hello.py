@@ -1,21 +1,17 @@
 import pandas as pd
 import streamlit as st
 import joblib
-from flask import request, Flask 
-from streamlit.web.server.server import Server
-# from streamlit.web.server.server import middleware
+from flask import request
+# from streamlit.web.server.server import Server
 
-# app = Flask(__name__)
-
-
-# Enable CORS
-Server.enableCORS = True
+# # Enable CORS
+# Server.enableCORS = True
 
 
-# @middleware
-def enable_cors(response):
-    response.headers["Access-Control-Allow-Origin"] = "*"
-    return response
+# # @middleware
+# def enable_cors(response):
+#     response.headers["Access-Control-Allow-Origin"] = "*"
+#     return response
 
 
 def receive_data(sendData):
@@ -25,10 +21,7 @@ def receive_data(sendData):
 ff_data = receive_data()
 print('Json data')
 print(ff_data)
-    
 
-# if __name__ == "__main__":
-#     app.run(debug=True)
 
 # Load a model from the pickle file
 def load_model(model_file):
