@@ -5,4 +5,3 @@ pydeck
 streamlit
 scikit-learn
 flask
-streamlit.web.server.server
