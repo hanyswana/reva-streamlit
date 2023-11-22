@@ -7,7 +7,6 @@ from streamlit.web.server.server import Server
 
 # app = Flask(__name__)
 
-st.title("Streamlit CORS Example")
 
 # Enable CORS
 Server.enableCORS = True
@@ -21,10 +20,10 @@ def enable_cors(response):
 
 def receive_data():
     data = request.get_json() 
-    st.write('Json data')
     st.write(data)
 
 json_data = receive_data()
+print('Json data')
 print(json_data)
     
 
