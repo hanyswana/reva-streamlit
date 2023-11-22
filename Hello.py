@@ -22,9 +22,9 @@ def receive_data():
     data = request.get_json() 
     st.write(data)
 
-json_data = receive_data()
+ff_data = receive_data()
 print('Json data')
-print(json_data)
+print(ff_data)
     
 
 # if __name__ == "__main__":
