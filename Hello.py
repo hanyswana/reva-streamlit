@@ -1,10 +1,11 @@
 import pandas as pd
 import streamlit as st
 import joblib
-from flask import request 
+from flask import request, Flask 
 from streamlit.web.server.server import Server
 # from streamlit.web.server.server import middleware
 
+app = Flask(__name__)
 
 st.title("Streamlit CORS Example")
 
@@ -18,11 +19,26 @@ def enable_cors(response):
     return response
 
 
-def receive_data():
-    data = request.get_json() 
-    st.write('Json data')
-    st.write(data)
+# def receive_data():
+#     data = request.get_json() 
+#     st.write('Json data')
+#     st.write(data
 
+@app.route("/json-endpoint", methods=["POST"])
+def receive_json_data():
+    # Get the JSON data from the request body
+    json_data = json.loads(request.data)
+
+    # Process the JSON data
+    # For example, you could store the data in a variable or database
+    sample_data = json_data[]
+
+    # Return a response
+    return "JSON data received successfully"
+    
+
+if __name__ == "__main__":
+    app.run(debug=True)
 
 # Load a model from the pickle file
 def load_model(model_file):
