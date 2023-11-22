@@ -18,9 +18,9 @@ def receive_data(sendData):
     data = request.get_json(sendData) 
     st.write(data)
 
-ff_data = receive_data()
-print('Json data')
-print(ff_data)
+# ff_data = receive_data()
+# print('Json data')
+# print(ff_data)
 
 
 # Load a model from the pickle file
