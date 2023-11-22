@@ -29,9 +29,9 @@ def receive_json_data():
     # Get the JSON data from the request body
     json_data = json.loads(request.data)
 
-    # Process the JSON data
-    # For example, you could store the data in a variable or database
-    sample_data = json_data[]
+    # # Process the JSON data
+    # # For example, you could store the data in a variable or database
+    # sample_data = json_data[]
 
     # Return a response
     return "JSON data received successfully"
