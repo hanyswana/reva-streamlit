@@ -34,11 +34,11 @@ def receive_data(sendData):
 # if data_received:
 #     st.write('Data received:', data_received)
 
-# # Load a model from the pickle file
-# def load_model(model_file):
-#     with open(model_file, 'rb') as f:
-#         model = joblib.load(f)
-#     return model
+# Load a model from the pickle file
+def load_model(model_file):
+    with open(model_file, 'rb') as f:
+        model = joblib.load(f)
+    return model
 
 
 # Streamlit UI elements
