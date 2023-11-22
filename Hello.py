@@ -3,12 +3,20 @@ import streamlit as st
 import joblib
 from flask import request 
 from streamlit.web.server.server import Server
+# from streamlit.web.server.server import middleware
 
 
 st.title("Streamlit CORS Example")
 
 # Enable CORS
 Server.enableCORS = True
+
+
+# @middleware
+def enable_cors(response):
+    response.headers["Access-Control-Allow-Origin"] = "*"
+    return response
+
 
 def receive_data():
     json_data = request.get_json() 
