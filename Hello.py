@@ -22,7 +22,7 @@ def enable_cors(response):
 def receive_data():
     data = request.get_json() 
     st.write('Json data')
-    st.write(data
+    st.write(data)
 
 # @app.route("/json-endpoint", methods=["POST"])
 # def receive_json_data():
