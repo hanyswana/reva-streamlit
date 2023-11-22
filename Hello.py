@@ -24,17 +24,8 @@ def receive_data():
     st.write('Json data')
     st.write(data)
 
-# @app.route("/json-endpoint", methods=["POST"])
-# def receive_json_data():
-#     # Get the JSON data from the request body
-#     json_data = json.loads(request.data)
-
-#     # # Process the JSON data
-#     # # For example, you could store the data in a variable or database
-#     # sample_data = json_data[]
-
-#     # Return a response
-#     return "JSON data received successfully"
+json_data = receive_data()
+print(json_data)
     
 
 # if __name__ == "__main__":
