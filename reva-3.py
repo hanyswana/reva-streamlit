@@ -18,7 +18,7 @@ def receive_data(sendData):
     data = request.get_json(sendData) 
     st.write(data)
 
-ff_data = receive_data()
+ff_data = receive_data(sendData)
 print('Json data')
 print(ff_data)
 
