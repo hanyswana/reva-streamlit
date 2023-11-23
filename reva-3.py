@@ -15,7 +15,7 @@ import requests
 #     return response
 
 # Set the Flutterflow API URL
-url = "https://reva-bluetooth-predict.flutterflow.app/"
+url = "https://reva-bluetooth-predict.flutterflow.app/sendData"
 
 # Get data from Flutterflow
 response = requests.get(url)
