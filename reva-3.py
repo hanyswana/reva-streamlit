@@ -23,7 +23,7 @@ response = requests.get(url)
 
 # Check if the response is successful
 if response.status_code == 200:
-    data = response.get_json()
+    data = response.get_json(sendData)
     st.write(data)
 else:
     st.error("Error fetching data from Flutterflow API. Status code:", response.status_code)
