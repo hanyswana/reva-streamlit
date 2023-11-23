@@ -14,25 +14,25 @@ from flask import request
 #     return response
 
 
-def receive_data(sendData):
-    data = request.get_json(sendData) 
-    st.write(data)
-
-ff_data = receive_data(sendData)
-print('Json data')
-print(ff_data)
-
-# def receive_data():
-#     data = st.session_state['sendData']
+# def receive_data(sendData):
+#     data = request.get_json(sendData) 
 #     st.write(data)
 
-# if 'sendData' not in st.session_state:
-#     st.session_state['sendData'] = None
+# ff_data = receive_data()
+# print('Json data')
+# print(ff_data)
 
-# data_received = receive_data()
+def receive_data():
+    data = st.session_state['sendData']
+    st.write(data)
 
-# if data_received:
-#     st.write('Data received:', data_received)
+if 'sendData' not in st.session_state:
+    st.session_state['sendData'] = None
+
+data_received = receive_data()
+
+if data_received:
+    st.write('Data received:', data_received)
 
 # Load a model from the pickle file
 def load_model(model_file):
