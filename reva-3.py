@@ -14,8 +14,8 @@ from flask import request
 #     return response
 
 
-def receive_data(sendData):
-    data = request.get_json(sendData) 
+def receive_data():
+    data = request.get_json() 
     st.write(data)
 
 data_received = receive_data()
