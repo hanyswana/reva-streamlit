@@ -18,6 +18,9 @@ import requests
 # Set the Flutterflow API URL
 url = "https://reva-bluetooth-predict.flutterflow.app/sendData"
 
+# Get data from Flutterflow
+response = requests.get(url)
+
 # Check if the response is successful
 if response.status_code == 200:
     data = response.json()
