@@ -17,7 +17,7 @@ from flask import request
 url = "https://reva-bluetooth-predict.flutterflow.app/"
 
 # Get data from Flutterflow
-response = requests.get(url)
+response = request.get(url)
 data = response.json()
 st.write(data)
 
