@@ -14,13 +14,17 @@ import requests
 #     response.headers["Access-Control-Allow-Origin"] = "*"
 #     return response
 
+
 # Set the Flutterflow API URL
 url = "https://reva-bluetooth-predict.flutterflow.app/sendData"
 
-# Get data from Flutterflow
-response = requests.get(url)
-data = response.json()
-st.write(data)
+# Check if the response is successful
+if response.status_code == 200:
+    data = response.json()
+    st.write(data)
+else:
+    st.error("Error fetching data from Flutterflow API. Status code:", response.status_code)
+
 
 # def receive_data():
 #     data = request.get_json() 
