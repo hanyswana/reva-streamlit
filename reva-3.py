@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import joblib
 from flask import request
+import requests
 # from streamlit.web.server.server import Server
 
 # # Enable CORS
@@ -17,7 +18,7 @@ from flask import request
 url = "https://reva-bluetooth-predict.flutterflow.app/"
 
 # Get data from Flutterflow
-response = request.get(url)
+response = requests.get(url)
 data = response.json()
 st.write(data)
 
