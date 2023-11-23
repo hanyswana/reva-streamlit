@@ -13,15 +13,22 @@ from flask import request
 #     response.headers["Access-Control-Allow-Origin"] = "*"
 #     return response
 
+# Set the Flutterflow API URL
+url = "https://reva-bluetooth-predict.flutterflow.app/"
 
-def receive_data():
-    data = request.get_json() 
-    st.write(data)
+# Get data from Flutterflow
+response = requests.get(url)
+data = response.json()
+st.write(data)
 
-data_received = receive_data()
+# def receive_data():
+#     data = request.get_json() 
+#     st.write(data)
 
-if data_received:
-    st.write('Data received:', data_received)
+# data_received = receive_data()
+
+# if data_received:
+#     st.write('Data received:', data_received)
 
 
 # ff_data = receive_data()
