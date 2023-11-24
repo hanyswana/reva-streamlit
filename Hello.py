@@ -43,6 +43,7 @@ new_data = pd.read_csv('example1.csv')
 
 # Combine the ori data with the new data
 sample_data = pd.concat([new_data, ori_data])
+print(sample_data)
 
 # st.write('Spectral Data:')
 # st.write(example)
