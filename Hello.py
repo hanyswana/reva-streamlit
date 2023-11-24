@@ -43,8 +43,8 @@ new_data = pd.read_csv('example1.csv')
 
 # Combine the ori data with the new data
 sample_data = pd.concat([new_data, ori_data])
-st.write('Spectral Data:')
-st.write(sample_data)
+# st.write('Spectral Data:')
+# st.write(sample_data)
 
 lr_model = load_model('pipeline  6.csv_lr_ori.joblib')
 dtr_model = load_model('pipeline  64.csv_dtr_ori.joblib')
