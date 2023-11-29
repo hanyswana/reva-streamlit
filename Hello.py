@@ -16,10 +16,15 @@ response = requests.get(api_url, params=payload)
 if response.status_code == 200:
     # Parse the JSON data
     data = response.json()
+    df = pd.DataFrame(data)
+    df.to_csv('json_data.csv', index+False)
 
     # Display the data in the Streamlit app
     st.write('Spectral data:')
     st.write(data)
+
+    return df
+    
 else:
     # Display an error message
     st.write("Error:", response.status_code)
