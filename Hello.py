@@ -52,7 +52,8 @@ dtr_llc_model = load_model('pipeline  92.csv_dtr_llc.joblib')
 
 
 # Streamlit UI elements
-st.title('REVA (Hb Prediction)')
+st.title('Prediction')
+st.title('')
 
 # Load the new data (1 sample) 
 new_data = pd.read_csv('json_data.csv')
