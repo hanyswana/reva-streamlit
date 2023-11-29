@@ -6,7 +6,7 @@ import requests
 
 
 # Define the API URL and payload
-api_url = "https://x8ki-letl-twmt.n7.xano.io/api:3iQkTr3r/spectral/{spectral_id}1"
+api_url = "https://x8ki-letl-twmt.n7.xano.io/api:3iQkTr3r/spectral/1"
 payload = {}
 
 # Make the API request and store the response
