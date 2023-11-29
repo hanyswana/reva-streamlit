@@ -21,9 +21,26 @@ def json_data():
         df = pd.DataFrame(data)
         df.to_csv('json_data.csv', index=False)
 
+        # Streamlit UI elements
+        st.title('REVA (Hb Prediction)')
+
+        # Load the ori data (124 samples)
+        ori_data = pd.read_csv('reva-lablink-oridata-124-x.csv')
+
+        # Load the new data (1 sample) and convert json to csv file
+        # json_data = pd.read_json('example1.json')
+        # json_data.to_csv('example1.csv', index=False)
+        new_data = pd.read_csv('json_data.csv')
+        
         # Display the data in the Streamlit app
         st.write('JSON data:')
-        st.write(df)
+        st.write(new_data)
+
+        # Combine the ori data with the new data
+        sample_data = pd.concat([new_data, ori_data])
+
+        st.write('Spectral Data:')
+        st.write(sample_data)
 
         return df
     else:
@@ -32,23 +49,6 @@ def json_data():
         return None
 
 
-# Streamlit UI elements
-st.title('REVA (Hb Prediction)')
-
-# Load the ori data (124 samples)
-ori_data = pd.read_csv('reva-lablink-oridata-124-x.csv')
-
-# Load the new data (1 sample) and convert json to csv file
-# json_data = pd.read_json('example1.json')
-# json_data.to_csv('example1.csv', index=False)
-json = json_data('json_data.csv')
-new_data = pd.read_csv(json)
-
-# Combine the ori data with the new data
-sample_data = pd.concat([new_data, ori_data])
-
-st.write('Spectral Data:')
-st.write(sample_data)
 
 
 # Load a model from the pickle file
