@@ -18,43 +18,15 @@ def json_data():
     if response.status_code == 200:
         # Parse the JSON data
         data = response.json()
-        df = pd.DataFrame(data)
-        df.to_csv('json_data.csv', index=False)
-
-        # Streamlit UI elements
-        st.title('REVA (Hb Prediction)')
-
-        # Load the ori data (124 samples)
-        ori_data = pd.read_csv('reva-lablink-oridata-124-x.csv')
-
-        # Load the new data (1 sample) and convert json to csv file
-        # json_data = pd.read_json('example1.json')
-        # json_data.to_csv('example1.csv', index=False)
-        new_data = pd.read_csv('json_data.csv')
-        
-        # Display the data in the Streamlit app
-        st.write('JSON data:')
-        st.write(new_data)
-
-        # Combine the ori data with the new data
-        sample_data = pd.concat([new_data, ori_data])
-
-        st.write('Spectral Data:')
-        st.write(sample_data)
-
-        # Apply dimension reduction to the sample using Isomap and LLC
-        sample_iso = load_model('pipeline  104.csv_iso.joblib').fit_transform(sample_data)
-        sample_llc = load_model('pipeline  50.csv_llc.joblib').fit_transform(sample_data)
-
-
-
-        return df
     else:
         # Display an error message
         st.write("Error:", response.status_code)
         return None
 
 
+# Convert json to csv
+df = pd.DataFrame(data)
+df.to_csv('json_data.csv', index=False)
 
 
 # Load a model from the pickle file
@@ -71,6 +43,30 @@ lr_llc_model = load_model('pipeline  78.csv_lr_llc.joblib')
 dtr_llc_model = load_model('pipeline  92.csv_dtr_llc.joblib')
 
 
+# Streamlit UI elements
+st.title('REVA (Hb Prediction)')
+
+# Load the ori data (124 samples)
+ori_data = pd.read_csv('reva-lablink-oridata-124-x.csv')
+
+# Load the new data (1 sample) and convert json to csv file
+# json_data = pd.read_json('example1.json')
+# json_data.to_csv('example1.csv', index=False)
+new_data = pd.read_csv('json_data.csv')
+        
+# Display the data in the Streamlit app
+st.write('JSON data:')
+st.write(new_data)
+
+# Combine the ori data with the new data
+sample_data = pd.concat([new_data, ori_data])
+
+st.write('Spectral Data:')
+st.write(sample_data)
+
+# Apply dimension reduction to the sample using Isomap and LLC
+sample_iso = load_model('pipeline  104.csv_iso.joblib').fit_transform(sample_data)
+sample_llc = load_model('pipeline  50.csv_llc.joblib').fit_transform(sample_data)
 
 
 # Streamlit UI elements
