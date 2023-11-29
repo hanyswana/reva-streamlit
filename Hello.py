@@ -18,6 +18,7 @@ if response.status_code == 200:
     data = response.json()
 
     # Display the data in the Streamlit app
+    st.write('JSON data')
     st.write(data)
 else:
     # Display an error message
