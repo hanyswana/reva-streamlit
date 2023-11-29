@@ -52,13 +52,11 @@ dtr_llc_model = load_model('pipeline  92.csv_dtr_llc.joblib')
 
 
 # Streamlit UI elements
-st.title('')
 st.title('Prediction')
-st.title('')
 
 # Load the new data (1 sample) 
 new_data = pd.read_csv('json_data.csv')
-st.write('JSON data:')
+st.write('Spectral data:')
 st.write(new_data)
 
 # Load the ori data (124 samples)
