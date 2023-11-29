@@ -52,6 +52,7 @@ dtr_llc_model = load_model('pipeline  92.csv_dtr_llc.joblib')
 
 
 # Streamlit UI elements
+st.title('')
 st.title('Prediction')
 st.title('')
 
