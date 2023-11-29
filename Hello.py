@@ -5,29 +5,23 @@ from flask import request
 import requests
 
 
-# Define the API URL
+# Define the API URL and payload
 api_url = "https://x8ki-letl-twmt.n7.xano.io/api:3iQkTr3r/spectral/1"
+payload = {}
 
 # Make the API request and store the response
-response = requests.get(api_url)
+response = requests.get(api_url, params=payload)
 
 # Check if the request was successful
 if response.status_code == 200:
     # Parse the JSON data
     data = response.json()
-    df = pd.DataFrame(data)
-    df.to_csv('json_data.csv', index=False)
-    return df
 
     # Display the data in the Streamlit app
-    st.write('Spectral data:')
     st.write(data)
-
-    
 else:
     # Display an error message
     st.write("Error:", response.status_code)
-    return None
 
 
 # Load a model from the pickle file
