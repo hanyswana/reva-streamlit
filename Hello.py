@@ -58,8 +58,8 @@ st.title('')
 
 # Load the new data (1 sample) 
 new_data = pd.read_csv('json_data.csv')
-# st.write('JSON data:')
-# st.write(new_data)
+st.write('JSON data:')
+st.write(new_data)
 
 # Load the ori data (124 samples)
 ori_data = pd.read_csv('reva-lablink-oridata-124-x.csv')
