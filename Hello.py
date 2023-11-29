@@ -2,25 +2,27 @@ import pandas as pd
 import streamlit as st
 import joblib
 from flask import request
-# from streamlit.web.server.server import Server
-
-# # Enable CORS
-# Server.enableCORS = True
+import requests
 
 
-# # @middleware
-# def enable_cors(response):
-#     response.headers["Access-Control-Allow-Origin"] = "*"
-#     return response
+# Define the API URL and payload
+api_url = "https://x8ki-letl-twmt.n7.xano.io/api:3iQkTr3r/spectral/{spectral_id}1"
+payload = {}
 
+# Make the API request and store the response
+response = requests.get(api_url, params=payload)
 
-def receive_data(sendData):
-    data = request.get_json(sendData) 
+# Check if the request was successful
+if response.status_code == 200:
+    # Parse the JSON data
+    data = response.json()
+
+    # Display the data in the Streamlit app
+    st.write('Spectral data:')
     st.write(data)
-
-# ff_data = receive_data()
-# print('Json data')
-# print(ff_data)
+else:
+    # Display an error message
+    st.write("Error:", response.status_code)
 
 
 # Load a model from the pickle file
