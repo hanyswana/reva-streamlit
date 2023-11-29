@@ -1,7 +1,6 @@
 import pandas as pd
 import streamlit as st
 import joblib
-from flask import request
 import requests
 
 
