@@ -16,6 +16,12 @@ response = requests.get(api_url, params=payload)
 if response.status_code == 200:
     # Parse the JSON data
     data = response.json()
+        
+    # Convert the JSON data into a Pandas DataFrame
+    df = pd.DataFrame(data)
+
+    # Convert the DataFrame to a CSV file
+    df.to_csv('data.csv', index=False)
 
     # Display the data in the Streamlit app
     st.write('JSON data')
