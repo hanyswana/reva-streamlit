@@ -90,7 +90,7 @@ def json_data():
             else:
                 st.write('The sample is empty. Please load a sample with data.')
             
-                return df
+        return df
     else:
         # Display an error message
         st.write("Error:", response.status_code)
