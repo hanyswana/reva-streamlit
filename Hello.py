@@ -42,6 +42,12 @@ def json_data():
         st.write('Spectral Data:')
         st.write(sample_data)
 
+        # Apply dimension reduction to the sample using Isomap and LLC
+        sample_iso = load_model('pipeline  104.csv_iso.joblib').fit_transform(sample_data)
+        sample_llc = load_model('pipeline  50.csv_llc.joblib').fit_transform(sample_data)
+
+
+
         return df
     else:
         # Display an error message
@@ -64,9 +70,7 @@ dtr_iso_model = load_model('pipeline  63.csv_dtr_iso.joblib')
 lr_llc_model = load_model('pipeline  78.csv_lr_llc.joblib')
 dtr_llc_model = load_model('pipeline  92.csv_dtr_llc.joblib')
 
-# Apply dimension reduction to the sample using Isomap and LLC
-sample_iso = load_model('pipeline  104.csv_iso.joblib').fit_transform(sample_data)
-sample_llc = load_model('pipeline  50.csv_llc.joblib').fit_transform(sample_data)
+
 
 
 # Streamlit UI elements
