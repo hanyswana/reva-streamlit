@@ -72,35 +72,61 @@ sample_iso = load_model('pipeline  104.csv_iso.joblib').fit_transform(sample_dat
 sample_llc = load_model('pipeline  50.csv_llc.joblib').fit_transform(sample_data)
 
 
-# Streamlit UI elements
-st.write('Click the "Predict" button to make prediction of Hb.')
+# # Streamlit UI elements
+# st.write('Click the "Predict" button to make prediction of Hb.')
 
 # # Add button to trigger prediction
 # if st.button('Predict'):
-    if len(sample_data) > 0:
-        lr_prediction = lr_model.predict(sample_data)
-        dtr_prediction = dtr_model.predict(sample_data)
-        lr_iso_prediction = lr_iso_model.predict(sample_iso)
-        dtr_iso_prediction = dtr_iso_model.predict(sample_iso)
-        lr_llc_prediction = lr_llc_model.predict(sample_llc)
-        dtr_llc_prediction = dtr_llc_model.predict(sample_llc)
+#     if len(sample_data) > 0:
+#         lr_prediction = lr_model.predict(sample_data)
+#         dtr_prediction = dtr_model.predict(sample_data)
+#         lr_iso_prediction = lr_iso_model.predict(sample_iso)
+#         dtr_iso_prediction = dtr_iso_model.predict(sample_iso)
+#         lr_llc_prediction = lr_llc_model.predict(sample_llc)
+#         dtr_llc_prediction = dtr_llc_model.predict(sample_llc)
 
-        st.markdown(f"""
-            <style>
-                .hb_prediction {{
-                    font-size: 18px;
-                    font-weight: bold;
-                }}
-            </style>
-            <p class="hb_prediction">Hb value (LR): {lr_prediction[0]} g/dL</p>
-            <p class="hb_prediction">Hb value (DTR): {dtr_prediction[0]:.1f} g/dL</p>
-            <p class="hb_prediction">Hb value (LR-ISOMAP): {lr_iso_prediction[0]:.1f} g/dL</p>
-            <p class="hb_prediction">Hb value (DTR-ISOMAP): {dtr_iso_prediction[0]:.1f} g/dL</p>
-            <p class="hb_prediction">Hb value (LR-LLC): {lr_llc_prediction[0]:.1f} g/dL</p>
-            <p class="hb_prediction">Hb value (DTR-LLC): {dtr_llc_prediction[0]:.1f} g/dL</p>
-        """, unsafe_allow_html=True)
-    else:
-        st.write('The sample is empty. Please load a sample with data.')
+#         st.markdown(f"""
+#             <style>
+#                 .hb_prediction {{
+#                     font-size: 18px;
+#                     font-weight: bold;
+#                 }}
+#             </style>
+#             <p class="hb_prediction">Hb value (LR): {lr_prediction[0]} g/dL</p>
+#             <p class="hb_prediction">Hb value (DTR): {dtr_prediction[0]:.1f} g/dL</p>
+#             <p class="hb_prediction">Hb value (LR-ISOMAP): {lr_iso_prediction[0]:.1f} g/dL</p>
+#             <p class="hb_prediction">Hb value (DTR-ISOMAP): {dtr_iso_prediction[0]:.1f} g/dL</p>
+#             <p class="hb_prediction">Hb value (LR-LLC): {lr_llc_prediction[0]:.1f} g/dL</p>
+#             <p class="hb_prediction">Hb value (DTR-LLC): {dtr_llc_prediction[0]:.1f} g/dL</p>
+#         """, unsafe_allow_html=True)
+#     else:
+#         st.write('The sample is empty. Please load a sample with data.')
+
+
+if len(sample_data) > 0:
+    lr_prediction = lr_model.predict(sample_data)
+    dtr_prediction = dtr_model.predict(sample_data)
+    lr_iso_prediction = lr_iso_model.predict(sample_iso)
+    dtr_iso_prediction = dtr_iso_model.predict(sample_iso)
+    lr_llc_prediction = lr_llc_model.predict(sample_llc)
+    dtr_llc_prediction = dtr_llc_model.predict(sample_llc)
+
+    st.markdown(f"""
+        <style>
+            .hb_prediction {{
+                font-size: 18px;
+                font-weight: bold;
+            }}
+        </style>
+        <p class="hb_prediction">Hb value (LR): {lr_prediction[0]} g/dL</p>
+        <p class="hb_prediction">Hb value (DTR): {dtr_prediction[0]:.1f} g/dL</p>
+        <p class="hb_prediction">Hb value (LR-ISOMAP): {lr_iso_prediction[0]:.1f} g/dL</p>
+        <p class="hb_prediction">Hb value (DTR-ISOMAP): {dtr_iso_prediction[0]:.1f} g/dL</p>
+        <p class="hb_prediction">Hb value (LR-LLC): {lr_llc_prediction[0]:.1f} g/dL</p>
+        <p class="hb_prediction">Hb value (DTR-LLC): {dtr_llc_prediction[0]:.1f} g/dL</p>
+    """, unsafe_allow_html=True)
+else:
+    st.write('The sample is empty. Please load a sample with data.')
 
 
 
