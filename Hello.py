@@ -40,10 +40,10 @@ st.title('REVA (Hb Prediction)')
 # Load the ori data (124 samples)
 ori_data = pd.read_csv('reva-lablink-oridata-124-x.csv')
 
-# Load the new data (1 sample) and convert json to csv file
-json_data = pd.read_json('data.json')
-json_data.to_csv('data.csv', index=False)
-new_data = pd.read_csv('data.csv')
+# # Load the new data (1 sample) and convert json to csv file
+# json_data = pd.read_json('data.json')
+# json_data.to_csv('data.csv', index=False)
+new_data = pd.read_csv('json_data.csv')
 
 # Combine the ori data with the new data
 sample_data = pd.concat([new_data, ori_data])
