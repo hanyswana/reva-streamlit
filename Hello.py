@@ -21,10 +21,12 @@ if response.status_code == 200:
     # Display the data in the Streamlit app
     st.write('Spectral data:')
     st.write(data)
+    return df
     
 else:
     # Display an error message
     st.write("Error:", response.status_code)
+    return None
 
 
 # Load a model from the pickle file
