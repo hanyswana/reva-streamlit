@@ -57,17 +57,16 @@ st.title('REVA (Hb Prediction)')
 
 # Load the new data (1 sample) 
 new_data = pd.read_csv('json_data.csv')
-st.write('JSON data:')
-st.write(new_data)
+# st.write('JSON data:')
+# st.write(new_data)
 
 # Load the ori data (124 samples)
 ori_data = pd.read_csv('reva-lablink-oridata-124-x.csv')
-st.write('Original data:')
 
 # Combine the ori data with the new data
 sample_data = pd.concat([new_data, ori_data])
-st.write('Spectral Data:')
-st.write(sample_data)
+# st.write('Spectral Data:')
+# st.write(sample_data)
 
 # Apply dimension reduction to the sample using Isomap and LLC
 sample_iso = load_model('pipeline  104.csv_iso.joblib').fit_transform(sample_data)
