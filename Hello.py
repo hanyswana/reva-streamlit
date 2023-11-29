@@ -25,7 +25,7 @@ if response.status_code == 200:
 
     # Display the data in the Streamlit app
     st.write('JSON data')
-    st.write(data)
+    st.write(df)
 else:
     # Display an error message
     st.write("Error:", response.status_code)
