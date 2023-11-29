@@ -5,30 +5,33 @@ from flask import request
 import requests
 
 
-# Define the API URL and payload
-api_url = "https://x8ki-letl-twmt.n7.xano.io/api:3iQkTr3r/spectral/1"
-payload = {}
+def json_data():
+    # Define the API URL and payload
+    api_url = "https://x8ki-letl-twmt.n7.xano.io/api:3iQkTr3r/spectral/1"
+    payload = {}
 
-# Make the API request and store the response
-response = requests.get(api_url, params=payload)
+    # Make the API request and store the response
+    response = requests.get(api_url, params=payload)
 
-# Check if the request was successful
-if response.status_code == 200:
-    # Parse the JSON data
-    data = response.json()
+    # Check if the request was successful
+    if response.status_code == 200:
+        # Parse the JSON data
+        data = response.json()
         
-    # # Convert the JSON data into a Pandas DataFrame
-    # df = pd.DataFrame(data)
+        # Convert the JSON data into a Pandas DataFrame
+        df = pd.DataFrame(data)
 
-    # # Convert the DataFrame to a CSV file
-    # df.to_csv('data.csv', index=False)
+        # Convert the DataFrame to a CSV file
+        df.to_csv('json_data.csv', index=False)
 
-    # Display the data in the Streamlit app
-    st.write('JSON data')
-    st.write(data)
-else:
-    # Display an error message
-    st.write("Error:", response.status_code)
+        # Display the data in the Streamlit app
+        st.write('JSON data')
+        st.write(df)
+        return df
+    else:
+        # Display an error message
+        st.write("Error:", response.status_code)
+        return None
 
 
 # Streamlit UI elements
