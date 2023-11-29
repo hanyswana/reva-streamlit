@@ -20,7 +20,7 @@ def json_data():
         data = response.json()
 
         # Convert json to csv
-        df = pd.DataFrame(json)
+        df = pd.DataFrame(data)
         df.to_csv('json_data.csv', index=False)
         return df
     else:
