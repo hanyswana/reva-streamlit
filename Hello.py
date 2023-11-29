@@ -24,13 +24,6 @@ else:
     st.write("Error:", response.status_code)
 
 
-# Load a model from the pickle file
-def load_model(model_file):
-    with open(model_file, 'rb') as f:
-        model = joblib.load(f)
-    return model
-
-
 # Streamlit UI elements
 st.title('REVA (Hb Prediction)')
 
@@ -38,14 +31,20 @@ st.title('REVA (Hb Prediction)')
 ori_data = pd.read_csv('reva-lablink-oridata-40.csv')
 
 # Load the new data (1 sample) and convert json to csv file
-json_data = pd.read_json('example1.json')
-json_data.to_csv('example1.csv', index=False)
-new_data = pd.read_csv('example1.csv')
+json_data = pd.read_json('data.json')
+json_data.to_csv('data.csv', index=False)
+new_data = pd.read_csv('data.csv')
 
 # Combine the ori data with the new data
 sample_data = pd.concat([new_data, ori_data])
-# st.write('Spectral Data:')
-# st.write(sample_data)
+st.write('Spectral Data:')
+st.write(sample_data)
+
+# Load a model from the pickle file
+def load_model(model_file):
+    with open(model_file, 'rb') as f:
+        model = joblib.load(f)
+    return model
 
 lr_model = load_model('pipeline  6.csv_lr_ori.joblib')
 dtr_model = load_model('pipeline  64.csv_dtr_ori.joblib')
