@@ -32,8 +32,6 @@ def json_data():
         return None
 
 
-
-
 # Streamlit UI elements
 st.title('REVA (Hb Prediction)')
 
@@ -43,14 +41,15 @@ ori_data = pd.read_csv('reva-lablink-oridata-124-x.csv')
 # Load the new data (1 sample) and convert json to csv file
 # json_data = pd.read_json('example1.json')
 # json_data.to_csv('example1.csv', index=False)
-new_data = pd.read_csv('json_data.csv')
+json = json_data('json_data.csv')
+new_data = pd.read_csv(json)
 
 # Combine the ori data with the new data
 sample_data = pd.concat([new_data, ori_data])
 
-# st.write('Spectral Data:')
-# st.write(example)
-# st.write(merged_data)
+st.write('Spectral Data:')
+st.write(sample_data)
+
 
 # Load a model from the pickle file
 def load_model(model_file):
@@ -68,6 +67,7 @@ dtr_llc_model = load_model('pipeline  92.csv_dtr_llc.joblib')
 # Apply dimension reduction to the sample using Isomap and LLC
 sample_iso = load_model('pipeline  104.csv_iso.joblib').fit_transform(sample_data)
 sample_llc = load_model('pipeline  50.csv_llc.joblib').fit_transform(sample_data)
+
 
 # Streamlit UI elements
 st.write('Click the "Predict" button to make prediction of Hb.')
