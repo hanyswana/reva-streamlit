@@ -75,8 +75,8 @@ sample_llc = load_model('pipeline  50.csv_llc.joblib').fit_transform(sample_data
 # Streamlit UI elements
 st.write('Click the "Predict" button to make prediction of Hb.')
 
-# Add button to trigger prediction
-if st.button('Predict'):
+# # Add button to trigger prediction
+# if st.button('Predict'):
     if len(sample_data) > 0:
         lr_prediction = lr_model.predict(sample_data)
         dtr_prediction = dtr_model.predict(sample_data)
