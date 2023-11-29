@@ -17,15 +17,15 @@ if response.status_code == 200:
     # Parse the JSON data
     data = response.json()
         
-    # Convert the JSON data into a Pandas DataFrame
-    df = pd.DataFrame(data)
+    # # Convert the JSON data into a Pandas DataFrame
+    # df = pd.DataFrame(data)
 
-    # Convert the DataFrame to a CSV file
-    df.to_csv('data.csv', index=False)
+    # # Convert the DataFrame to a CSV file
+    # df.to_csv('data.csv', index=False)
 
     # Display the data in the Streamlit app
     st.write('JSON data')
-    st.write(df)
+    st.write(data)
 else:
     # Display an error message
     st.write("Error:", response.status_code)
