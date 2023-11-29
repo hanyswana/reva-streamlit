@@ -25,7 +25,8 @@ def json_data():
 
 
 # Convert json to csv
-df = pd.DataFrame(data)
+json = json_data(data)
+df = pd.DataFrame(json)
 df.to_csv('json_data.csv', index=False)
 
 
