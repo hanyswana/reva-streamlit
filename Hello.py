@@ -7,7 +7,7 @@ import requests
 
 def json_data():
     
-    # Define the API URL and payload
+    # Define the API URL from server (Xano) and payload
     api_url = "https://x8ki-letl-twmt.n7.xano.io/api:3iQkTr3r/spectral/1"
     payload = {}
 
@@ -18,16 +18,24 @@ def json_data():
     if response.status_code == 200:
         # Parse the JSON data
         data = response.json()
+
+        # Convert json to csv
+        df = pd.DataFrame(json)
+        df.to_csv('json_data.csv', index=False)
+        return df
     else:
         # Display an error message
         st.write("Error:", response.status_code)
         return None
 
 
-# Convert json to csv
-json = json_data(data)
-df = pd.DataFrame(json)
-df.to_csv('json_data.csv', index=False)
+def main():
+    # Get data from server (Xano)
+    data_df = json_data()
+
+
+if __name__ == "__main__":
+    main()
 
 
 # Load a model from the pickle file
@@ -47,21 +55,17 @@ dtr_llc_model = load_model('pipeline  92.csv_dtr_llc.joblib')
 # Streamlit UI elements
 st.title('REVA (Hb Prediction)')
 
-# Load the ori data (124 samples)
-ori_data = pd.read_csv('reva-lablink-oridata-124-x.csv')
-
-# Load the new data (1 sample) and convert json to csv file
-# json_data = pd.read_json('example1.json')
-# json_data.to_csv('example1.csv', index=False)
+# Load the new data (1 sample) 
 new_data = pd.read_csv('json_data.csv')
-        
-# Display the data in the Streamlit app
 st.write('JSON data:')
 st.write(new_data)
 
+# Load the ori data (124 samples)
+ori_data = pd.read_csv('reva-lablink-oridata-124-x.csv')
+st.write('Original data:')
+
 # Combine the ori data with the new data
 sample_data = pd.concat([new_data, ori_data])
-
 st.write('Spectral Data:')
 st.write(sample_data)
 
