@@ -22,7 +22,6 @@ if response.status_code == 200:
     # Display the data in the Streamlit app
     st.write('Spectral data:')
     st.write(data)
-
     return df
     
 else:
