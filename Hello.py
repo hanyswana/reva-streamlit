@@ -63,7 +63,7 @@ st.write(new_data)
 ori_data = pd.read_csv('reva-lablink-oridata-124-x.csv')
 
 # Combine the ori data with the new data
-sample_data = pd.concat([new_data, ori_data])
+sample_data = pd.concat([new_data.iloc[:1], ori_data])
 # st.write('Spectral Data:')
 # st.write(sample_data)
 
