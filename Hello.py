@@ -7,7 +7,7 @@ import requests
 def json_data():
     
     # Define the API URL from server (Xano) and payload
-    api_url = "https://x8ki-letl-twmt.n7.xano.io/api:3iQkTr3r/spectral"
+    api_url = "https://x8ki-letl-twmt.n7.xano.io/api:gTEeTJrZ/split_text"
     payload = {}
 
     # Make the API request and store the response
