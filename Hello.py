@@ -20,8 +20,8 @@ def json_data():
 
         # Convert json to csv
         df = pd.DataFrame(data)
-        df.to_csv('json_data.csv', index=False)
-        return df
+        df.iloc[:1].to_csv('json_data.csv', index=False)
+        return df.iloc[:1]
     else:
         # Display an error message
         st.write("Error:", response.status_code)
