@@ -44,11 +44,11 @@ def load_model(model_file):
     return model
     
 lr_model = load_model('pipeline  6.csv_lr_ori.joblib')
-dtr_model = load_model('pipeline  64.csv_dtr_ori.joblib')
+dtr_model = load_model('pipeline  64.csv_dtr_ori2.joblib')
 lr_iso_model = load_model('pipeline  85.csv_lr_iso.joblib')
-dtr_iso_model = load_model('pipeline  63.csv_dtr_iso.joblib')
+dtr_iso_model = load_model('pipeline  63.csv_dtr_iso2.joblib')
 lr_llc_model = load_model('pipeline  78.csv_lr_llc.joblib')
-dtr_llc_model = load_model('pipeline  92.csv_dtr_llc.joblib')
+dtr_llc_model = load_model('pipeline  92.csv_dtr_llc2.joblib')
 
 
 # Streamlit UI elements
