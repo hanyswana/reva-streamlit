@@ -90,11 +90,8 @@ if len(sample_data) > 0:
             }}
         </style>
         <p class="hb_prediction">Hb value (LR): {lr_prediction[0]} g/dL</p>
-        # <p class="hb_prediction">Hb value (DTR): {dtr_prediction[0]:.1f} g/dL</p>
-        <p class="hb_prediction">Hb value (LR-ISOMAP): {lr_iso_prediction[0]:.1f} g/dL</p>
-        # <p class="hb_prediction">Hb value (DTR-ISOMAP): {dtr_iso_prediction[0]:.1f} g/dL</p>
+        <p class="hb_prediction">Hb value (LR-ISOMAP): {lr_iso_prediction[0]:.1f} g/dL</p>g/dL</p>
         <p class="hb_prediction">Hb value (LR-LLC): {lr_llc_prediction[0]:.1f} g/dL</p>
-        # <p class="hb_prediction">Hb value (DTR-LLC): {dtr_llc_prediction[0]:.1f} g/dL</p>
     """, unsafe_allow_html=True)
 else:
     st.write('The sample is empty. Please load a sample with data.')
