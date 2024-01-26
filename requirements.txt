@@ -1,5 +1,9 @@
+altair
+numpy
 pandas
+pydeck
 streamlit
 scikit-learn
+json
 flask
-sklearn
+pyngrok
