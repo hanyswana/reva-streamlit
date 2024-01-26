@@ -4,6 +4,4 @@ pandas
 pydeck
 streamlit
 scikit-learn
-json
 flask
-pyngrok
