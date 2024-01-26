@@ -20,7 +20,7 @@ def json_data():
 
         # Convert json to csv
         df = pd.DataFrame(data)
-        df.iloc[:2].to_csv('json_data.csv', index=False)
+        df.iloc[1:2].to_csv('json_data.csv', index=False)
         return df.iloc[:1]
     else:
         # Display an error message
@@ -65,7 +65,7 @@ ori_data = pd.read_csv('reva-lablink-oridata-124-x.csv')
 # st.write(ori_data)
 
 # Combine the ori data with the new data
-sample_data = pd.concat([new_data.iloc[:2], ori_data])
+sample_data = pd.concat([new_data.iloc[1:2], ori_data])
 st.write('Sample Data:')
 st.write(sample_data)
 
