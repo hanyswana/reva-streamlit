@@ -76,7 +76,7 @@ sample_llc = load_model('pipeline  50.csv_llc.joblib').fit_transform(sample_data
 
 if len(sample_data) > 0:
     lr_prediction = lr_model.predict(sample_data)
-    dtr_prediction = dtr_model.predict(sample_data)
+    dtr_prediction = dtr_model.predict(sample_iso)
     lr_iso_prediction = lr_iso_model.predict(sample_iso)
     dtr_iso_prediction = dtr_iso_model.predict(sample_iso)
     lr_llc_prediction = lr_llc_model.predict(sample_llc)
