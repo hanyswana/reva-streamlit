@@ -48,7 +48,7 @@ lr_model = load_model('pipeline  6.csv_lr_ori.joblib')
 lr_iso_model = load_model('pipeline  85.csv_lr_iso.joblib')
 # dtr_iso_model = load_model('pipeline  63.csv_dtr_iso.joblib')
 lr_llc_model = load_model('pipeline  78.csv_lr_llc.joblib')
-dtr_llc_model = load_model('pipeline  92.csv_dtr_llc.joblib')
+# dtr_llc_model = load_model('pipeline  92.csv_dtr_llc.joblib')
 
 
 # Streamlit UI elements
@@ -80,7 +80,7 @@ if len(sample_data) > 0:
     lr_iso_prediction = lr_iso_model.predict(sample_iso)
     # dtr_iso_prediction = dtr_iso_model.predict(sample_iso)
     lr_llc_prediction = lr_llc_model.predict(sample_llc)
-    dtr_llc_prediction = dtr_llc_model.predict(sample_llc)
+    # dtr_llc_prediction = dtr_llc_model.predict(sample_llc)
 
     st.markdown(f"""
         <style>
@@ -94,7 +94,7 @@ if len(sample_data) > 0:
         <p class="hb_prediction">Hb value (LR-ISOMAP): {lr_iso_prediction[0]:.1f} g/dL</p>
         # <p class="hb_prediction">Hb value (DTR-ISOMAP): {dtr_iso_prediction[0]:.1f} g/dL</p>
         <p class="hb_prediction">Hb value (LR-LLC): {lr_llc_prediction[0]:.1f} g/dL</p>
-        <p class="hb_prediction">Hb value (DTR-LLC): {dtr_llc_prediction[0]:.1f} g/dL</p>
+        # <p class="hb_prediction">Hb value (DTR-LLC): {dtr_llc_prediction[0]:.1f} g/dL</p>
     """, unsafe_allow_html=True)
 else:
     st.write('The sample is empty. Please load a sample with data.')
