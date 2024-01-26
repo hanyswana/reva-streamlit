@@ -5,6 +5,7 @@ import requests
 
 
 def json_data():
+    
     # Define the API URL from server (Xano) and payload
     api_url = "https://x8ki-letl-twmt.n7.xano.io/api:gTEeTJrZ/split_text"
     payload = {}
@@ -17,29 +18,14 @@ def json_data():
         # Parse the JSON data
         data = response.json()
 
-        # Check if there are at least two rows of data
-        if len(data) >= 2:
-            # Convert json to DataFrame
-            df = pd.DataFrame(data)
-
-            # Perform division of first row by second row
-            result = df.iloc[0] / df.iloc[1]
-
-            # Convert the result to a DataFrame
-            result_df = pd.DataFrame([result])
-
-            # Export to CSV
-            result_df.to_csv('result_data.csv', index=False)
-
-            return result_df
-        else:
-            st.write("Not enough data to perform the operation")
-            return None
+        # Convert json to csv
+        df = pd.DataFrame(data)
+        df.iloc[1:2].to_csv('json_data.csv', index=False)
+        return df.iloc[1:2]
     else:
         # Display an error message
         st.write("Error:", response.status_code)
         return None
-
 
 def main():
     # Get data from server (Xano)
