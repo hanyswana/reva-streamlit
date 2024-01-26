@@ -44,7 +44,7 @@ def load_model(model_file):
     return model
     
 lr_model = load_model('pipeline  6.csv_lr_ori.joblib')
-dtr_model = load_model('pipeline  64.csv_dtr_ori.joblib')
+# dtr_model = load_model('pipeline  64.csv_dtr_ori.joblib')
 lr_iso_model = load_model('pipeline  85.csv_lr_iso.joblib')
 dtr_iso_model = load_model('pipeline  63.csv_dtr_iso.joblib')
 lr_llc_model = load_model('pipeline  78.csv_lr_llc.joblib')
@@ -76,7 +76,7 @@ sample_llc = load_model('pipeline  50.csv_llc.joblib').fit_transform(sample_data
 
 if len(sample_data) > 0:
     lr_prediction = lr_model.predict(sample_data)
-    dtr_prediction = dtr_model.predict(sample_data)
+    # dtr_prediction = dtr_model.predict(sample_data)
     lr_iso_prediction = lr_iso_model.predict(sample_iso)
     dtr_iso_prediction = dtr_iso_model.predict(sample_iso)
     lr_llc_prediction = lr_llc_model.predict(sample_llc)
@@ -90,7 +90,7 @@ if len(sample_data) > 0:
             }}
         </style>
         <p class="hb_prediction">Hb value (LR): {lr_prediction[0]} g/dL</p>
-        <p class="hb_prediction">Hb value (DTR): {dtr_prediction[0]:.1f} g/dL</p>
+        # <p class="hb_prediction">Hb value (DTR): {dtr_prediction[0]:.1f} g/dL</p>
         <p class="hb_prediction">Hb value (LR-ISOMAP): {lr_iso_prediction[0]:.1f} g/dL</p>
         <p class="hb_prediction">Hb value (DTR-ISOMAP): {dtr_iso_prediction[0]:.1f} g/dL</p>
         <p class="hb_prediction">Hb value (LR-LLC): {lr_llc_prediction[0]:.1f} g/dL</p>
