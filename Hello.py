@@ -30,11 +30,11 @@ def json_data():
     df1 = pd.DataFrame(data1).iloc[:1]
     df2 = pd.DataFrame(data2).iloc[:1]
 
-    # Combine the first line of both dataframes
-    combined_df = pd.concat([df1, df2], ignore_index=True)
+    # Element-wise division of the dataframes
+    absorbance_df = df1.div(df2.values)
 
-    combined_df.to_csv('json_data.csv', index=False)
-    return combined_df
+    absorbance_df.to_csv('absorbance_data.csv', index=False)
+    return absorbance_df
 
 def main():
     # Get data from server (Xano)
@@ -59,28 +59,26 @@ dtr_llc_model = load_model('pipeline  92.csv_dtr_llc2.joblib')
 # Streamlit UI elements
 st.title('Prediction')
 
-# Load the new data (1 sample) 
-new_data = pd.read_csv('json_data.csv')
-st.write('Spectral data:')
-st.write(new_data)
+# Load the new absorbance data 
+absorbance_data = pd.read_csv('absorbance_data.csv')
+st.write('Absorbance data:')
+st.write(absorbance_data)
 
-# Load the ori data (124 samples)
+# Load the original data (124 samples)
 ori_data = pd.read_csv('reva-lablink-oridata-124-x.csv')
-# st.write('Ori Data:')
-# st.write(ori_data)
 
-# Combine the ori data with the new data
-sample_data = pd.concat([new_data, ori_data])
-st.write('Sample Data:')
-st.write(sample_data)
+# Combine the absorbance data with the original data
+combined_data = pd.concat([absorbance_data, ori_data])
+st.write('Combined Data:')
+st.write(combined_data)
 
 # Apply dimension reduction to the sample using Isomap and LLC
-sample_iso = load_model('pipeline  104.csv_iso.joblib').fit_transform(sample_data)
-sample_llc = load_model('pipeline  50.csv_llc.joblib').fit_transform(sample_data)
+sample_iso = load_model('pipeline  104.csv_iso.joblib').fit_transform(combined_data)
+sample_llc = load_model('pipeline  50.csv_llc.joblib').fit_transform(combined_data)
 
-if len(sample_data) > 0:
-    lr_prediction = lr_model.predict(sample_data)
-    dtr_prediction = dtr_model.predict(sample_data)
+if len(combined_data) > 0:
+    lr_prediction = lr_model.predict(combined_data)
+    dtr_prediction = dtr_model.predict(combined_data)
     lr_iso_prediction = lr_iso_model.predict(sample_iso)
     dtr_iso_prediction = dtr_iso_model.predict(sample_iso)
     lr_llc_prediction = lr_llc_model.predict(sample_llc)
@@ -103,4 +101,4 @@ if len(sample_data) > 0:
 else:
     st.write('The sample is empty. Please load a sample with data.')
 
-# Rest of your Streamlit UI elements and functionality as before
+# Rest of your Streamlit UI elements and functionality
