@@ -26,9 +26,9 @@ def json_data():
         st.write("Error in second API call:", response2.status_code)
         return None
 
-    # Extract first line of data from both API responses
-    df1 = pd.DataFrame(data1).iloc[:1]
-    df2 = pd.DataFrame(data2).iloc[:1]
+    # Extract first line of data from both API responses and convert to numeric
+    df1 = pd.DataFrame(data1).iloc[:1].apply(pd.to_numeric, errors='coerce')
+    df2 = pd.DataFrame(data2).iloc[:1].apply(pd.to_numeric, errors='coerce')
 
     # Element-wise division of the dataframes
     absorbance_df = df1.div(df2.values)
