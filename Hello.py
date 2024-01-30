@@ -31,7 +31,7 @@ def json_data():
     df2 = pd.DataFrame(data2).iloc[:1].apply(pd.to_numeric, errors='coerce')
 
     # Element-wise division of the dataframes
-    absorbance_df = df1.div(df2.values)
+    absorbance_df = df1.div(df2.values).pow(2)
 
     absorbance_df.to_csv('absorbance_data.csv', index=False)
     return absorbance_df
