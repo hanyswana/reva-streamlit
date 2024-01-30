@@ -3,38 +3,45 @@ import streamlit as st
 import joblib
 import requests
 
-
 def json_data():
-    
-    # Define the API URL from server (Xano) and payload
-    api_url = "https://x8ki-letl-twmt.n7.xano.io/api:gTEeTJrZ/split_text"
-    payload = {}
+    # First API call
+    api_url1 = "https://x8ki-letl-twmt.n7.xano.io/api:gTEeTJrZ/split_text"
+    payload1 = {}
+    response1 = requests.get(api_url1, params=payload1)
 
-    # Make the API request and store the response
-    response = requests.get(api_url, params=payload)
-
-    # Check if the request was successful
-    if response.status_code == 200:
-        # Parse the JSON data
-        data = response.json()
-
-        # Convert json to csv
-        df = pd.DataFrame(data)
-        df.iloc[:1].to_csv('json_data.csv', index=False)
-        return df.iloc[:1]
+    if response1.status_code == 200:
+        data1 = response1.json()
     else:
-        # Display an error message
-        st.write("Error:", response.status_code)
+        st.write("Error in first API call:", response1.status_code)
         return None
+
+    # Second API call
+    api_url2 = "https://x8ki-letl-twmt.n7.xano.io/api:3iQkTr3r/backgroundData"
+    payload2 = {}
+    response2 = requests.get(api_url2, params=payload2)
+
+    if response2.status_code == 200:
+        data2 = response2.json()
+    else:
+        st.write("Error in second API call:", response2.status_code)
+        return None
+
+    # Extract first line of data from both API responses
+    df1 = pd.DataFrame(data1).iloc[:1]
+    df2 = pd.DataFrame(data2).iloc[:1]
+
+    # Combine the first line of both dataframes
+    combined_df = pd.concat([df1, df2], ignore_index=True)
+
+    combined_df.to_csv('json_data.csv', index=False)
+    return combined_df
 
 def main():
     # Get data from server (Xano)
     data_df = json_data()
 
-
 if __name__ == "__main__":
     main()
-
 
 # Load a model from the pickle file
 def load_model(model_file):
@@ -48,7 +55,6 @@ lr_iso_model = load_model('pipeline  85.csv_lr_iso.joblib')
 dtr_iso_model = load_model('pipeline  63.csv_dtr_iso2.joblib')
 lr_llc_model = load_model('pipeline  78.csv_lr_llc.joblib')
 dtr_llc_model = load_model('pipeline  92.csv_dtr_llc2.joblib')
-
 
 # Streamlit UI elements
 st.title('Prediction')
@@ -71,7 +77,6 @@ sample_data = pd.concat([new_data.iloc[:1], ori_data])
 # Apply dimension reduction to the sample using Isomap and LLC
 sample_iso = load_model('pipeline  104.csv_iso.joblib').fit_transform(sample_data)
 sample_llc = load_model('pipeline  50.csv_llc.joblib').fit_transform(sample_data)
-
 
 if len(sample_data) > 0:
     lr_prediction = lr_model.predict(sample_data)
@@ -98,8 +103,4 @@ if len(sample_data) > 0:
 else:
     st.write('The sample is empty. Please load a sample with data.')
 
-
-
-
-
-
+# Rest of your Streamlit UI elements and functionality as before
