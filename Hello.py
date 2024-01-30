@@ -70,9 +70,9 @@ ori_data = pd.read_csv('reva-lablink-oridata-124-x.csv')
 # st.write(ori_data)
 
 # Combine the ori data with the new data
-sample_data = pd.concat([new_data.iloc[:1], ori_data])
-# st.write('Sample Data:')
-# st.write(sample_data)
+sample_data = pd.concat([new_data, ori_data])
+st.write('Sample Data:')
+st.write(sample_data)
 
 # Apply dimension reduction to the sample using Isomap and LLC
 sample_iso = load_model('pipeline  104.csv_iso.joblib').fit_transform(sample_data)
