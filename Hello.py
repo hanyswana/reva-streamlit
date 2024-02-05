@@ -100,5 +100,3 @@ if len(combined_data) > 0:
     """, unsafe_allow_html=True)
 else:
     st.write('The sample is empty. Please load a sample with data.')
-
-# Rest of your Streamlit UI elements and functionality
