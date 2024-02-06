@@ -57,7 +57,7 @@ lr_llc_model = load_model('pipeline  78.csv_lr_llc.joblib')
 dtr_llc_model = load_model('pipeline  92.csv_dtr_llc2.joblib')
 
 # Streamlit UI elements
-st.title('Prediction')
+st.title('Haemoglobin :')
 
 # Load the new absorbance data 
 absorbance_data = pd.read_csv('absorbance_data.csv')
@@ -87,16 +87,16 @@ if len(combined_data) > 0:
     st.markdown(f"""
         <style>
             .hb_prediction {{
-                font-size: 18px;
+                font-size: 16px;
                 font-weight: bold;
             }}
         </style>
-        <p class="hb_prediction">Hb value (LR): {lr_prediction[0]} g/dL</p>
-        <p class="hb_prediction">Hb value (DTR): {dtr_prediction[0]:.1f} g/dL</p>
-        <p class="hb_prediction">Hb value (LR-ISOMAP): {lr_iso_prediction[0]:.1f} g/dL</p>
-        <p class="hb_prediction">Hb value (DTR-ISOMAP): {dtr_iso_prediction[0]:.1f} g/dL</p>
-        <p class="hb_prediction">Hb value (LR-LLC): {lr_llc_prediction[0]:.1f} g/dL</p>
-        <p class="hb_prediction">Hb value (DTR-LLC): {dtr_llc_prediction[0]:.1f} g/dL</p>
+        <p class="hb_prediction">(LR): {lr_prediction[0]} g/dL</p>
+        <p class="hb_prediction">(DTR): {dtr_prediction[0]:.1f} g/dL</p>
+        <p class="hb_prediction">(LR-ISOMAP): {lr_iso_prediction[0]:.1f} g/dL</p>
+        <p class="hb_prediction">(DTR-ISOMAP): {dtr_iso_prediction[0]:.1f} g/dL</p>
+        <p class="hb_prediction">(LR-LLC): {lr_llc_prediction[0]:.1f} g/dL</p>
+        <p class="hb_prediction">(DTR-LLC): {dtr_llc_prediction[0]:.1f} g/dL</p>
     """, unsafe_allow_html=True)
 else:
     st.write('The sample is empty. Please load a sample with data.')
