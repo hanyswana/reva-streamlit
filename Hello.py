@@ -27,7 +27,7 @@ def json_data():
         return None
 
     # Extract first line of data from both API responses and convert to numeric
-    df1 = pd.DataFrame(data1).iloc[:1].apply(pd.to_numeric, errors='coerce')
+    df1 = pd.DataFrame(data1).iloc[:2].apply(pd.to_numeric, errors='coerce')
     df2 = pd.DataFrame(data2).iloc[:1].apply(pd.to_numeric, errors='coerce')
 
     # Element-wise division of the dataframes
@@ -69,8 +69,8 @@ ori_data = pd.read_csv('reva-lablink-oridata-124-x.csv')
 
 # Combine the absorbance data with the original data
 combined_data = pd.concat([absorbance_data, ori_data])
-# st.write('Combined Data:')
-# st.write(combined_data)
+st.write('Combined Data:')
+st.write(combined_data)
 
 # Apply dimension reduction to the sample using Isomap and LLC
 sample_iso = load_model('pipeline  104.csv_iso.joblib').fit_transform(combined_data)
