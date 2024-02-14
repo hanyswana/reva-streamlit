@@ -27,7 +27,7 @@ def json_data():
         return None
 
     # Extract first line of data from both API responses and convert to numeric
-    df1 = pd.DataFrame(data1).iloc[:2].apply(pd.to_numeric, errors='coerce')
+    df1 = pd.DataFrame(data1).iloc[1:2].apply(pd.to_numeric, errors='coerce')
     df2 = pd.DataFrame(data2).iloc[:1].apply(pd.to_numeric, errors='coerce')
 
     # Element-wise division of the dataframes
