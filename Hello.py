@@ -33,10 +33,10 @@ def json_data():
     df1 = pd.DataFrame(data1).iloc[:1].apply(pd.to_numeric, errors='coerce')
     df2 = pd.DataFrame(data2).iloc[:1].apply(pd.to_numeric, errors='coerce')
 
-    st.write("Background:")
-    st.write(df1)
-    st.write("Sample:")
-    st.write(df2)
+    # st.write("Background:")
+    # st.write(df1)
+    # st.write("Sample:")
+    # st.write(df2)
 
     # Element-wise division of the dataframes
     absorbance_df = df1.div(df2.values).pow(2)
@@ -66,16 +66,16 @@ dtr_llc_model = load_model('pipeline  92.csv_dtr_llc2.joblib')
 
 # Load the new absorbance data 
 absorbance_data = pd.read_csv('absorbance_data.csv')
-st.write('Absorbance data:')
-st.write(absorbance_data)
+# st.write('Absorbance data:')
+# st.write(absorbance_data)
 
 # Load the original data (124 samples)
 ori_data = pd.read_csv('reva-lablink-oridata-124-x.csv')
 
 # Combine the absorbance data with the original data
 combined_data = pd.concat([absorbance_data, ori_data])
-st.write('Combined Data:')
-st.write(combined_data)
+# st.write('Combined Data:')
+# st.write(combined_data)
 
 # Apply dimension reduction to the sample using Isomap and LLC
 sample_iso = load_model('pipeline  104.csv_iso.joblib').fit_transform(combined_data)
