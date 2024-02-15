@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 import joblib
 import requests
+import matplotlib.pyplot as plt
 
 # Streamlit UI elements
 st.title('Haemoglobin :')
@@ -40,6 +41,16 @@ def json_data():
 
     # Element-wise division of the dataframes
     absorbance_df = df1.div(df2.values).pow(2)
+
+    # Plotting the absorbance data
+    plt.figure(figsize=(10, 6))
+    for column in absorbance_df.columns:
+    plt.plot(absorbance_df.index, absorbance_df[column], label=column)
+    plt.title('Absorbance Data')
+    plt.xlabel('Wavelength')
+    plt.ylabel('Absorbance')
+    plt.legend()
+    st.pyplot(plt)
 
     absorbance_df.to_csv('absorbance_data.csv', index=False)
     return absorbance_df
