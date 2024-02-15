@@ -45,7 +45,7 @@ def json_data():
     # Plotting the absorbance data
     plt.figure(figsize=(10, 6))
     for column in absorbance_df.columns:
-    plt.plot(absorbance_df.index, absorbance_df[column], label=column)
+        plt.plot(absorbance_df.index, absorbance_df[column], label=column)
     plt.title('Absorbance Data')
     plt.xlabel('Wavelength')
     plt.ylabel('Absorbance')
@@ -53,6 +53,7 @@ def json_data():
     st.pyplot(plt)
 
     absorbance_df.to_csv('absorbance_data.csv', index=False)
+    
     return absorbance_df
 
 def main():
