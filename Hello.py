@@ -3,6 +3,9 @@ import streamlit as st
 import joblib
 import requests
 
+# Streamlit UI elements
+st.title('Haemoglobin :')
+
 def json_data():
     # First API call
     api_url1 = "https://x8ki-letl-twmt.n7.xano.io/api:3iQkTr3r/backgroundData"
@@ -30,6 +33,11 @@ def json_data():
     df1 = pd.DataFrame(data1).iloc[1:2].apply(pd.to_numeric, errors='coerce')
     df2 = pd.DataFrame(data2).iloc[:1].apply(pd.to_numeric, errors='coerce')
 
+    st.write("Background:")
+    st.write(df1)
+    st.write("Sample:")
+    st.write(df2)
+
     # Element-wise division of the dataframes
     absorbance_df = df1.div(df2.values).pow(2)
 
@@ -55,9 +63,6 @@ lr_iso_model = load_model('pipeline  85.csv_lr_iso.joblib')
 dtr_iso_model = load_model('pipeline  63.csv_dtr_iso2.joblib')
 lr_llc_model = load_model('pipeline  78.csv_lr_llc.joblib')
 dtr_llc_model = load_model('pipeline  92.csv_dtr_llc2.joblib')
-
-# Streamlit UI elements
-st.title('Haemoglobin :')
 
 # Load the new absorbance data 
 absorbance_data = pd.read_csv('absorbance_data.csv')
