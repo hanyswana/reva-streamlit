@@ -5,4 +5,4 @@ pydeck
 streamlit
 scikit-learn
 flask
-matplotlib
+matplotlib.pyplot
