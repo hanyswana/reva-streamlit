@@ -81,7 +81,7 @@ def predict_with_model(model, input_data):
 
 def main():
     # Load the TensorFlow model
-    model_path = '/workspaces/reva-streamlit/reva-lablink-hb-125-(original-data)-15-02-24'
+    model_path = 'reva-lablink-hb-125-(original-data)-15-02-24'
     model = load_model(model_path)
 
     # Get data from server (simulated here)
