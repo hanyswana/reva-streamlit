@@ -94,9 +94,16 @@ def main():
     st.markdown("""
     <style>
     .custom-font {font-size: 22px; -weight: bold;}
+    .high-value {color: red;}
     </style> """, unsafe_allow_html=True)
     
-    st.markdown(f'<p class="custom-font">Haemoglobin :<br>{predictions_value:.1f} g/dL</p>', unsafe_allow_html=True)
+        # Add condition for prediction value
+    if predictions_value > 16:
+        display_value = '<span class="high-value">High value</span>'
+    else:
+        display_value = f"{predictions_value:.1f} g/dL"
+    
+    st.markdown(f'<p class="custom-font">Haemoglobin :<br>{display_value}</p>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
