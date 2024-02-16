@@ -4,8 +4,17 @@ import joblib
 import requests
 import matplotlib.pyplot as plt
 
-# Streamlit UI elements
-st.title('Haemoglobin :')
+# Define a custom style for your text
+st.markdown("""
+<style>
+.custom-font {
+    font-size: 22px; /* Adjust the size as needed */
+    font-weight: bold;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown('<p class="custom-font">Absorbance data :</p>', unsafe_allow_html=True)
 
 def json_data():
     # First API call
@@ -33,27 +42,26 @@ def json_data():
     # Extract first line of data from both API responses and convert to numeric
     df1 = pd.DataFrame(data1).iloc[:1].apply(pd.to_numeric, errors='coerce')
     df2 = pd.DataFrame(data2).iloc[:1].apply(pd.to_numeric, errors='coerce')
+    wavelengths = df1.columns
 
-    # st.write("Background:")
-    # st.write(df1)
-    # st.write("Sample:")
-    # st.write(df2)
-
-    # Element-wise division of the dataframes
+    # Element-wise division of the dataframes & convert absorbance data to csv
     absorbance_df = df1.div(df2.values).pow(2)
-
-    # Plotting the absorbance data
-    plt.figure(figsize=(10, 6))
-    for column in absorbance_df.columns:
-        plt.plot(absorbance_df.index, absorbance_df[column], label=column)
-    plt.title('Absorbance Data')
-    plt.xlabel('Wavelength')
-    plt.ylabel('Absorbance')
-    plt.legend()
-    st.pyplot(plt)
-
     absorbance_df.to_csv('absorbance_data.csv', index=False)
-    
+   
+
+    # Plotting
+    absorbance_data = absorbance_df.iloc[0]  # First row of absorbance data
+    plt.figure(figsize=(10, 6))
+    plt.plot(wavelengths, absorbance_data, marker='o', linestyle='-', color='b')
+    plt.xlabel('Wavelength (nm)', fontweight='bold', fontsize=18)
+    plt.ylabel('Absorbance', fontweight='bold', fontsize=18)
+    plt.xticks(rotation='vertical', fontweight='bold', fontsize=14)
+    plt.yticks(fontweight='bold', fontsize=14)
+    # plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+    st.pyplot(plt)
+ 
     return absorbance_df
 
 def main():
@@ -92,6 +100,18 @@ combined_data = pd.concat([absorbance_data, ori_data])
 # Apply dimension reduction to the sample using Isomap and LLC
 sample_iso = load_model('pipeline  104.csv_iso.joblib').fit_transform(combined_data)
 sample_llc = load_model('pipeline  50.csv_llc.joblib').fit_transform(combined_data)
+
+# Define a custom style for your text
+st.markdown("""
+<style>
+.custom-font {
+    font-size: 22px; /* Adjust the size as needed */
+    font-weight: bold;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown('<p class="custom-font">Haemoglobin :</p>', unsafe_allow_html=True)
 
 if len(combined_data) > 0:
     lr_prediction = lr_model.predict(combined_data)
