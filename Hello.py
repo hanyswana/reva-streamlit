@@ -7,12 +7,8 @@ import tensorflow as tf
 
 st.markdown("""
 <style>
-.custom-font {
-    font-size: 22px; /* Adjust the size as needed */
-    font-weight: bold;
-}
-</style>
-""", unsafe_allow_html=True)
+.custom-font {font-size: 22px; font-weight: bold;}
+</style> """, unsafe_allow_html=True)
 
 st.markdown('<p class="custom-font">Absorbance data :</p>', unsafe_allow_html=True)
 
@@ -47,8 +43,6 @@ def json_data():
     # Element-wise division of the dataframes & convert absorbance data to csv
     absorbance_df = df1.div(df2.values).pow(2)
     absorbance_df.to_csv('absorbance_data.csv', index=False)
-    # st.write(wavelengths)
-    # st.write(absorbance_data)
 
     # Plotting
     absorbance_data = absorbance_df.iloc[0]  # First row of absorbance data
@@ -69,8 +63,7 @@ def load_model(model_dir):
     return model
 
 def predict_with_model(model, input_data):
-    # Assuming absorbance_data is a DataFrame with the correct number of features (19)
-    
+
     # Convert DataFrame to numpy array with dtype 'float64' to match model's expectation
     input_array = input_data.to_numpy(dtype='float64')
     
@@ -83,35 +76,28 @@ def predict_with_model(model, input_data):
     
     # Use the model for prediction
     # Assuming the model has a predict function, which is common for TensorFlow models
-    # Some models might require calling a specific method or passing through a signature
-    predictions = model(input_tensor)  # If this line causes issues, see the alternative below
+    predictions = model(input_tensor)
     
     return predictions.numpy()  # Convert predictions to numpy array if needed
 
 def main():
     # Load the TensorFlow model
-    model_path = 'reva-lablink-hb-125-(original-data)-15-02-24'
+    model_path = '/workspaces/reva-streamlit/reva-lablink-hb-125-(original-data)-15-02-24'
     model = load_model(model_path)
 
     # Get data from server (simulated here)
     absorbance_data = json_data()
 
     # Predict
-    # st.write(model)
-    # st.write(absorbance_data)
     predictions = predict_with_model(model, absorbance_data)
-    
+    predictions_value = predictions[0][0]
+
     st.markdown("""
     <style>
-    .custom-font {
-        font-size: 22px; /* Adjust the size as needed */
-        -weight: bold;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-    st.markdown('<p class="custom-font">Haemoglobin : {predictions} g/dL</p>', unsafe_allow_html=True)
-    st.write(predictions)
+    .custom-font {font-size: 22px; -weight: bold;}
+    </style> """, unsafe_allow_html=True)
+    
+    st.markdown(f'<p class="custom-font">Haemoglobin :<br>{predictions_value:.1f} g/dL</p>', unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
