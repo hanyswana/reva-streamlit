@@ -41,8 +41,18 @@ def json_data():
 
     # Element-wise division of the dataframes & convert absorbance data to csv
     absorbance_df = df1.div(df2.values).pow(2)
-    absorbance_df.to_csv('absorbance_data.csv', index=False)
-    st.write(absorbance_df)
+
+    # Convert DataFrame to CSV
+    absorbance_data = absorbance_df.to_csv(index=False)
+    
+    # Create a download button and offer the CSV to download
+    st.download_button(
+        label="Download Absorbance Data as CSV",
+        data=absorbance_data,
+        file_name="absorbance_data.csv",
+        mime="text/csv",
+    )
+    
     absorbance_data = absorbance_df.iloc[0]  # First row of absorbance data
 
     # Plotting
