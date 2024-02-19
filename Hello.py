@@ -44,7 +44,7 @@ def json_data():
     st.write(absorbance_df)
 
     # Convert DataFrame to CSV
-    csv_data = absorbance_df.to_csv(index=False).encode('utf-8')
+    csv_data = absorbance_df.to_csv(index=False)
     
     # Create a download button and offer the CSV to download
     st.download_button(
@@ -68,6 +68,8 @@ def json_data():
     st.pyplot(plt)
  
     return absorbance_df
+
+json_data()
 
 def load_model(model_dir):
     model = tf.saved_model.load(model_dir)
