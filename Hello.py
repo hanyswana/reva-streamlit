@@ -45,8 +45,7 @@ def json_data():
 
     # Convert DataFrame to CSV
     csv_data = absorbance_df.to_csv(index=False)
-    
-    absorbance_data = absorbance_df.iloc[0]  # First row of absorbance data
+    absorbance_df.to_csv('absorbance_data.csv', index=False)
 
     # Plotting
     plt.figure(figsize=(10, 6))
