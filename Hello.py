@@ -46,6 +46,17 @@ def json_data():
     # Convert DataFrame to CSV
     csv_data = absorbance_df.to_csv(index=False)
     absorbance_df.to_csv('absorbance_data.csv', index=False)
+
+    # Plotting
+    plt.figure(figsize=(10, 6))
+    plt.plot(wavelengths, absorbance_data, marker='o', linestyle='-', color='b')
+    plt.xlabel('Wavelength (nm)', fontweight='bold', fontsize=14)
+    plt.ylabel('Absorbance', fontweight='bold', fontsize=14)
+    plt.xticks(rotation='vertical', fontweight='bold', fontsize=12)
+    plt.yticks(fontweight='bold', fontsize=12)
+    plt.tight_layout()
+    plt.show()
+    st.pyplot(plt)
  
     return absorbance_df
 
@@ -96,17 +107,6 @@ def main():
         display_value = f"{predictions_value:.1f} g/dL"
     
     st.markdown(f'<p class="custom-font">Haemoglobin :<br>{display_value}</p>', unsafe_allow_html=True)
-
-# Plotting
-plt.figure(figsize=(10, 6))
-plt.plot(wavelengths, absorbance_data, marker='o', linestyle='-', color='b')
-plt.xlabel('Wavelength (nm)', fontweight='bold', fontsize=14)
-plt.ylabel('Absorbance', fontweight='bold', fontsize=14)
-plt.xticks(rotation='vertical', fontweight='bold', fontsize=12)
-plt.yticks(fontweight='bold', fontsize=12)
-plt.tight_layout()
-plt.show()
-st.pyplot(plt)
     
 if __name__ == "__main__":
     main()
