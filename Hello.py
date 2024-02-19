@@ -44,7 +44,6 @@ def json_data():
     st.write(absorbance_df)
 
     # Convert DataFrame to CSV
-    csv_data = absorbance_df.to_csv(index=False)
     absorbance_df.to_csv('absorbance_data.csv', index=False)
 
     # Plotting
