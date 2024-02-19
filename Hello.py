@@ -42,9 +42,8 @@ def json_data():
     # Element-wise division of the dataframes & convert absorbance data to csv
     absorbance_df = df1.div(df2.values).pow(2)
     absorbance_df.to_csv('absorbance_data.csv', index=False)
-    
+    st.write(absorbance_df)
     absorbance_data = absorbance_df.iloc[0]  # First row of absorbance data
-    st.write(absorbance_data)
 
     # Plotting
     plt.figure(figsize=(10, 6))
