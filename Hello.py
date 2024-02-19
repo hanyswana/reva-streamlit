@@ -42,10 +42,11 @@ def json_data():
     # Element-wise division of the dataframes & convert absorbance data to csv
     absorbance_df = df1.div(df2.values).pow(2)
     absorbance_df.to_csv('absorbance_data.csv', index=False)
+    
+    absorbance_data = absorbance_df.iloc[0]  # First row of absorbance data
     st.write(absorbance_data)
 
     # Plotting
-    absorbance_data = absorbance_df.iloc[0]  # First row of absorbance data
     plt.figure(figsize=(10, 6))
     plt.plot(wavelengths, absorbance_data, marker='o', linestyle='-', color='b')
     plt.xlabel('Wavelength (nm)', fontweight='bold', fontsize=14)
