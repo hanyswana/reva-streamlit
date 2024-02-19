@@ -44,7 +44,7 @@ def json_data():
     st.write(absorbance_df)
 
     # Convert DataFrame to CSV
-    csv_data = absorbance_df.to_csv(index=False)
+    csv_data = absorbance_df.to_csv(index=False).encode('utf-8')
     
     # Create a download button and offer the CSV to download
     st.download_button(
