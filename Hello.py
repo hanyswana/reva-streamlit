@@ -46,14 +46,6 @@ def json_data():
     # Convert DataFrame to CSV
     csv_data = absorbance_df.to_csv(index=False)
     
-    # Create a download button and offer the CSV to download
-    st.download_button(
-        label="Download Absorbance Data as CSV",
-        data=csv_data,
-        file_name="absorbance_data.csv",
-        mime="text/csv",
-    )
-    
     absorbance_data = absorbance_df.iloc[0]  # First row of absorbance data
 
     # Plotting
