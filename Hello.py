@@ -69,8 +69,6 @@ def json_data():
  
     return absorbance_df
 
-json_data()
-
 def load_model(model_dir):
     model = tf.saved_model.load(model_dir)
     return model
