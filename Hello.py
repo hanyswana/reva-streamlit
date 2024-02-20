@@ -87,7 +87,7 @@ def predict_with_model(model, input_data):
 def main():
     # Load the TensorFlow model
     model_paths = [
-        'reva-lablink-hb-125-(original-data)-15-02-24',
+        'reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27',
         'reva-lablink-hb-125-(original-data).csv_best_model_2024-02-16_17-44-04_b4_r0.26',
         'reva-lablink-hb-125-(original-data).csv_best_model_2024-02-16_11-47-00_b4_r0.26'
     ]
