@@ -116,7 +116,7 @@ def main():
         else:
             display_value = f"{predictions_value:.1f} g/dL"
     
-        st.markdown(f'<p class="custom-font">Haemoglobin {model_path}:<br>{display_value}</p>', unsafe_allow_html=True)
+        st.markdown(f'<p class="custom-font">Haemoglobin :<br>{display_value}</p>', unsafe_allow_html=True)
     
 if __name__ == "__main__":
     main()
