@@ -115,8 +115,12 @@ def main():
             display_value = f'<span class="high-value">High value : ({predictions_value:.1f} g/dL)</span>'
         else:
             display_value = f"{predictions_value:.1f} g/dL"
+
+        R39 = model_labels['reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27']
+        R25 = model_labels['reva-lablink-hb-125-(original-data).csv_best_model_2024-02-16_11-47-00_b4_r0.26']
+        R26 = model_labels['reva-lablink-hb-125-(original-data).csv_best_model_2024-02-16_17-44-04_b4_r0.26']
     
-        st.markdown(f'<p class="custom-font">Haemoglobin :<br>{display_value}</p>', unsafe_allow_html=True)
+        st.markdown(f'<p class="custom-font">Haemoglobin {R39}:<br>{display_value}</p>', unsafe_allow_html=True)
     
 if __name__ == "__main__":
     main()
