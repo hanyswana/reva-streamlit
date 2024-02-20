@@ -86,17 +86,16 @@ def predict_with_model(model, input_data):
 
 def main():
     # Load the TensorFlow model
-    model_labels = [
+    model_paths = [
         'reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27',
         'reva-lablink-hb-125-(original-data).csv_best_model_2024-02-16_11-47-00_b4_r0.26',
         'reva-lablink-hb-125-(original-data).csv_best_model_2024-02-16_17-44-04_b4_r0.26'
-        
     ]
 
     # Get data from server (simulated here)
     absorbance_data = json_data()
 
-    for model_path, label in model_labels.items():
+    for model_path in model_paths:
         # Load the model
         model = load_model(model_path)
         
@@ -104,21 +103,13 @@ def main():
         predictions = predict_with_model(model, absorbance_data)
         predictions_value = predictions[0][0]
 
-        st.markdown("""
-        <style>
-        .custom-font {font-size: 18px; -weight: bold;}
-        .high-value {color: red;}
-        </style> """, unsafe_allow_html=True)
-
         # Add condition for prediction value
         if predictions_value > 25:
-            display_value = f'<span class="high-value">High value : ({predictions_value:.1f} g/dL)</span>'
+            display_value = f'High value : ({predictions_value:.1f} g/dL)'
         else:
             display_value = f"{predictions_value:.1f} g/dL"
 
-        label = model_labels[model_path]
-    
-        st.markdown(f'<p class="custom-font">Haemoglobin {label}:<br>{display_value}</p>', unsafe_allow_html=True)
+        st.markdown(f'<p class="custom-font">Haemoglobin {model_path}:<br>{display_value}</p>', unsafe_allow_html=True)
     
 if __name__ == "__main__":
     main()
