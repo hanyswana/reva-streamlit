@@ -98,7 +98,7 @@ def main():
     for label, model_path in model_paths_with_labels:
         # Load the model
         model = load_model(model_path)
-        st.write({label}: model)
+        st.write(model)
         
         # Predict
         predictions = predict_with_model(model, absorbance_data)
