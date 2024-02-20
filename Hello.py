@@ -96,7 +96,7 @@ def main():
     # Get data from server (simulated here)
     absorbance_data = json_data()
 
-    for model_path in model_labels.keys:
+    for model_path, label in model_labels.items():
         # Load the model
         model = load_model(model_path)
         
