@@ -86,29 +86,36 @@ def predict_with_model(model, input_data):
 
 def main():
     # Load the TensorFlow model
-    model_path = 'reva-lablink-hb-125-(original-data)-15-02-24'
-    model = load_model(model_path)
+    model_paths = [
+        'reva-lablink-hb-125-(original-data)-15-02-24',
+        'reva-lablink-hb-125-(original-data).csv_best_model_2024-02-16_17-44-04_b4_r0.26',
+        'reva-lablink-hb-125-(original-data).csv_best_model_2024-02-16_11-47-00_b4_r0.26'
+    ]
 
     # Get data from server (simulated here)
     absorbance_data = json_data()
 
-    # Predict
-    predictions = predict_with_model(model, absorbance_data)
-    predictions_value = predictions[0][0]
+    for model_path in model_paths:
+        # Load the model
+        model = load_model(model_path)
+        
+        # Predict
+        predictions = predict_with_model(model, absorbance_data)
+        predictions_value = predictions[0][0]
 
-    st.markdown("""
-    <style>
-    .custom-font {font-size: 18px; -weight: bold;}
-    .high-value {color: red;}
-    </style> """, unsafe_allow_html=True)
-    
+        st.markdown("""
+        <style>
+        .custom-font {font-size: 18px; -weight: bold;}
+        .high-value {color: red;}
+        </style> """, unsafe_allow_html=True)
+
         # Add condition for prediction value
-    if predictions_value > 25:
-        display_value = f'<span class="high-value">High value : ({predictions_value:.1f} g/dL)</span>'
-    else:
-        display_value = f"{predictions_value:.1f} g/dL"
+        if predictions_value > 25:
+            display_value = f'<span class="high-value">High value : ({predictions_value:.1f} g/dL)</span>'
+        else:
+            display_value = f"{predictions_value:.1f} g/dL"
     
-    st.markdown(f'<p class="custom-font">Haemoglobin :<br>{display_value}</p>', unsafe_allow_html=True)
+        st.markdown(f'<p class="custom-font">Haemoglobin {model_path}:<br>{display_value}</p>', unsafe_allow_html=True)
     
 if __name__ == "__main__":
     main()
