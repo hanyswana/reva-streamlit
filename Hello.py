@@ -4,12 +4,12 @@ import requests
 import matplotlib.pyplot as plt
 import tensorflow as tf
 
-st.markdown("""
-<style>
-.custom-font {font-size: 16px; font-weight: bold;}
-</style> """, unsafe_allow_html=True)
+# st.markdown("""
+# <style>
+# .custom-font {font-size: 16px; font-weight: bold;}
+# </style> """, unsafe_allow_html=True)
 
-st.markdown('<p class="custom-font">Absorbance data :</p>', unsafe_allow_html=True)
+# st.markdown('<p class="custom-font">Absorbance data :</p>', unsafe_allow_html=True)
 
 def json_data():
     # First API call
