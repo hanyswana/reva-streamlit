@@ -108,7 +108,7 @@ def main():
         # Display label and prediction value
         st.markdown(f'<span class="label">Haemoglobin {label}:</span><br>{display_value}</p>', unsafe_allow_html=True)
 
-            # Plotting
+        # Plotting
         plt.figure(figsize=(10, 4))
         plt.plot(wavelengths, absorbance_data, marker='o', linestyle='-', color='b')
         plt.xlabel('Wavelength (nm)', fontweight='bold', fontsize=14)
