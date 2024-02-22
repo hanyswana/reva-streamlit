@@ -106,7 +106,7 @@ def main():
             display_value = f'<span class="value">{predictions_value:.1f} g/dL</span>'
         
         # Display label and prediction value
-        st.markdown(f'<span class="label">Haemoglobin {label}:</span><br>{display_value}</p>', unsafe_allow_html=True)
+        st.markdown(f'<span class="label">Haemoglobin ({label}):</span><br>{display_value}</p>', unsafe_allow_html=True)
 
     # Plotting
     plt.figure(figsize=(10, 4))
