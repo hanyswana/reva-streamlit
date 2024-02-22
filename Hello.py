@@ -105,7 +105,7 @@ def main():
 
         st.markdown("""
         <style>
-        .custom-font {font-size: 18px; font-weight: bold;}
+        .custom-font {font-size: 20px; font-weight: bold ;color: blue}
         .high-value {color: red;}
         </style> """, unsafe_allow_html=True)
 
