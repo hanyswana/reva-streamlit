@@ -108,16 +108,16 @@ def main():
         # Display label and prediction value
         st.markdown(f'<span class="label">Haemoglobin {label}:</span><br>{display_value}</p>', unsafe_allow_html=True)
 
-        # Plotting
-        plt.figure(figsize=(10, 4))
-        plt.plot(wavelengths, absorbance_data.iloc[0], marker='o', linestyle='-', color='b')
-        plt.xlabel('Wavelength (nm)', fontweight='bold', fontsize=14)
-        plt.ylabel('Absorbance', fontweight='bold', fontsize=14)
-        plt.xticks(rotation='vertical', fontweight='bold', fontsize=12)
-        plt.yticks(fontweight='bold', fontsize=12)
-        plt.tight_layout()
-        plt.show()
-        st.pyplot(plt)
+    # Plotting
+    plt.figure(figsize=(10, 4))
+    plt.plot(wavelengths, absorbance_data.iloc[0], marker='o', linestyle='-', color='b')
+    plt.xlabel('Wavelength (nm)', fontweight='bold', fontsize=14)
+    plt.ylabel('Absorbance', fontweight='bold', fontsize=14)
+    plt.xticks(rotation='vertical', fontweight='bold', fontsize=12)
+    plt.yticks(fontweight='bold', fontsize=12)
+    plt.tight_layout()
+    plt.show()
+    st.pyplot(plt)
     
 if __name__ == "__main__":
     main()
