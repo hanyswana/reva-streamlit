@@ -50,7 +50,7 @@ def json_data():
     absorbance_data = absorbance_df.iloc[0]  
 
     # Plotting
-    plt.figure(figsize=(10, 5))
+    plt.figure(figsize=(10, 4))
     plt.plot(wavelengths, absorbance_data, marker='o', linestyle='-', color='b')
     plt.xlabel('Wavelength (nm)', fontweight='bold', fontsize=14)
     plt.ylabel('Absorbance', fontweight='bold', fontsize=14)
