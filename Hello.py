@@ -88,7 +88,6 @@ def main():
     # Define model paths with labels
     model_paths_with_labels = [
         ('R39', 'reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27'),
-        ('R25', 'reva-lablink-hb-125-(original-data).csv_best_model_2024-02-16_11-47-00_b4_r0.26'),
         ('R26', 'reva-lablink-hb-125-(original-data).csv_best_model_2024-02-16_17-44-04_b4_r0.26')
     ]
 
