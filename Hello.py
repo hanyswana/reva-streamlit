@@ -6,7 +6,7 @@ import tensorflow as tf
 
 st.markdown("""
 <style>
-.custom-font {font-size: 18px; font-weight: bold;}
+.custom-font {font-size: 16px; font-weight: bold;}
 </style> """, unsafe_allow_html=True)
 
 st.markdown('<p class="custom-font">Absorbance data :</p>', unsafe_allow_html=True)
@@ -105,7 +105,7 @@ def main():
     
         st.markdown("""
         <style>
-        .label {font-size: 20px; font-weight: bold; color: black;}
+        .label {font-size: 16px; font-weight: bold; color: black;}
         .value {font-size: 20px; font-weight: bold; color: blue;}
         .high-value {color: red;}
         </style> """, unsafe_allow_html=True)
