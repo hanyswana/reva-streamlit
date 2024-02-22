@@ -98,15 +98,14 @@ for label, model_path in model_paths_with_labels:
     # Load the model
     model = load_model(model_path)
     # st.write(model)
-    
+        
     # Predict
     predictions = predict_with_model(model, absorbance_data)
     predictions_value = predictions[0][0]
 
     st.markdown("""
     <style>
-    .label {font-size: 20px; font-weight: bold; color: black;}
-    .value {font-size: 20px; font-weight: bold; color: blue;}
+    .custom-font {font-size: 20px; font-weight: bold ;color: blue}
     .high-value {color: red;}
     </style> """, unsafe_allow_html=True)
 
@@ -114,10 +113,10 @@ for label, model_path in model_paths_with_labels:
     if predictions_value > 25:
         display_value = f'<span class="high-value">High value : ({predictions_value:.1f} g/dL)</span>'
     else:
-        display_value = f'<span class="value">{predictions_value:.1f} g/dL</span>'
+        display_value = f"{predictions_value:.1f} g/dL"
     
     # Display label and prediction value
-    st.markdown(f'<span class="label">Haemoglobin {label}:</span><br>{display_value}</p>', unsafe_allow_html=True)
+    st.markdown(f'<p class="custom-font">Haemoglobin {label}:<br>{display_value}</p>', unsafe_allow_html=True)
 
     
 if __name__ == "__main__":
