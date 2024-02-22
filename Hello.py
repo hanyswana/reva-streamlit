@@ -48,19 +48,8 @@ def json_data():
     
     # First row of absorbance data
     absorbance_data = absorbance_df.iloc[0]  
-
-    # Plotting
-    plt.figure(figsize=(10, 4))
-    plt.plot(wavelengths, absorbance_data, marker='o', linestyle='-', color='b')
-    plt.xlabel('Wavelength (nm)', fontweight='bold', fontsize=14)
-    plt.ylabel('Absorbance', fontweight='bold', fontsize=14)
-    plt.xticks(rotation='vertical', fontweight='bold', fontsize=12)
-    plt.yticks(fontweight='bold', fontsize=12)
-    plt.tight_layout()
-    plt.show()
-    st.pyplot(plt)
  
-    return absorbance_df
+    return absorbance_df, wavelengths
 
 def load_model(model_dir):
     model = tf.saved_model.load(model_dir)
@@ -92,7 +81,7 @@ def main():
     ]
 
     # Get data from server (simulated here)
-    absorbance_data = json_data()
+    absorbance_data, wavelengths = json_data()
 
     for label, model_path in model_paths_with_labels:
         # Load the model
@@ -118,6 +107,17 @@ def main():
         
         # Display label and prediction value
         st.markdown(f'<span class="label">Haemoglobin {label}:</span><br>{display_value}</p>', unsafe_allow_html=True)
+
+            # Plotting
+        plt.figure(figsize=(10, 4))
+        plt.plot(wavelengths, absorbance_data, marker='o', linestyle='-', color='b')
+        plt.xlabel('Wavelength (nm)', fontweight='bold', fontsize=14)
+        plt.ylabel('Absorbance', fontweight='bold', fontsize=14)
+        plt.xticks(rotation='vertical', fontweight='bold', fontsize=12)
+        plt.yticks(fontweight='bold', fontsize=12)
+        plt.tight_layout()
+        plt.show()
+        st.pyplot(plt)
     
 if __name__ == "__main__":
     main()
