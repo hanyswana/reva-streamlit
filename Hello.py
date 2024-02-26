@@ -90,7 +90,7 @@ def main():
         st.markdown("""
         <style>
         .label {font-size: 16px; font-weight: bold; color: black;}
-        .value {font-size: 30px; font-weight: bold; color: blue;}
+        .value {font-size: 60px; font-weight: bold; color: blue;}
         .high-value {color: red;}
         </style> """, unsafe_allow_html=True)
     
