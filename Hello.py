@@ -46,17 +46,17 @@ def json_data():
 
     # Normalize the absorbance data using Euclidean normalization
     normalizer = Normalizer(norm='l2')  # Euclidean normalization
-    absorbance_normalized = normalizer.transform(absorbance_df)
-    absorbance_normalized_df = pd.DataFrame(absorbance_normalized, columns=absorbance_df.columns)
-    st.write(absorbance_normalized_df)
+    absorbance_normalized_euc = normalizer.transform(absorbance_df)
+    absorbance_normalized_euc_df = pd.DataFrame(absorbance_normalized_euc, columns=absorbance_df.columns)
+    st.write(absorbance_normalized_euc_df)
 
     # Convert normalized DataFrame to CSV (optional step, depending on your needs)
-    absorbance_normalized_df.to_csv('absorbance_data_normalized.csv', index=False)
+    absorbance_normalized_euc_df.to_csv('absorbance_data_normalized_euc.csv', index=False)
 
     # # First row of absorbance data
     # absorbance_data = absorbance_normalized_df.iloc[0]  
  
-    return absorbance_df, absorbance_normalized_df, wavelengths
+    return absorbance_df, absorbance_normalized_euc_df, wavelengths
 
 def load_model(model_dir):
     model = tf.saved_model.load(model_dir)
@@ -78,7 +78,7 @@ def main():
     ]
 
     # Get data from server (simulated here)
-    absorbance_data, absorbance_normalized_data, wavelengths = json_data()
+    absorbance_data, absorbance_normalized_euc_data, wavelengths = json_data()
 
     for label, model_path in model_paths_with_labels:
         # Load the model
@@ -90,8 +90,8 @@ def main():
         predictions_value_original = predictions_original[0][0]
         
         # Predict with Euclidean normalized absorbance data
-        predictions_normalized = predict_with_model(model, absorbance_normalized_data)
-        predictions_value_normalized = predictions_normalized[0][0]
+        predictions_normalized_euc = predict_with_model(model, absorbance_normalized_euc_data)
+        predictions_value_normalized_euc = predictions_normalized_euc[0][0]
     
         st.markdown("""
         <style>
@@ -103,10 +103,10 @@ def main():
         # Add condition for prediction value
         if predictions_value_original > 25:
             display_value = f'<span class="high-value">High value : ({predictions_value_original:.1f} g/dL)</span>'
-            display_value2 = f'<span class="high-value">High value : ({predictions_value_normalized:.1f} g/dL)</span>'
+            display_value2 = f'<span class="high-value">High value : ({predictions_value_normalized_euc:.1f} g/dL)</span>'
         else:
             display_value = f'<span class="value">{predictions_value_original:.1f} g/dL</span>'
-            display_value2 = f'<span class="value">{predictions_value_normalized:.1f} g/dL</span>'
+            display_value2 = f'<span class="value">{predictions_value_normalized_euc:.1f} g/dL</span>'
         
         # Display label and prediction value
         st.markdown(f'<span class="label">Haemoglobin ({label}) Original:</span><br>{display_value}</p>', unsafe_allow_html=True)
