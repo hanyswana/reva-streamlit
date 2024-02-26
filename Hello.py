@@ -15,27 +15,27 @@ from scipy import sparse
 
 # st.markdown('<p class="custom-font">Absorbance data :</p>', unsafe_allow_html=True)
 
-# Custom Baseline Removal Transformer
-class BaselineRemover(TransformerMixin, BaseEstimator):
-    def __init__(self, *, copy=True):
-        self.copy = copy
+# # Custom Baseline Removal Transformer
+# class BaselineRemover(TransformerMixin, BaseEstimator):
+#     def __init__(self, *, copy=True):
+#         self.copy = copy
 
-    def fit(self, X, y=None):
-        if sparse.issparse(X):
-            raise ValueError('Sparse matrices not supported!')
-        return self
+#     def fit(self, X, y=None):
+#         if sparse.issparse(X):
+#             raise ValueError('Sparse matrices not supported!')
+#         return self
 
-    def transform(self, X, copy=None):
-        copy = copy if copy is not None else self.copy
-        X = self._validate_data(X, reset=True, accept_sparse='csr', copy=copy, estimator=self, dtype=FLOAT_DTYPES, force_all_finite='allow-nan')
-        X = self.remove_baseline(X.T).T
-        return X
+#     def transform(self, X, copy=None):
+#         copy = copy if copy is not None else self.copy
+#         X = self._validate_data(X, reset=True, accept_sparse='csr', copy=copy, estimator=self, dtype=FLOAT_DTYPES, force_all_finite='allow-nan')
+#         X = self.remove_baseline(X.T).T
+#         return X
 
-    def remove_baseline(self, spectra):
-        return spectra - spectra.mean(axis=0)
+#     def remove_baseline(self, spectra):
+#         return spectra - spectra.mean(axis=0)
 
-    def _more_tags(self):
-        return {'allow_nan': True}
+#     def _more_tags(self):
+#         return {'allow_nan': True}
         
 def json_data():
     # First API call
@@ -152,7 +152,7 @@ def main():
     
         st.markdown("""
         <style>
-        .label {font-size: 16px; font-weight: bold; color: black;}
+        .label {font-size: 20px; font-weight: bold; color: black;}
         .value {font-size: 36px; font-weight: bold; color: blue;}
         .high-value {color: red;}
         </style> """, unsafe_allow_html=True)
