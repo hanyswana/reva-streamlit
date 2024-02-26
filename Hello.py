@@ -42,21 +42,32 @@ def json_data():
 
     # Element-wise division of the dataframes & convert absorbance data to csv
     absorbance_df = df1.div(df2.values).pow(2)
+    st.write('Original absorbance')
     st.write(absorbance_df)
 
     # Normalize the absorbance data using Euclidean normalization
     normalizer = Normalizer(norm='l2')  # Euclidean normalization
     absorbance_normalized_euc = normalizer.transform(absorbance_df)
     absorbance_normalized_euc_df = pd.DataFrame(absorbance_normalized_euc, columns=absorbance_df.columns)
+    st.write('Euclidean absorbance')
     st.write(absorbance_normalized_euc_df)
 
     # Convert normalized DataFrame to CSV (optional step, depending on your needs)
     absorbance_normalized_euc_df.to_csv('absorbance_data_normalized_euc.csv', index=False)
 
+    # Normalize the absorbance data using Manhattan normalization
+    normalizer = Normalizer(norm='l1')  # Manhattan normalization
+    absorbance_normalized_manh = normalizer.transform(absorbance_df)
+    absorbance_normalized_manh_df = pd.DataFrame(absorbance_normalized_manh, columns=absorbance_df.columns)
+    st.write(absorbance_normalized_manh_df)
+
+    # Convert normalized DataFrame to CSV (optional step, depending on your needs)
+    absorbance_normalized_manh_df.to_csv('absorbance_data_normalized_manh.csv', index=False)
+
     # # First row of absorbance data
     # absorbance_data = absorbance_normalized_df.iloc[0]  
  
-    return absorbance_df, absorbance_normalized_euc_df, wavelengths
+    return absorbance_df, absorbance_normalized_euc_df, absorbance_normalized_manh_df, wavelengths
 
 def load_model(model_dir):
     model = tf.saved_model.load(model_dir)
@@ -78,7 +89,7 @@ def main():
     ]
 
     # Get data from server (simulated here)
-    absorbance_data, absorbance_normalized_euc_data, wavelengths = json_data()
+    absorbance_data, absorbance_normalized_euc_data, absorbance_normalized_manh_data, wavelengths = json_data()
 
     for label, model_path in model_paths_with_labels:
         # Load the model
@@ -92,6 +103,10 @@ def main():
         # Predict with Euclidean normalized absorbance data
         predictions_normalized_euc = predict_with_model(model, absorbance_normalized_euc_data)
         predictions_value_normalized_euc = predictions_normalized_euc[0][0]
+
+        # Predict with Manhattan normalized absorbance data
+        predictions_normalized_manh = predict_with_model(model, absorbance_normalized_manh_data)
+        predictions_value_normalized_manh = predictions_normalized_manh[0][0]
     
         st.markdown("""
         <style>
@@ -104,13 +119,17 @@ def main():
         if predictions_value_original > 25:
             display_value = f'<span class="high-value">High value : ({predictions_value_original:.1f} g/dL)</span>'
             display_value2 = f'<span class="high-value">High value : ({predictions_value_normalized_euc:.1f} g/dL)</span>'
+            display_value3 = f'<span class="high-value">High value : ({predictions_value_normalized_manh:.1f} g/dL)</span>'
         else:
             display_value = f'<span class="value">{predictions_value_original:.1f} g/dL</span>'
             display_value2 = f'<span class="value">{predictions_value_normalized_euc:.1f} g/dL</span>'
+            display_value3 = f'<span class="value">{predictions_value_normalized_manh:.1f} g/dL</span>'
         
         # Display label and prediction value
         st.markdown(f'<span class="label">Haemoglobin ({label}) Original:</span><br>{display_value}</p>', unsafe_allow_html=True)
         st.markdown(f'<span class="label">Haemoglobin ({label}) Normalized Euclidean:</span><br>{display_value2}</p>', unsafe_allow_html=True)
+        st.markdown(f'<span class="label">Haemoglobin ({label}) Normalized Manhattan:</span><br>{display_value3}</p>', unsafe_allow_html=True)
+
 
     # Plotting
     plt.figure(figsize=(10, 4))
