@@ -3,6 +3,7 @@ import streamlit as st
 import requests
 import matplotlib.pyplot as plt
 import tensorflow as tf
+from sklearn.preprocessing import Normalizer
 
 # st.markdown("""
 # <style>
@@ -47,6 +48,7 @@ def json_data():
     normalizer = Normalizer(norm='l2')  # Euclidean normalization
     absorbance_normalized = normalizer.transform(absorbance_df)
     absorbance_normalized_df = pd.DataFrame(absorbance_normalized, columns=absorbance_df.columns)
+    st.write(absorbance_normalized_df)
 
     # Convert normalized DataFrame to CSV (optional step, depending on your needs)
     absorbance_normalized_df.to_csv('absorbance_data_normalized.csv', index=False)
