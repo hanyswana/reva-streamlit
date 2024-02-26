@@ -4,6 +4,9 @@ import requests
 import matplotlib.pyplot as plt
 import tensorflow as tf
 from sklearn.preprocessing import Normalizer
+from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.utils.validation import FLOAT_DTYPES
+from scipy import sparse
 
 # st.markdown("""
 # <style>
