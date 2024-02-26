@@ -101,7 +101,7 @@ def main():
         </style> """, unsafe_allow_html=True)
     
         # Add condition for prediction value
-        if predictions_value > 25:
+        if predictions_value_original > 25:
             display_value = f'<span class="high-value">High value : ({predictions_value_original:.1f} g/dL)</span>'
             display_value = f'<span class="high-value">High value : ({predictions_value_normalized:.1f} g/dL)</span>'
         else:
