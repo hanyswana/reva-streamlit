@@ -57,26 +57,18 @@ def load_model(model_dir):
 
 def predict_with_model(model, input_data):
 
-    # Convert DataFrame to numpy array with dtype 'float64' to match model's expectation
     input_array = input_data.to_numpy(dtype='float64')
-    
-    # Ensure the input_array has the correct shape, (-1, 19), where -1 is any batch size
-    # and 19 is the number of features
     input_array_reshaped = input_array.reshape(-1, 19)  # Adjust to match the number of features your model expects
-    
-    # Convert reshaped array to tensor with dtype=tf.float64
     input_tensor = tf.convert_to_tensor(input_array_reshaped, dtype=tf.float64)
-    
-    # Use the model for prediction
-    # Assuming the model has a predict function, which is common for TensorFlow models
     predictions = model(input_tensor)
-    
     return predictions.numpy()  # Convert predictions to numpy array if needed
 
 def main():
     # Define model paths with labels
     model_paths_with_labels = [
-        ('R39', 'reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27') 
+        ('Ori (R39)', 'reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27'),
+        ('Normalized Manhattan (R38)', 'reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27'),
+        ('Normalized Manhattan (R40)', 'reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27')
     ]
 
     # Get data from server (simulated here)
