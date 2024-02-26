@@ -43,13 +43,21 @@ def json_data():
     absorbance_df = df1.div(df2.values).pow(2)
     st.write(absorbance_df)
 
+    # Normalize the absorbance data using Euclidean normalization
+    normalizer = Normalizer(norm='l2')  # Euclidean normalization
+    absorbance_normalized = normalizer.transform(absorbance_df)
+    absorbance_normalized_df = pd.DataFrame(absorbance_normalized, columns=absorbance_df.columns)
+
+    # Convert normalized DataFrame to CSV (optional step, depending on your needs)
+    absorbance_normalized_df.to_csv('absorbance_data_normalized.csv', index=False)
+
     # Convert DataFrame to CSV
-    absorbance_df.to_csv('absorbance_data.csv', index=False)
+    # absorbance_df.to_csv('absorbance_data.csv', index=False)
     
     # First row of absorbance data
-    absorbance_data = absorbance_df.iloc[0]  
+    absorbance_data = absorbance_normalized_df.iloc[0]  
  
-    return absorbance_df, wavelengths
+    return absorbance_normalized_df, wavelengths
 
 def load_model(model_dir):
     model = tf.saved_model.load(model_dir)
