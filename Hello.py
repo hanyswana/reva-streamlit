@@ -59,6 +59,7 @@ def json_data():
     normalizer = Normalizer(norm='l1')  # Manhattan normalization
     absorbance_normalized_manh = normalizer.transform(absorbance_df)
     absorbance_normalized_manh_df = pd.DataFrame(absorbance_normalized_manh, columns=absorbance_df.columns)
+    st.write('Manhattan absorbance')
     st.write(absorbance_normalized_manh_df)
 
     # Convert normalized DataFrame to CSV (optional step, depending on your needs)
