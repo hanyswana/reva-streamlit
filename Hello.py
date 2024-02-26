@@ -103,13 +103,14 @@ def main():
         # Add condition for prediction value
         if predictions_value_original > 25:
             display_value = f'<span class="high-value">High value : ({predictions_value_original:.1f} g/dL)</span>'
-            display_value = f'<span class="high-value">High value : ({predictions_value_normalized:.1f} g/dL)</span>'
+            display_value2 = f'<span class="high-value">High value : ({predictions_value_normalized:.1f} g/dL)</span>'
         else:
             display_value = f'<span class="value">{predictions_value_original:.1f} g/dL</span>'
-            display_value = f'<span class="value">{predictions_value_normalized:.1f} g/dL</span>'
+            display_value2 = f'<span class="value">{predictions_value_normalized:.1f} g/dL</span>'
         
         # Display label and prediction value
-        st.markdown(f'<span class="label">Haemoglobin ({label}):</span><br>{display_value}</p>', unsafe_allow_html=True)
+        st.markdown(f'<span class="label">Haemoglobin ({label}) Original:</span><br>{display_value}</p>', unsafe_allow_html=True)
+        st.markdown(f'<span class="label">Haemoglobin ({label}) Normalized Euclidean:</span><br>{display_value2}</p>', unsafe_allow_html=True)
 
     # Plotting
     plt.figure(figsize=(10, 4))
