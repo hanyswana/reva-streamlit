@@ -53,13 +53,10 @@ def json_data():
     # Convert normalized DataFrame to CSV (optional step, depending on your needs)
     absorbance_normalized_df.to_csv('absorbance_data_normalized.csv', index=False)
 
-    # Convert DataFrame to CSV
-    # absorbance_df.to_csv('absorbance_data.csv', index=False)
-    
-    # First row of absorbance data
-    absorbance_data = absorbance_normalized_df.iloc[0]  
+    # # First row of absorbance data
+    # absorbance_data = absorbance_normalized_df.iloc[0]  
  
-    return absorbance_normalized_df, wavelengths
+    return absorbance_df, absorbance_normalized_df, wavelengths
 
 def load_model(model_dir):
     model = tf.saved_model.load(model_dir)
@@ -67,20 +64,10 @@ def load_model(model_dir):
 
 def predict_with_model(model, input_data):
 
-    # Convert DataFrame to numpy array with dtype 'float64' to match model's expectation
     input_array = input_data.to_numpy(dtype='float64')
-    
-    # Ensure the input_array has the correct shape, (-1, 19), where -1 is any batch size
-    # and 19 is the number of features
     input_array_reshaped = input_array.reshape(-1, 19)  # Adjust to match the number of features your model expects
-    
-    # Convert reshaped array to tensor with dtype=tf.float64
     input_tensor = tf.convert_to_tensor(input_array_reshaped, dtype=tf.float64)
-    
-    # Use the model for prediction
-    # Assuming the model has a predict function, which is common for TensorFlow models
     predictions = model(input_tensor)
-    
     return predictions.numpy()  # Convert predictions to numpy array if needed
 
 def main():
@@ -91,16 +78,20 @@ def main():
     ]
 
     # Get data from server (simulated here)
-    absorbance_data, wavelengths = json_data()
+    absorbance_data, absorbance_normalized_data, wavelengths = json_data()
 
     for label, model_path in model_paths_with_labels:
         # Load the model
         model = load_model(model_path)
         # st.write(model)
         
-        # Predict
-        predictions = predict_with_model(model, absorbance_data)
-        predictions_value = predictions[0][0]
+        # Predict with original absorbance data
+        predictions_original = predict_with_model(model, absorbance_data)
+        predictions_value_original = predictions_original[0][0]
+        
+        # Predict with Euclidean normalized absorbance data
+        predictions_normalized = predict_with_model(model, absorbance_normalized_data)
+        predictions_value_normalized = predictions_normalized[0][0]
     
         st.markdown("""
         <style>
@@ -111,9 +102,11 @@ def main():
     
         # Add condition for prediction value
         if predictions_value > 25:
-            display_value = f'<span class="high-value">High value : ({predictions_value:.1f} g/dL)</span>'
+            display_value = f'<span class="high-value">High value : ({predictions_value_original:.1f} g/dL)</span>'
+            display_value = f'<span class="high-value">High value : ({predictions_value_normalized:.1f} g/dL)</span>'
         else:
-            display_value = f'<span class="value">{predictions_value:.1f} g/dL</span>'
+            display_value = f'<span class="value">{predictions_value_original:.1f} g/dL</span>'
+            display_value = f'<span class="value">{predictions_value_normalized:.1f} g/dL</span>'
         
         # Display label and prediction value
         st.markdown(f'<span class="label">Haemoglobin ({label}):</span><br>{display_value}</p>', unsafe_allow_html=True)
