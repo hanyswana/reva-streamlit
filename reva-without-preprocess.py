@@ -70,7 +70,7 @@ def predict_with_model(model, input_data):
         input_shape = input_details[0]['shape']
         
         # Assuming input_data is a pandas DataFrame
-        input_array = input_data.to_numpy(dtype='float32').reshape(input_shape)
+        input_array = input_data.to_numpy(dtype='float64').reshape(input_shape)
         model.set_tensor(input_details[0]['index'], input_array)
         model.invoke()
         predictions = model.get_tensor(output_details[0]['index'])
