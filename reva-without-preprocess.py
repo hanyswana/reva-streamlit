@@ -51,33 +51,42 @@ def json_data():
  
     return absorbance_df, wavelengths
 
-def load_model(model_dir):
-    model = tf.saved_model.load(model_dir)
-    return model
+def load_model(model_path):
+    if model_path.endswith('.tflite'):
+        # Load TensorFlow Lite model
+        interpreter = tf.lite.Interpreter(model_path=model_path)
+        interpreter.allocate_tensors()
+        return interpreter
+    else:
+        # Load TensorFlow model
+        model = tf.saved_model.load(model_path)
+        return model
 
 def predict_with_model(model, input_data):
-
-    # Convert DataFrame to numpy array with dtype 'float64' to match model's expectation
-    input_array = input_data.to_numpy(dtype='float64')
-    
-    # Ensure the input_array has the correct shape, (-1, 19), where -1 is any batch size
-    # and 19 is the number of features
-    input_array_reshaped = input_array.reshape(-1, 19)  # Adjust to match the number of features your model expects
-    
-    # Convert reshaped array to tensor with dtype=tf.float64
-    input_tensor = tf.convert_to_tensor(input_array_reshaped, dtype=tf.float64)
-    
-    # Use the model for prediction
-    # Assuming the model has a predict function, which is common for TensorFlow models
-    predictions = model(input_tensor)
-    
-    return predictions.numpy()  # Convert predictions to numpy array if needed
+    if isinstance(model, tf.lite.Interpreter):
+        # TensorFlow Lite model prediction
+        input_details = model.get_input_details()
+        output_details = model.get_output_details()
+        input_shape = input_details[0]['shape']
+        
+        # Assuming input_data is a pandas DataFrame
+        input_array = input_data.to_numpy(dtype='float32').reshape(input_shape)
+        model.set_tensor(input_details[0]['index'], input_array)
+        model.invoke()
+        predictions = model.get_tensor(output_details[0]['index'])
+        return predictions
+    else:
+        # TensorFlow model prediction
+        input_array = input_data.to_numpy(dtype='float64')
+        input_array_reshaped = input_array.reshape(-1, 19)  # Adjust as needed
+        input_tensor = tf.convert_to_tensor(input_array_reshaped, dtype=tf.float64)
+        predictions = model(input_tensor)
+        return predictions.numpy()
 
 def main():
-    # Define model paths with labels
     model_paths_with_labels = [
         ('R39', 'reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27'),
-        ('R26', 'reva-lablink-hb-125-(original-data).csv_best_model_2024-02-16_17-44-04_b4_r0.26')
+        ('TFLITE', 'tflite_model.tflite')  # TensorFlow Lite model added here
     ]
 
     # Get data from server (simulated here)
@@ -86,20 +95,19 @@ def main():
     for label, model_path in model_paths_with_labels:
         # Load the model
         model = load_model(model_path)
-        # st.write(model)
         
         # Predict
         predictions = predict_with_model(model, absorbance_data)
-        predictions_value = predictions[0][0]
-    
+        predictions_value = predictions[0][0] if label == 'TFLITE' else predictions[0]  # Adjust based on your model's output
+        
         st.markdown("""
         <style>
         .label {font-size: 16px; font-weight: bold; color: black;}
-        .value {font-size: 30px; font-weight: bold; color: blue;}
+        .value {font-size: 60px; font-weight: bold; color: blue;}
         .high-value {color: red;}
         </style> """, unsafe_allow_html=True)
     
-        # Add condition for prediction value
+        # Condition for prediction value display
         if predictions_value > 25:
             display_value = f'<span class="high-value">High value : ({predictions_value:.1f} g/dL)</span>'
         else:
@@ -118,6 +126,6 @@ def main():
     plt.tight_layout()
     plt.show()
     st.pyplot(plt)
-    
+
 if __name__ == "__main__":
     main()
