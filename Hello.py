@@ -105,8 +105,8 @@ def json_data():
     st.write(absorbance_baseline_removed_df)
 
     # Apply SNV to the absorbance data after baseline removal
-    absorbance_snv = snv(absorbance_baseline_removed_df.values)
-    absorbance_snv_df = pd.DataFrame(absorbance_snv, columns=absorbance_baseline_removed_df.columns)
+    absorbance_snv = snv(absorbance_df.values)
+    absorbance_snv_df = pd.DataFrame(absorbance_snv, columns=absorbance_df.columns)
     st.write('SNV Transformation')
     st.write(absorbance_snv_df)
 
@@ -135,7 +135,7 @@ def main():
     ]
 
     # Get data from server (simulated here)
-    absorbance_data, absorbance_normalized_euc_data, absorbance_normalized_manh_data, absorbance_baseline_removed_data, absorbance_snv_df, wavelengths = json_data()
+    absorbance_data, absorbance_normalized_euc_data, absorbance_normalized_manh_data, absorbance_baseline_removed_data, absorbance_snv_data, wavelengths = json_data()
     # absorbance_data, wavelengths = json_data()
 
     for label, model_path in model_paths_with_labels:
