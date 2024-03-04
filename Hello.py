@@ -93,7 +93,7 @@ def main():
         <style>
         .label {font-size: 16px; font-weight: bold; color: black;}
         .value {font-size: 60px; font-weight: bold; color: blue;}
-        .high-value {color: red;}
+        .high-value {font-size: 60px; font-weight: bold; color: red;}
         </style> """, unsafe_allow_html=True)
     
         # Add condition for prediction value
