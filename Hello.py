@@ -64,8 +64,8 @@ def predict_with_model(model, input_data):
     predictions = model(input_tensor)
     return predictions.numpy()  # Convert predictions to numpy array if needed
 
-def apply_preprocess(preprocess_path, df2):
-    return df2
+def apply_preprocess(preprocess_path, absorbance_data):
+    return absorbance_data
     
 def main():
 
