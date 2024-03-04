@@ -50,7 +50,7 @@ def json_data():
     # First row of absorbance data
     absorbance_data = absorbance_df.iloc[0]  
  
-    return df2, absorbance_df, wavelengths
+    return absorbance_df, wavelengths
 
 def load_model(model_dir):
     model = tf.saved_model.load(model_dir)
@@ -85,7 +85,7 @@ def main():
 
     for preprocess_label, preprocess_file in preprocess_files:
         # Apply each preprocess to the absorbance data
-        modified_absorbance_data = apply_preprocess(preprocess_file, df2)
+        modified_absorbance_data = apply_preprocess(preprocess_file, absorbance_data)
 
         for label, model_path in model_paths_with_labels:
             # Load the model
@@ -93,7 +93,7 @@ def main():
             # st.write(model)
             
             # Predict
-            predictions = predict_with_model(model, modified_absorbance_data)
+            predictions = predict_with_model(model, absorbance_data)
             predictions_value = predictions[0][0]
         
             st.markdown("""
