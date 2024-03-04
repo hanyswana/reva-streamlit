@@ -74,8 +74,8 @@ def json_data():
 
     # Element-wise division of the dataframes & convert absorbance data to csv
     absorbance_df = df1.div(df2.values).pow(2)
-    # st.write('Original absorbance')
-    # st.write(absorbance_df)
+    st.write('Original absorbance')
+    st.write(absorbance_df)
 
     # Normalize the absorbance data using Euclidean normalization
     normalizer = Normalizer(norm='l2')  # Euclidean normalization
