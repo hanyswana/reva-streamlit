@@ -3,6 +3,10 @@ import streamlit as st
 import requests
 import matplotlib.pyplot as plt
 import tensorflow as tf
+from sklearn.preprocessing import Normalizer
+from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.utils.validation import FLOAT_DTYPES
+from scipy import sparse
 
 # st.markdown("""
 # <style>
@@ -11,6 +15,34 @@ import tensorflow as tf
 
 # st.markdown('<p class="custom-font">Absorbance data :</p>', unsafe_allow_html=True)
 
+# Custom Baseline Removal Transformer
+class BaselineRemover(TransformerMixin, BaseEstimator):
+    def __init__(self, *, copy=True):
+        self.copy = copy
+
+    def fit(self, X, y=None):
+        if sparse.issparse(X):
+            raise ValueError('Sparse matrices not supported!')
+        return self
+
+    def transform(self, X, copy=None):
+        copy = copy if copy is not None else self.copy
+        X = self._validate_data(X, reset=True, accept_sparse='csr', copy=copy, estimator=self, dtype=FLOAT_DTYPES, force_all_finite='allow-nan')
+        X = self.remove_baseline(X.T).T
+        return X
+
+    def remove_baseline(self, spectra):
+        return spectra - spectra.mean(axis=0)
+
+    def _more_tags(self):
+        return {'allow_nan': True}
+
+def snv(input_data):
+    # Mean centering and scaling by standard deviation for each spectrum
+    mean_corrected = input_data - np.mean(input_data, axis=1, keepdims=True)
+    snv_transformed = mean_corrected / np.std(mean_corrected, axis=1, keepdims=True)
+    return snv_transformed
+        
 def json_data():
     # First API call
     api_url1 = "https://x8ki-letl-twmt.n7.xano.io/api:3iQkTr3r/backgroundData"
@@ -37,20 +69,51 @@ def json_data():
     # Extract first line of data from both API responses and convert to numeric
     df1 = pd.DataFrame(data1).iloc[:1].apply(pd.to_numeric, errors='coerce')
     df2 = pd.DataFrame(data2).iloc[:1].apply(pd.to_numeric, errors='coerce')
-    # st.write(df2)
     wavelengths = df1.columns
 
     # Element-wise division of the dataframes & convert absorbance data to csv
     absorbance_df = df1.div(df2.values).pow(2)
-    st.write(absorbance_df)
+    # st.write('Original absorbance')
+    # st.write(absorbance_df)
 
-    # Convert DataFrame to CSV
-    absorbance_df.to_csv('absorbance_data.csv', index=False)
-    
+    # Normalize the absorbance data using Euclidean normalization
+    normalizer = Normalizer(norm='l2')  # Euclidean normalization
+    absorbance_normalized_euc = normalizer.transform(absorbance_df)
+    absorbance_normalized_euc_df = pd.DataFrame(absorbance_normalized_euc, columns=absorbance_df.columns)
+    st.write('Euclidean absorbance')
+    st.write(absorbance_normalized_euc_df)
+
+    # Convert normalized DataFrame to CSV (optional step, depending on your needs)
+    absorbance_normalized_euc_df.to_csv('absorbance_data_normalized_euc.csv', index=False)
+
+    # Normalize the absorbance data using Manhattan normalization
+    normalizer = Normalizer(norm='l1')  # Manhattan normalization
+    absorbance_normalized_manh = normalizer.transform(absorbance_df)
+    absorbance_normalized_manh_df = pd.DataFrame(absorbance_normalized_manh, columns=absorbance_df.columns)
+    st.write('Manhattan absorbance')
+    st.write(absorbance_normalized_manh_df)
+
+    # Convert normalized DataFrame to CSV (optional step, depending on your needs)
+    absorbance_normalized_manh_df.to_csv('absorbance_data_normalized_manh.csv', index=False)
+
+    # Apply baseline removal to the absorbance data
+    baseline_remover = BaselineRemover()
+    absorbance_baseline_removed = baseline_remover.transform(absorbance_df)
+    absorbance_baseline_removed_df = pd.DataFrame(absorbance_baseline_removed, columns=absorbance_df.columns)
+    st.write('Baseline removal')
+    st.write(absorbance_baseline_removed_df)
+
+    # Apply SNV to the absorbance data after baseline removal
+    absorbance_snv = snv(absorbance_baseline_removed_df.values)
+    absorbance_snv_df = pd.DataFrame(absorbance_snv, columns=absorbance_baseline_removed_df.columns)
+    st.write('SNV Transformation')
+    st.write(absorbance_snv_df)
+
     # First row of absorbance data
-    absorbance_data = absorbance_df.iloc[0]  
+    absorbance_data = absorbance_normalized_df.iloc[0]  
  
-    return absorbance_df, wavelengths
+    return absorbance_df, absorbance_normalized_euc_df, absorbance_normalized_manh_df, absorbance_baseline_removed_df, absorbance_snv_df, wavelengths
+    # return absorbance_df, wavelengths
 
 def load_model(model_dir):
     model = tf.saved_model.load(model_dir)
@@ -65,19 +128,13 @@ def predict_with_model(model, input_data):
     return predictions.numpy()  # Convert predictions to numpy array if needed
 
 def main():
-    # # Define model paths with labels
+    # Define model paths with labels
     model_paths_with_labels = [
-        ('Ori (R39)', 'reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27'),
-        ('Normalized Manhattan (R38)', 'lablink-hb-norm-manh.csv_best_model_2024-02-23_00-52-51_r38'),
-        ('Normalized Manhattan (R40)', 'lablink-hb-norm-manh.csv_best_model_2024-02-22_02-09-42_r40'),
-        ('SNV (R49)', 'snv_transformed-1.csv_best_model_2024-02-29_22-15-55')
+        ('R39', 'reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27')
     ]
 
-    # model_paths_with_labels = [
-    #     ('Ori (R39)', 'reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27')
-    # ]
-    
     # Get data from server (simulated here)
+    # absorbance_data, absorbance_normalized_euc_data, absorbance_normalized_manh_data, absorbance_baseline_removed_data, absorbance_snv_df, wavelengths = json_data()
     absorbance_data, wavelengths = json_data()
 
     for label, model_path in model_paths_with_labels:
@@ -85,25 +142,55 @@ def main():
         model = load_model(model_path)
         # st.write(model)
         
-        # Predict
-        predictions = predict_with_model(model, absorbance_data)
-        predictions_value = predictions[0][0]
+        # Predict with original absorbance data
+        predictions_original = predict_with_model(model, absorbance_data)
+        predictions_value_original = predictions_original[0][0]
+        
+        # Predict with Euclidean normalized absorbance data
+        predictions_normalized_euc = predict_with_model(model, absorbance_normalized_euc_data)
+        predictions_value_normalized_euc = predictions_normalized_euc[0][0]
+
+        # Predict with Manhattan normalized absorbance data
+        predictions_normalized_manh = predict_with_model(model, absorbance_normalized_manh_data)
+        predictions_value_normalized_manh = predictions_normalized_manh[0][0]
+
+        # Predict with baseline removed absorbance data
+        predictions_baseline_removed = predict_with_model(model, absorbance_baseline_removed_data)
+        predictions_value_baseline_removed = predictions_baseline_removed[0][0]
+
+        # Predict with SNV transformed absorbance data
+        predictions_snv = predict_with_model(model, absorbance_snv_data)
+        predictions_value_snv = predictions_snv[0][0]
+
     
         st.markdown("""
         <style>
-        .label {font-size: 16px; font-weight: bold; color: black;}
-        .value {font-size: 60px; font-weight: bold; color: blue;}
-        .high-value {font-size: 60px; font-weight: bold; color: red;}
+        .label {font-size: 20px; font-weight: bold; color: black;}
+        .value {font-size: 40px; font-weight: bold; color: blue;}
+        .high-value {color: red;}
         </style> """, unsafe_allow_html=True)
     
         # Add condition for prediction value
-        if predictions_value > 25:
-            display_value = f'<span class="high-value">High value : ({predictions_value:.1f} g/dL)</span>'
+        if predictions_value_original > 25:
+            display_value = f'<span class="high-value">High value : ({predictions_value_original:.1f} g/dL)</span>'
+            display_value2 = f'<span class="high-value">High value : ({predictions_value_normalized_euc:.1f} g/dL)</span>'
+            display_value3 = f'<span class="high-value">High value : ({predictions_value_normalized_manh:.1f} g/dL)</span>'
+            display_value4 = f'<span class="high-value">High value : ({predictions_value_baseline_removed:.1f} g/dL)</span>'
+            display_value5 = f'<span class="high-value">High value : ({predictions_value_snv:.1f} g/dL)</span>'
         else:
-            display_value = f'<span class="value">{predictions_value:.1f} g/dL</span>'
+            display_value = f'<span class="value">{predictions_value_original:.1f} g/dL</span>'
+            display_value2 = f'<span class="value">{predictions_value_normalized_euc:.1f} g/dL</span>'
+            display_value3 = f'<span class="value">{predictions_value_normalized_manh:.1f} g/dL</span>'
+            display_value4 = f'<span class="value">{predictions_value_baseline_removed:.1f} g/dL</span>'
+            display_value5 = f'<span class="value">{predictions_value_snv:.1f} g/dL</span>'
         
         # Display label and prediction value
-        st.markdown(f'<span class="label">Haemoglobin ({label}):</span><br>{display_value}</p>', unsafe_allow_html=True)
+        st.markdown(f'<span class="label">Haemoglobin :</span><br>{display_value}</p>', unsafe_allow_html=True)
+        st.markdown(f'<span class="label">Haemoglobin ({label}) Normalized Euclidean:</span><br>{display_value2}</p>', unsafe_allow_html=True)
+        st.markdown(f'<span class="label">Haemoglobin ({label}) Normalized Manhattan:</span><br>{display_value3}</p>', unsafe_allow_html=True)
+        st.markdown(f'<span class="label">Haemoglobin ({label}) Baseline removal:</span><br>{display_value4}</p>', unsafe_allow_html=True)
+        st.markdown(f'<span class="label">Haemoglobin ({label}) SNV:</span><br>{display_value5}</p>', unsafe_allow_html=True)
+
 
     # Plotting
     plt.figure(figsize=(10, 4))
