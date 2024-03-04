@@ -65,11 +65,6 @@ def predict_with_model(model, input_data):
     return predictions.numpy()  # Convert predictions to numpy array if needed
 
 def apply_preprocess(preprocess_path, df2):
-    # Simulate reading the preprocessing file and applying the preprocess
-    # In actual implementation, you would load the preprocess parameters and apply them
-    # This is a placeholder to represent the process
-    print(f"Applying preprocessing from {preprocess_path}...")
-    # Return the modified absorbance data after applying preprocessing
     return df2
     
 def main():
