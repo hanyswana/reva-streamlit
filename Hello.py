@@ -81,7 +81,7 @@ def main():
     ]
     
     # Get data from server (simulated here)
-    df2, absorbance_data, wavelengths = json_data()
+    absorbance_data, wavelengths = json_data()
 
     for preprocess_label, preprocess_file in preprocess_files:
         # Apply each preprocess to the absorbance data
