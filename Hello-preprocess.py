@@ -65,13 +65,17 @@ def predict_with_model(model, input_data):
     return predictions.numpy()  # Convert predictions to numpy array if needed
 
 def main():
-    # Define model paths with labels
+    # # Define model paths with labels
     model_paths_with_labels = [
         ('Ori (R39)', 'reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27'),
         ('Normalized Manhattan (R38)', 'lablink-hb-norm-manh.csv_best_model_2024-02-23_00-52-51_r38'),
         ('Normalized Manhattan (R40)', 'lablink-hb-norm-manh.csv_best_model_2024-02-22_02-09-42_r40'),
         ('SNV (R49)', 'snv_transformed-1.csv_best_model_2024-02-29_22-15-55')
     ]
+
+    # model_paths_with_labels = [
+    #     ('Ori (R39)', 'reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27')
+    # ]
     
     # Get data from server (simulated here)
     absorbance_data, wavelengths = json_data()
