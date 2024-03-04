@@ -50,7 +50,7 @@ def json_data():
     # First row of absorbance data
     absorbance_data = absorbance_df.iloc[0]  
  
-    return absorbance_df, wavelengths, df2
+    return absorbance_df, wavelengths
 
 def load_model(model_dir):
     model = tf.saved_model.load(model_dir)
@@ -64,53 +64,42 @@ def predict_with_model(model, input_data):
     predictions = model(input_tensor)
     return predictions.numpy()  # Convert predictions to numpy array if needed
 
-def apply_preprocess(preprocess_path, df2):
-    return df2
-    
 def main():
-
-    preprocess_files = [
-        ('Normalized Manhattan (R38)', 'lablink-hb-norm-manh.csv_best_model_2024-02-23_00-52-51_r38'),
-        ('Normalized Manhattan (R40)', 'lablink-hb-norm-manh.csv_best_model_2024-02-22_02-09-42_r40'),
-        ('SNV (R49)', 'snv_transformed-1.csv_best_model_2024-02-29_22-15-55'),
-    ]
-    
     # Define model paths with labels
     model_paths_with_labels = [
-        ('Ori (R39)', 'reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27')
+        ('Ori (R39)', 'reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27'),
+        ('Normalized Manhattan (R38)', 'lablink-hb-norm-manh.csv_best_model_2024-02-23_00-52-51_r38'),
+        ('Normalized Manhattan (R40)', 'lablink-hb-norm-manh.csv_best_model_2024-02-22_02-09-42_r40'),
+        ('SNV (R49)', 'snv_transformed-1.csv_best_model_2024-02-29_22-15-55')
     ]
     
     # Get data from server (simulated here)
-    absorbance_data, wavelengths, df2 = json_data()
+    absorbance_data, wavelengths = json_data()
 
-    for preprocess_label, preprocess_file in preprocess_files:
-        # Apply each preprocess to the spectral data
-        modified_absorbance_data = apply_preprocess(preprocess_file, df2)
-
-        for label, model_path in model_paths_with_labels:
-            # Load the model
-            model = load_model(model_path)
-            # st.write(model)
-            
-            # Predict
-            predictions = predict_with_model(model, modified_absorbance_data)
-            predictions_value = predictions[0][0]
+    for label, model_path in model_paths_with_labels:
+        # Load the model
+        model = load_model(model_path)
+        # st.write(model)
         
-            st.markdown("""
-            <style>
-            .label {font-size: 16px; font-weight: bold; color: black;}
-            .value {font-size: 60px; font-weight: bold; color: blue;}
-            .high-value {font-size: 60px; font-weight: bold; color: red;}
-            </style> """, unsafe_allow_html=True)
+        # Predict
+        predictions = predict_with_model(model, absorbance_data)
+        predictions_value = predictions[0][0]
+    
+        st.markdown("""
+        <style>
+        .label {font-size: 16px; font-weight: bold; color: black;}
+        .value {font-size: 60px; font-weight: bold; color: blue;}
+        .high-value {font-size: 60px; font-weight: bold; color: red;}
+        </style> """, unsafe_allow_html=True)
+    
+        # Add condition for prediction value
+        if predictions_value > 25:
+            display_value = f'<span class="high-value">High value : ({predictions_value:.1f} g/dL)</span>'
+        else:
+            display_value = f'<span class="value">{predictions_value:.1f} g/dL</span>'
         
-            # Add condition for prediction value
-            if predictions_value > 25:
-                display_value = f'<span class="high-value">High value : ({predictions_value:.1f} g/dL)</span>'
-            else:
-                display_value = f'<span class="value">{predictions_value:.1f} g/dL</span>'
-            
-            # Display label and prediction value
-            st.markdown(f'<span class="label">Haemoglobin ({preprocess_label} with {label}):</span><br>{display_value}</p>', unsafe_allow_html=True)
+        # Display label and prediction value
+        st.markdown(f'<span class="label">Haemoglobin ({label}):</span><br>{display_value}</p>', unsafe_allow_html=True)
 
     # Plotting
     plt.figure(figsize=(10, 4))
