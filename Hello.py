@@ -93,7 +93,7 @@ def main():
             # st.write(model)
             
             # Predict
-            predictions = predict_with_model(model, absorbance_data)
+            predictions = predict_with_model(model, modified_absorbance_data)
             predictions_value = predictions[0][0]
         
             st.markdown("""
