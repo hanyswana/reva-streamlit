@@ -85,7 +85,7 @@ def main():
 
     for preprocess_label, preprocess_file in preprocess_files:
         # Apply each preprocess to the absorbance data
-        modified_absorbance_data = apply_preprocess(preprocess_file, absorbance_data)
+        modified_absorbance_data = apply_preprocess(preprocess_file, df2)
 
         for label, model_path in model_paths_with_labels:
             # Load the model
