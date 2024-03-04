@@ -7,6 +7,7 @@ from sklearn.preprocessing import Normalizer
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils.validation import FLOAT_DTYPES
 from scipy import sparse
+import numpy as np
 
 # st.markdown("""
 # <style>
