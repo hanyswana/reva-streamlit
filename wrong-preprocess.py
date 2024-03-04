@@ -36,6 +36,12 @@ class BaselineRemover(TransformerMixin, BaseEstimator):
 
     def _more_tags(self):
         return {'allow_nan': True}
+
+def snv(input_data):
+    # Mean centering and scaling by standard deviation for each spectrum
+    mean_corrected = input_data - np.mean(input_data, axis=1, keepdims=True)
+    snv_transformed = mean_corrected / np.std(mean_corrected, axis=1, keepdims=True)
+    return snv_transformed
         
 def json_data():
     # First API call
@@ -97,10 +103,16 @@ def json_data():
     st.write('Baseline removal')
     st.write(absorbance_baseline_removed_df)
 
+    # Apply SNV to the absorbance data after baseline removal
+    absorbance_snv = snv(absorbance_baseline_removed_df.values)
+    absorbance_snv_df = pd.DataFrame(absorbance_snv, columns=absorbance_baseline_removed_df.columns)
+    st.write('SNV Transformation')
+    st.write(absorbance_snv_df)
+
     # First row of absorbance data
     absorbance_data = absorbance_normalized_df.iloc[0]  
  
-    return absorbance_df, absorbance_normalized_euc_df, absorbance_normalized_manh_df, absorbance_baseline_removed_df, wavelengths
+    return absorbance_df, absorbance_normalized_euc_df, absorbance_normalized_manh_df, absorbance_baseline_removed_df, absorbance_snv_df, wavelengths
     # return absorbance_df, wavelengths
 
 def load_model(model_dir):
@@ -122,7 +134,7 @@ def main():
     ]
 
     # Get data from server (simulated here)
-    # absorbance_data, absorbance_normalized_euc_data, absorbance_normalized_manh_data, absorbance_baseline_removed_data, wavelengths = json_data()
+    # absorbance_data, absorbance_normalized_euc_data, absorbance_normalized_manh_data, absorbance_baseline_removed_data, absorbance_snv_df, wavelengths = json_data()
     absorbance_data, wavelengths = json_data()
 
     for label, model_path in model_paths_with_labels:
@@ -145,6 +157,11 @@ def main():
         # Predict with baseline removed absorbance data
         predictions_baseline_removed = predict_with_model(model, absorbance_baseline_removed_data)
         predictions_value_baseline_removed = predictions_baseline_removed[0][0]
+
+        # Predict with SNV transformed absorbance data
+        predictions_snv = predict_with_model(model, absorbance_snv_data)
+        predictions_value_snv = predictions_snv[0][0]
+
     
         st.markdown("""
         <style>
@@ -159,17 +176,20 @@ def main():
             display_value2 = f'<span class="high-value">High value : ({predictions_value_normalized_euc:.1f} g/dL)</span>'
             display_value3 = f'<span class="high-value">High value : ({predictions_value_normalized_manh:.1f} g/dL)</span>'
             display_value4 = f'<span class="high-value">High value : ({predictions_value_baseline_removed:.1f} g/dL)</span>'
+            display_value5 = f'<span class="high-value">High value : ({predictions_value_snv:.1f} g/dL)</span>'
         else:
             display_value = f'<span class="value">{predictions_value_original:.1f} g/dL</span>'
             display_value2 = f'<span class="value">{predictions_value_normalized_euc:.1f} g/dL</span>'
             display_value3 = f'<span class="value">{predictions_value_normalized_manh:.1f} g/dL</span>'
             display_value4 = f'<span class="value">{predictions_value_baseline_removed:.1f} g/dL</span>'
+            display_value5 = f'<span class="value">{predictions_value_snv:.1f} g/dL</span>'
         
         # Display label and prediction value
         st.markdown(f'<span class="label">Haemoglobin :</span><br>{display_value}</p>', unsafe_allow_html=True)
         st.markdown(f'<span class="label">Haemoglobin ({label}) Normalized Euclidean:</span><br>{display_value2}</p>', unsafe_allow_html=True)
         st.markdown(f'<span class="label">Haemoglobin ({label}) Normalized Manhattan:</span><br>{display_value3}</p>', unsafe_allow_html=True)
         st.markdown(f'<span class="label">Haemoglobin ({label}) Baseline removal:</span><br>{display_value4}</p>', unsafe_allow_html=True)
+        st.markdown(f'<span class="label">Haemoglobin ({label}) SNV:</span><br>{display_value5}</p>', unsafe_allow_html=True)
 
 
     # Plotting
