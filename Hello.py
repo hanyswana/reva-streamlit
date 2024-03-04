@@ -110,8 +110,8 @@ def json_data():
     st.write('SNV Transformation')
     st.write(absorbance_snv_df)
 
-    # # First row of absorbance data
-    # absorbance_data = absorbance_normalized_df.iloc[0]  
+    # First row of absorbance data
+    absorbance_data = absorbance_df.iloc[0]  
  
     return absorbance_df, absorbance_normalized_euc_df, absorbance_normalized_manh_df, absorbance_baseline_removed_df, absorbance_snv_df, wavelengths
     # return absorbance_df, wavelengths
