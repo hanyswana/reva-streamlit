@@ -88,6 +88,8 @@ def predict_with_model(model, input_data):
         input_tensor = tf.convert_to_tensor(input_array_reshaped, dtype=tf.float64)
         predictions = model(input_tensor)
         return predictions.numpy()
+        
+    return predictions
 
 def main():
     # Define model paths with labels
