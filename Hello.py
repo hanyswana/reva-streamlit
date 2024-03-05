@@ -52,22 +52,49 @@ def json_data():
  
     return absorbance_df, wavelengths
 
-def load_model(model_dir):
-    model = tf.saved_model.load(model_dir)
-    return model
+def load_model(model_path):
+    # Check if the model is a TensorFlow Lite model based on the file extension
+    if model_path.endswith('.tflite'):
+        # Load TFLite model and allocate tensors.
+        interpreter = tf.lite.Interpreter(model_path=model_path)
+        interpreter.allocate_tensors()
+        return interpreter
+    else:
+        # Load a regular SavedModel
+        model = tf.saved_model.load(model_path)
+        return model
 
 def predict_with_model(model, input_data):
+    # Check if the model is an instance of the TensorFlow Lite Interpreter
+    if isinstance(model, tf.lite.Interpreter):
+        input_details = model.get_input_details()
+        output_details = model.get_output_details()
 
-    input_array = input_data.to_numpy(dtype='float64')
-    input_array_reshaped = input_array.reshape(-1, 19)  # Adjust to match the number of features your model expects
-    input_tensor = tf.convert_to_tensor(input_array_reshaped, dtype=tf.float64)
-    predictions = model(input_tensor)
-    return predictions.numpy()  # Convert predictions to numpy array if needed
+        # Assuming input_data is a pandas DataFrame, convert it to numpy array
+        input_array = input_data.to_numpy(dtype='float32') # Adjust dtype if necessary
+        input_array_reshaped = input_array.reshape(input_details[0]['shape'])
+        
+        # Set the tensor to point to the input data to be inferred
+        model.set_tensor(input_details[0]['index'], input_array_reshaped)
+        model.invoke()
+
+        # Get the model's output and return it
+        output_data = model.get_tensor(output_details[0]['index'])
+        return output_data
+    else:
+        # If it's a regular SavedModel, perform prediction as before
+        input_array = input_data.to_numpy(dtype='float64')
+        input_array_reshaped = input_array.reshape(-1, 19) # Adjust based on your model's input shape
+        input_tensor = tf.convert_to_tensor(input_array_reshaped, dtype=tf.float64)
+        predictions = model(input_tensor)
+        return predictions.numpy()
 
 def main():
     # Define model paths with labels
     model_paths_with_labels = [
-        ('Ori (R39)', 'reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27')
+        ('Ori (R39)', 'reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27'),
+        ('TFLite1', 'tflite_model.tflite),
+        ('TFLite2', 'model_new.tflite')
     ]
     
     # Get data from server (simulated here)
