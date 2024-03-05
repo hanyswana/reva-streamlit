@@ -67,7 +67,9 @@ def predict_with_model(model, input_data):
 def main():
     # Define model paths with labels
     model_paths_with_labels = [
-        ('Ori (R39)', 'reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27') ]
+        ('Ori (R39)', 'reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27'),
+        ('TFLite1', 'tflite_model.tflite')
+    ]
     
     # Get data from server (simulated here)
     absorbance_data, wavelengths = json_data()
