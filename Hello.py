@@ -80,19 +80,6 @@ def predict_with_model(model, input_data):
         input_tensor = tf.convert_to_tensor(input_array_reshaped, dtype=tf.float64)
         predictions = model(input_tensor)
         return predictions.numpy()  # Convert predictions to numpy array if needed
-
-def get_tflite_model_schema_version(model_path):
-    # Load the TFLite model
-    with open(model_path, 'rb') as f:
-        model_content = f.read()
-    
-    # Load the model as a FlatBuffer model
-    interpreter = tf.lite.Interpreter(model_content=model_content)
-    
-    # Get the schema version from the model's metadata
-    schema_version = interpreter.get_tensor_details()[0]['quantization_parameters']['scales']
-    
-    return schema_version
     
 def main():
     # Define model paths with labels
@@ -129,10 +116,6 @@ def main():
         
         # Display label and prediction value
         st.markdown(f'<span class="label">Haemoglobin ({label}):</span><br>{display_value}</p>', unsafe_allow_html=True)
-            
-        if label == 'TFLite1':
-            schema_version = get_tflite_model_schema_version(model_path)
-            st.write(f'{label} schema version: {schema_version}')
 
     # Plotting
     plt.figure(figsize=(10, 4))
