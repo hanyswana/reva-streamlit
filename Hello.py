@@ -58,11 +58,11 @@ def load_model(model_dir):
         interpreter = tf.lite.Interpreter(model_path=model_dir)
         interpreter.allocate_tensors()
         return interpreter
-    elif model_dir.endswith('.h'):  # Placeholder for .h file handling
-        # For .h file, loading directly in Python is not supported.
-        # This step would require converting the .h file back to .tflite
-        # or using it within a C/C++ application that interfaces with Python.
-        raise NotImplementedError("Model loading from .h files is not supported in this script.")
+    # elif model_dir.endswith('.h'):  # Placeholder for .h file handling
+    #     # For .h file, loading directly in Python is not supported.
+    #     # This step would require converting the .h file back to .tflite
+    #     # or using it within a C/C++ application that interfaces with Python.
+    #     raise NotImplementedError("Model loading from .h files is not supported in this script.")
     else:
         # Load TensorFlow SavedModel
         model = tf.saved_model.load(model_dir)
@@ -91,8 +91,7 @@ def main():
     model_paths_with_labels = [
         ('Ori (R39)', 'reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27'),
         ('TFLite1', 'tflite_model.tflite'),
-        ('TFLite2', 'tflite_model4.tflite'),
-        ('TFLite2(h)', 'tflite_model4.h')
+        ('TFLite2', 'tflite_model4.tflite')
     ]
     
     # Get data from server (simulated here)
