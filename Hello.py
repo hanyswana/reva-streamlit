@@ -24,7 +24,7 @@ def json_data():
         return None
 
     # Second API call
-    api_url2 = "https://x8ki-letl-twmt.n7.xano.io/api:gTEeTJrZ/spectral"
+    api_url2 = "https://x8ki-letl-twmt.n7.xano.io/api:gTEeTJrZ/split_text"
     payload2 = {}
     response2 = requests.get(api_url2, params=payload2)
 
