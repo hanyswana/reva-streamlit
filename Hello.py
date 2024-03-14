@@ -13,7 +13,7 @@ import tensorflow as tf
 
 def json_data():
     # First API call
-    # api_url1 = "https://x8ki-letl-twmt.n7.xano.io/api:U4wk_Gn6/BackgroundReading"
+    api_url1 = "https://x8ki-letl-twmt.n7.xano.io/api:U4wk_Gn6/BackgroundReading"
     payload1 = {}
     response1 = requests.get(api_url1, params=payload1)
 
@@ -24,7 +24,7 @@ def json_data():
         return None
 
     # Second API call
-    # api_url2 = "https://x8ki-letl-twmt.n7.xano.io/api:DKaWNKM4/spectral_data"
+    api_url2 = "https://x8ki-letl-twmt.n7.xano.io/api:DKaWNKM4/spectral_data"
     payload2 = {}
     response2 = requests.get(api_url2, params=payload2)
 
