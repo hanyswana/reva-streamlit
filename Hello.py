@@ -48,8 +48,8 @@ def json_data():
     # Convert DataFrame to CSV
     absorbance_df.to_csv('absorbance_data.csv', index=False)
     
-    # First row of absorbance data
-    absorbance_data = absorbance_df.iloc[0]  
+    # # First row of absorbance data
+    # absorbance_data = absorbance_df.iloc[0]  
  
     return absorbance_df, wavelengths
 
@@ -119,7 +119,7 @@ def main():
     
     
     # Get data from server (simulated here)
-    absorbance_data, wavelengths = json_data()
+    absorbance_df, wavelengths = json_data()
 
     for label, model_path in model_paths_with_labels:
 
