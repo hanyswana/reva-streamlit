@@ -122,10 +122,16 @@ def main():
     #     ('TFLite Q', 'tflite_model_snv_br_10_quant.tflite')
     # ]
 
+    # model_paths_with_labels = [
+    #     ('TF (SNV + br)', 'snv_baseline_removed_pls_top_10_float32.parquet_best_model_2024-04-03_04-18-56'),
+    #     ('TFLite', 'tflite_model_snv_br_10_2024-04-03_04-18-56.tflite'),
+    #     ('TFLite Q', 'tflite_model_snv_br_10_quant_2024-04-03_04-18-56.tflite')
+    # ]    
+
     model_paths_with_labels = [
-        ('TF (SNV + br)', 'snv_baseline_removed_pls_top_10_float32.parquet_best_model_2024-04-03_04-18-56'),
-        ('TFLite', 'tflite_model_snv_br_10_2024-04-03_04-18-56.tflite'),
-        ('TFLite Q', 'tflite_model_snv_br_10_quant_2024-04-03_04-18-56.tflite')
+        ('TF (SNV + euc)', 'snv_normalized_euclidean_pls_top_10_float32.parquet_best_model_2024-03-30_02-03-57'),
+        ('TFLite', 'tflite_model_snv_euc_10_2024-03-30_02-03-57.tflite'),
+        ('TFLite Q', 'tflite_model_snv_euc_10_quant_2024-03-30_02-03-57.tflite')
     ]    
     
     # Get data from server (simulated here)
