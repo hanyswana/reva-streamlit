@@ -64,10 +64,31 @@ def load_model(model_dir):
         return model
 
 
+# def predict_with_model(model, input_data):
+#     if isinstance(model, tf.lite.Interpreter):  # Check if model is TensorFlow Lite Interpreter
+#         input_details = model.get_input_details()
+#         output_details = model.get_output_details()
+        
+#         # Assuming input_data is already in the correct shape and type
+#         model.set_tensor(input_details[0]['index'], input_data)
+#         model.invoke()
+#         predictions = model.get_tensor(output_details[0]['index'])
+#         return predictions  # This will be a numpy array
+#     else:
+#         # Existing prediction code for TensorFlow SavedModel
+#         input_array = input_data.to_numpy(dtype='float64')
+#         input_array_reshaped = input_array.reshape(-1, 19)  # Adjust to match the number of features your model expects
+#         input_tensor = tf.convert_to_tensor(input_array_reshaped, dtype=tf.float64)
+#         predictions = model(input_tensor)
+#         return predictions.numpy()  # Convert predictions to numpy array if needed
+
 def predict_with_model(model, input_data):
     if isinstance(model, tf.lite.Interpreter):  # Check if model is TensorFlow Lite Interpreter
         input_details = model.get_input_details()
         output_details = model.get_output_details()
+        
+        input_data = input_data.astype('float32')
+        input_data = np.expand_dims(input_data, axis=0)
         
         # Assuming input_data is already in the correct shape and type
         model.set_tensor(input_details[0]['index'], input_data)
@@ -76,24 +97,24 @@ def predict_with_model(model, input_data):
         return predictions  # This will be a numpy array
     else:
         # Existing prediction code for TensorFlow SavedModel
-        input_array = input_data.to_numpy(dtype='float64')
-        input_array_reshaped = input_array.reshape(-1, 19)  # Adjust to match the number of features your model expects
-        input_tensor = tf.convert_to_tensor(input_array_reshaped, dtype=tf.float64)
+        input_array = input_data.to_numpy(dtype='float32')
+        input_array_reshaped = input_array.reshape(-1, 10)  # Adjust to match the number of features your model expects
+        input_tensor = tf.convert_to_tensor(input_array_reshaped, dtype=tf.float32)
         predictions = model(input_tensor)
         return predictions.numpy()  # Convert predictions to numpy array if needed
     
 def main():
-    # # Define model paths with labels
-    # model_paths_with_labels = [
-    #     ('Ori (R39)', 'reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27'),
-    #     ('TFLite1', 'tflite_model.tflite'),
-    #     ('TFLite2', 'tflite_model4.tflite')
-    # ]
-
-        # Define model paths with labels
+    # Define model paths with labels
     model_paths_with_labels = [
-        ('Ori (R39)', 'reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27')
+        ('SNV + br (R49)', 'snv_baseline_removed_pls_top_10_float32.parquet_best_model_2024-03-31_13-29-57'),
+        ('TFLite', 'tflite_model_snv_br_10.tflite'),
+        ('TFLite Q', 'tflite_model_snv_br_10_quant.tflite'))
     ]
+
+    #     # Define model paths with labels
+    # model_paths_with_labels = [
+    #     ('Ori (R39)', 'reva-lablink-hb-125-(original-data).csv_r2_0.39_2024-02-15_11-55-27')
+    # ]
     
     
     # Get data from server (simulated here)
@@ -118,23 +139,23 @@ def main():
     
         # Add condition for prediction value
         if predictions_value > 25:
-            display_value = f'<span class="high-value">High value : ({predictions_value:.1f} g/dL)</span>'
+            display_value = f'<span class="high-value">High value : ({predictions_value:.2f} g/dL)</span>'
         else:
-            display_value = f'<span class="value">{predictions_value:.1f} g/dL</span>'
+            display_value = f'<span class="value">{predictions_value:.2f} g/dL</span>'
         
         # Display label and prediction value
         st.markdown(f'<span class="label">Haemoglobin ({label}):</span><br>{display_value}</p>', unsafe_allow_html=True)
 
-    # Plotting
-    plt.figure(figsize=(10, 4))
-    plt.plot(wavelengths, absorbance_data.iloc[0], marker='o', linestyle='-', color='b')
-    plt.xlabel('Wavelength (nm)', fontweight='bold', fontsize=14)
-    plt.ylabel('Absorbance', fontweight='bold', fontsize=14)
-    plt.xticks(rotation='vertical', fontweight='bold', fontsize=12)
-    plt.yticks(fontweight='bold', fontsize=12)
-    plt.tight_layout()
-    plt.show()
-    st.pyplot(plt)
+    # # Plotting
+    # plt.figure(figsize=(10, 4))
+    # plt.plot(wavelengths, absorbance_data.iloc[0], marker='o', linestyle='-', color='b')
+    # plt.xlabel('Wavelength (nm)', fontweight='bold', fontsize=14)
+    # plt.ylabel('Absorbance', fontweight='bold', fontsize=14)
+    # plt.xticks(rotation='vertical', fontweight='bold', fontsize=12)
+    # plt.yticks(fontweight='bold', fontsize=12)
+    # plt.tight_layout()
+    # plt.show()
+    # st.pyplot(plt)
     
 if __name__ == "__main__":
     main()
