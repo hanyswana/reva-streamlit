@@ -38,11 +38,15 @@ def json_data():
     # Extract first line of data from both API responses and convert to numeric
     df1 = pd.DataFrame(data1).iloc[:1].apply(pd.to_numeric, errors='coerce')
     df2 = pd.DataFrame(data2).iloc[:1].apply(pd.to_numeric, errors='coerce')
-    # st.write(df2)
+    st.write('Bg:')
+    st.write(df1)
+    st.write('Spectral:')
+    st.write(df2)
     wavelengths = df1.columns
 
     # Element-wise division of the dataframes & convert absorbance data to csv
     absorbance_df = df1.div(df2.values).pow(2)
+    st.write('Absorbance:')
     st.write(absorbance_df)
 
     # Convert DataFrame to CSV
