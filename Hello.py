@@ -137,11 +137,11 @@ def main():
     # Get data from server (simulated here)
     absorbance_df, wavelengths = json_data()
 
-    for label, model_path in model_paths_with_labels:
+    # for label, model_path in model_paths_with_labels:
 
-        # Load the model
-        model = load_model(model_path)
-        # st.write(model)
+    #     # Load the model
+    #     model = load_model(model_path)
+    #     # st.write(model)
         
         # # Now process each row in df
         # for index, row in absorbance_df.iterrows():
