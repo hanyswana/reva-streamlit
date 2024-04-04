@@ -186,19 +186,6 @@ def main():
 
             st.markdown(f'<span class="label">Haemoglobin ({label}) - Sample {index+1}:</span><br>{display_value}</p>', unsafe_allow_html=True)
 
-                # Now process each row in df
-        for index, row in absorbance_df.iterrows():
-            predictions = predict_with_model(model, row)  # Assuming predict_with_model can handle a single row of DataFrame
-            predictions_value = predictions[0][0]  # Assuming each prediction returns a single value
-
-            # Display logic remains the same
-            if predictions_value > 25:
-                display_value = f'<span class="high-value">High value : ({predictions_value:.1f} g/dL)</span>'
-            else:
-                display_value = f'<span class="value">{predictions_value:.1f} g/dL</span>'
-
-            st.markdown(f'<span class="label">Haemoglobin ({label}) - Sample {index+1}:</span><br>{display_value}</p>', unsafe_allow_html=True)
-
 
     # # Plotting
     # plt.figure(figsize=(10, 4))
