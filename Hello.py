@@ -237,8 +237,14 @@ def main():
     
     # st.markdown('<p class="custom-font">Model SNV & BR :</p>', unsafe_allow_html=True)
 
-    # Loop through each model
-    for label, model_path in model_paths_with_labels:
+    # # Loop through each model
+    # for label, model_path in model_paths_with_labels:
+    #     model = load_model(model_path)
+    for i, (label, model_path) in enumerate(model_paths_with_labels, start=1):
+        # Dynamic section title with model label
+        st.markdown(f"### Model {i}: {label}")
+        st.markdown("---")  # Markdown for horizontal line
+        
         model = load_model(model_path)
         
         # Loop through each preprocessing type
