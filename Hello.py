@@ -186,25 +186,8 @@ def main():
         ('TFL Q', 'tflite_model_snv_manh_10_quant_2024-04-01_08-57-51.tflite')
     ]
 
-    # model_paths_with_labels = [
-    #     ('TF (SNV + br (24-04-03)', 'snv_baseline_removed_pls_top_10_float32.parquet_best_model_2024-04-03_04-18-56'),
-    #     ('TFLite', 'tflite_model_snv_br_10_2024-04-03_04-18-56.tflite'),
-    #     ('TFLite Q', 'tflite_model_snv_br_10_quant_2024-04-03_04-18-56.tflite')
-    # ]    
 
-    # model_paths_with_labels = [
-    #     ('TF (SNV + euc)', 'snv_normalized_euclidean_pls_top_10_float32.parquet_best_model_2024-03-30_02-03-57'),
-    #     ('TFLite', 'tflite_model_snv_euc_10_2024-03-30_02-03-57.tflite'),
-    #     ('TFLite Q', 'tflite_model_snv_euc_10_quant_2024-03-30_02-03-57.tflite')
-    # ]    
-
-    # model_paths_with_labels = [
-    #     ('TF (SNV + manh)', 'snv_normalized_manhattan_pls_top_10_float32.parquet_best_model_2024-04-01_08-57-51'),
-    #     ('TFLite', 'tflite_model_snv_manh_10_2024-04-01_08-57-51.tflite'),
-    #     ('TFLite Q', 'tflite_model_snv_manh_10_quant_2024-04-01_08-57-51.tflite')
-    # ]    
-
-        # Assuming json_data returns a tuple of all dataframes + wavelengths at the end
+    # Assuming json_data returns a tuple of all dataframes + wavelengths at the end
     data = json_data()
     if data is None:
         st.write("Failed to fetch or process data.")
@@ -215,8 +198,6 @@ def main():
     absorbance_normalized_manh_df, absorbance_snv_normalized_manh_df, 
     absorbance_baseline_removed_df, absorbance_snv_baseline_removed_df, 
     absorbance_snv_df, wavelengths) = data
-    
-    # (absorbance_df, absorbance_snv_baseline_removed_df, wavelengths) = data
 
     # Dictionary to hold DataFrame references and their labels for easy access
     data_frames_with_labels = [
@@ -230,12 +211,6 @@ def main():
         ("SNV", absorbance_snv_df)
     ]
 
-    # st.markdown("""
-    # <style>
-    # .custom-font {font-size: 16px; font-weight: bold;}
-    # </style> """, unsafe_allow_html=True)
-    
-    # st.markdown('<p class="custom-font">Model SNV & BR :</p>', unsafe_allow_html=True)
     results = []  # To accumulate prediction results
 
     # Accumulate results in a list
