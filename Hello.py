@@ -240,7 +240,7 @@ def main():
             predictions_value = predictions[0][0]  # Assuming each prediction returns a single value
 
             # Print the preprocessing label and prediction
-            st.markdown(f"PP: {preprocess_label} | {label}<span style='color: blue;'> - <strong>Hb:<\strong> {predictions_value:.1f} g/dL", unsafe_allow_html=True)
+            st.markdown(f"PP: {preprocess_label} | {label}<span style='color: blue;'> - <strong>Hb: {predictions_value:.1f} g/dL", unsafe_allow_html=True)
     
 
     # # Assuming json_data returns a tuple of all dataframes + wavelengths at the end
