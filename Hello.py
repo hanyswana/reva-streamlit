@@ -255,8 +255,8 @@ def main():
                 "Prediction (g/dL)": predictions_value
             })
 
-    # # Convert the results list to a DataFrame
-    # results_df = pd.DataFrame(results)
+    # Convert the results list to a DataFrame
+    results_df = pd.DataFrame(results)
 
     st.markdown("""
     <style>
@@ -267,9 +267,6 @@ def main():
     }
     </style>
     """, unsafe_allow_html=True)
-
-    # Display the results as a table
-    st.dataframe(results_df)
 
     # Display the results as a table
     st.dataframe(results_df)
