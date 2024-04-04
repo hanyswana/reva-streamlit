@@ -12,9 +12,93 @@ import numpy as np
 
 # st.markdown('<p class="custom-font">Absorbance data :</p>', unsafe_allow_html=True)
 
+# def json_data():
+#     # First API call
+#     api_url1 = "https://x8ki-letl-twmt.n7.xano.io/api:3Ws6ADLi/bgdata"
+#     payload1 = {}
+#     response1 = requests.get(api_url1, params=payload1)
+
+#     if response1.status_code == 200:
+#         data1 = response1.json()
+#     else:
+#         st.write("Error in first API call:", response1.status_code)
+#         return None
+
+#     # Second API call
+#     api_url2 = "https://x8ki-letl-twmt.n7.xano.io/api:Qc5crfn2/spectraldata"
+#     payload2 = {}
+#     response2 = requests.get(api_url2, params=payload2)
+
+#     if response2.status_code == 200:
+#         data2 = response2.json()
+#     else:
+#         st.write("Error in second API call:", response2.status_code)
+#         return None
+
+#     # Extract first line of data from both API responses and convert to numeric
+#     df1 = pd.DataFrame(data1).iloc[:1].apply(pd.to_numeric, errors='coerce')
+#     df2 = pd.DataFrame(data2).iloc[:1].apply(pd.to_numeric, errors='coerce')
+#     st.write('Bg:')
+#     st.write(df1)
+#     st.write('Spectral:')
+#     st.write(df2)
+#     wavelengths = df1.columns
+
+#     # Element-wise division of the dataframes & convert absorbance data to csv
+#     absorbance_df = df1.div(df2.values).pow(2)
+#     st.write('Absorbance:')
+#     st.write(absorbance_df)
+
+#     # Convert DataFrame to CSV
+#     absorbance_df.to_csv('absorbance_data.csv', index=False)
+    
+#     # # First row of absorbance data
+#     # absorbance_data = absorbance_df.iloc[0]  
+ 
+#     return absorbance_df, wavelengths
+
+# def load_model(model_dir):
+#     if model_dir.endswith('.tflite'):  # Check if model is a TensorFlow Lite model
+#         # Load TensorFlow Lite model
+#         interpreter = tf.lite.Interpreter(model_path=model_dir)
+#         interpreter.allocate_tensors()
+#         return interpreter
+#     else:
+#         # Load TensorFlow SavedModel
+#         model = tf.saved_model.load(model_dir)
+#         return model
+
+# Custom Baseline Removal Transformer
+class BaselineRemover(TransformerMixin, BaseEstimator):
+    def __init__(self, *, copy=True):
+        self.copy = copy
+
+    def fit(self, X, y=None):
+        if sparse.issparse(X):
+            raise ValueError('Sparse matrices not supported!')
+        return self
+
+    def transform(self, X, copy=None):
+        copy = copy if copy is not None else self.copy
+        X = self._validate_data(X, reset=True, accept_sparse='csr', copy=copy, estimator=self, dtype=FLOAT_DTYPES, force_all_finite='allow-nan')
+        X = self.remove_baseline(X.T).T
+        return X
+
+    def remove_baseline(self, spectra):
+        return spectra - spectra.mean(axis=0)
+
+    def _more_tags(self):
+        return {'allow_nan': True}
+
+def snv(input_data):
+    # Mean centering and scaling by standard deviation for each spectrum
+    mean_corrected = input_data - np.mean(input_data, axis=1, keepdims=True)
+    snv_transformed = mean_corrected / np.std(mean_corrected, axis=1, keepdims=True)
+    return snv_transformed
+        
 def json_data():
     # First API call
-    api_url1 = "https://x8ki-letl-twmt.n7.xano.io/api:3Ws6ADLi/bgdata"
+    api_url1 = "https://x8ki-letl-twmt.n7.xano.io/api:3iQkTr3r/backgroundData"
     payload1 = {}
     response1 = requests.get(api_url1, params=payload1)
 
@@ -25,7 +109,7 @@ def json_data():
         return None
 
     # Second API call
-    api_url2 = "https://x8ki-letl-twmt.n7.xano.io/api:Qc5crfn2/spectraldata"
+    api_url2 = "https://x8ki-letl-twmt.n7.xano.io/api:gTEeTJrZ/split_text"
     payload2 = {}
     response2 = requests.get(api_url2, params=payload2)
 
@@ -38,35 +122,54 @@ def json_data():
     # Extract first line of data from both API responses and convert to numeric
     df1 = pd.DataFrame(data1).iloc[:1].apply(pd.to_numeric, errors='coerce')
     df2 = pd.DataFrame(data2).iloc[:1].apply(pd.to_numeric, errors='coerce')
-    st.write('Bg:')
-    st.write(df1)
-    st.write('Spectral:')
-    st.write(df2)
     wavelengths = df1.columns
+    st.write('Background')
+    st.write(df1)
+    st.write('Spectral')
+    st.write(df2)
 
     # Element-wise division of the dataframes & convert absorbance data to csv
     absorbance_df = df1.div(df2.values).pow(2)
-    st.write('Absorbance:')
+    st.write('Original absorbance')
     st.write(absorbance_df)
 
-    # Convert DataFrame to CSV
-    absorbance_df.to_csv('absorbance_data.csv', index=False)
-    
-    # # First row of absorbance data
-    # absorbance_data = absorbance_df.iloc[0]  
- 
-    return absorbance_df, wavelengths
+    # Normalize the absorbance data using Euclidean normalization
+    normalizer = Normalizer(norm='l2')  # Euclidean normalization
+    absorbance_normalized_euc = normalizer.transform(absorbance_df)
+    absorbance_normalized_euc_df = pd.DataFrame(absorbance_normalized_euc, columns=absorbance_df.columns)
+    st.write('Euclidean absorbance')
+    st.write(absorbance_normalized_euc_df)
 
-def load_model(model_dir):
-    if model_dir.endswith('.tflite'):  # Check if model is a TensorFlow Lite model
-        # Load TensorFlow Lite model
-        interpreter = tf.lite.Interpreter(model_path=model_dir)
-        interpreter.allocate_tensors()
-        return interpreter
-    else:
-        # Load TensorFlow SavedModel
-        model = tf.saved_model.load(model_dir)
-        return model
+    # Convert normalized DataFrame to CSV (optional step, depending on your needs)
+    absorbance_normalized_euc_df.to_csv('absorbance_data_normalized_euc.csv', index=False)
+
+    # Normalize the absorbance data using Manhattan normalization
+    normalizer = Normalizer(norm='l1')  # Manhattan normalization
+    absorbance_normalized_manh = normalizer.transform(absorbance_df)
+    absorbance_normalized_manh_df = pd.DataFrame(absorbance_normalized_manh, columns=absorbance_df.columns)
+    st.write('Manhattan absorbance')
+    st.write(absorbance_normalized_manh_df)
+
+    # Convert normalized DataFrame to CSV (optional step, depending on your needs)
+    absorbance_normalized_manh_df.to_csv('absorbance_data_normalized_manh.csv', index=False)
+
+    # Apply baseline removal to the absorbance data
+    baseline_remover = BaselineRemover()
+    absorbance_baseline_removed = baseline_remover.transform(absorbance_df)
+    absorbance_baseline_removed_df = pd.DataFrame(absorbance_baseline_removed, columns=absorbance_df.columns)
+    st.write('Baseline removal')
+    st.write(absorbance_baseline_removed_df)
+
+    # Apply SNV to the absorbance data after baseline removal
+    absorbance_snv = snv(absorbance_df.values)
+    absorbance_snv_df = pd.DataFrame(absorbance_snv, columns=absorbance_df.columns)
+    st.write('SNV Transformation')
+    st.write(absorbance_snv_df)
+
+    # First row of absorbance data
+    absorbance_data = absorbance_df.iloc[0]  
+ 
+    return absorbance_df, absorbance_normalized_euc_df, absorbance_normalized_manh_df, absorbance_baseline_removed_df, absorbance_snv_df, wavelengths
 
 
 # def predict_with_model(model, input_data):
@@ -135,7 +238,7 @@ def main():
     ]    
     
     # Get data from server (simulated here)
-    absorbance_df, wavelengths = json_data()
+    absorbance_df, absorbance_normalized_euc_data, absorbance_normalized_manh_data, absorbance_baseline_removed_data, absorbance_snv_data, wavelengths = json_data()
 
     for label, model_path in model_paths_with_labels:
 
@@ -144,6 +247,19 @@ def main():
         # st.write(model)
         
         # Now process each row in df
+        for index, row in absorbance_df.iterrows():
+            predictions = predict_with_model(model, row)  # Assuming predict_with_model can handle a single row of DataFrame
+            predictions_value = predictions[0][0]  # Assuming each prediction returns a single value
+
+            # Display logic remains the same
+            if predictions_value > 25:
+                display_value = f'<span class="high-value">High value : ({predictions_value:.1f} g/dL)</span>'
+            else:
+                display_value = f'<span class="value">{predictions_value:.1f} g/dL</span>'
+
+            st.markdown(f'<span class="label">Haemoglobin ({label}) - Sample {index+1}:</span><br>{display_value}</p>', unsafe_allow_html=True)
+
+                # Now process each row in df
         for index, row in absorbance_df.iterrows():
             predictions = predict_with_model(model, row)  # Assuming predict_with_model can handle a single row of DataFrame
             predictions_value = predictions[0][0]  # Assuming each prediction returns a single value
