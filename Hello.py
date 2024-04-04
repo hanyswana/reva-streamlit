@@ -236,26 +236,50 @@ def main():
     # </style> """, unsafe_allow_html=True)
     
     # st.markdown('<p class="custom-font">Model SNV & BR :</p>', unsafe_allow_html=True)
+    results = []  # To accumulate prediction results
+
+    # Accumulate results in a list
+    for label, model_path in model_paths_with_labels:
+        model = load_model(model_path)
+        
+        for preprocess_label, df in data_frames_with_labels:
+            row = df.iloc[0]  # Assuming predictions on the first row
+            predictions = predict_with_model(model, row)
+            predictions_value = predictions[0][0]  # Assuming single value predictions
+
+            # Append each prediction result to the results list
+            results.append({
+                "Model": label,
+                "Preprocessing": preprocess_label,
+                "Prediction (g/dL)": predictions_value
+            })
+
+    # Convert the results list to a DataFrame
+    results_df = pd.DataFrame(results)
+
+    # Display the results as a table
+    st.dataframe(results_df)
 
     # # Loop through each model
     # for label, model_path in model_paths_with_labels:
     #     model = load_model(model_path)
-    for i, (label, model_path) in enumerate(model_paths_with_labels, start=1):
-        # Dynamic section title with model label
-        st.markdown(f"### Model {i}: {label}")
-        st.markdown("---")  # Markdown for horizontal line
+    
+    # for i, (label, model_path) in enumerate(model_paths_with_labels, start=1):
+    #     # Dynamic section title with model label
+    #     st.markdown(f"### Model {i}: {label}")
+    #     st.markdown("---")  # Markdown for horizontal line
         
-        model = load_model(model_path)
+    #     model = load_model(model_path)
         
-        # Loop through each preprocessing type
-        for preprocess_label, df in data_frames_with_labels:
-            # Making predictions for the first row as an example
-            row = df.iloc[0]  # Assuming we are making predictions on the first row
-            predictions = predict_with_model(model, row)
-            predictions_value = predictions[0][0]  # Assuming each prediction returns a single value
+    #     # Loop through each preprocessing type
+    #     for preprocess_label, df in data_frames_with_labels:
+    #         # Making predictions for the first row as an example
+    #         row = df.iloc[0]  # Assuming we are making predictions on the first row
+    #         predictions = predict_with_model(model, row)
+    #         predictions_value = predictions[0][0]  # Assuming each prediction returns a single value
 
-            # Print the preprocessing label and prediction
-            st.markdown(f"PP: {preprocess_label} | {label}<span style='color: blue;'> - <strong>Hb: {predictions_value:.1f} g/dL", unsafe_allow_html=True)
+    #         # Print the preprocessing label and prediction
+    #         st.markdown(f"PP: {preprocess_label} | {label}<span style='color: blue;'> - <strong>Hb: {predictions_value:.1f} g/dL", unsafe_allow_html=True)
     
 
     # # Assuming json_data returns a tuple of all dataframes + wavelengths at the end
