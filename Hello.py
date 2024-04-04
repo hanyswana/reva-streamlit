@@ -225,12 +225,14 @@ def main():
             predictions = predict_with_model(model, row)
             predictions_value = predictions[0][0]  # Assuming single value predictions
 
+            formatted_prediction_value = f"{predictions_value:.1f}"
+
 
             # Append each prediction result to the results list
             results.append({
                 "Model": label,
                 "Preprocessing": preprocess_label,
-                "Prediction (g/dL)": predictions_value
+                "Prediction (g/dL)": formatted_predictions_value
             })
 
     # Convert the results list to a DataFrame
