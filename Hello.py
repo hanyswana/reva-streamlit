@@ -221,7 +221,13 @@ def main():
         ("SNV", absorbance_snv_df)
     ]
 
-    st.markdown(f"Model SNV & BR <font-size: 16px; font-weight: bold;>", unsafe_allow_html=True)
+    st.markdown("""
+    <style>
+    .custom-font {font-size: 16px; font-weight: bold;}
+    </style> """, unsafe_allow_html=True)
+    
+    st.markdown('<p class="custom-font">Model SNV & BR :</p>', unsafe_allow_html=True)
+    # st.markdown(f"Model SNV & BR <font-size: 16px; font-weight: bold;>", unsafe_allow_html=True)
 
     # Loop through each model
     for label, model_path in model_paths_with_labels:
