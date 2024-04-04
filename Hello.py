@@ -241,18 +241,31 @@ def main():
     # Accumulate results in a list
     for label, model_path in model_paths_with_labels:
         model = load_model(model_path)
+
+        preprocessing_steps = []
+        predictions = []
         
         for preprocess_label, df in data_frames_with_labels:
             row = df.iloc[0]  # Assuming predictions on the first row
             predictions = predict_with_model(model, row)
             predictions_value = predictions[0][0]  # Assuming single value predictions
 
-            # Append each prediction result to the results list
-            results.append({
-                "Model": label,
-                "Preprocessing": preprocess_label,
-                "Prediction (g/dL)": predictions_value
-            })
+            preprocessing_steps.append(preprocess_label)
+            predictions.append(f"{predictions_value:.1f} g/dL")
+
+        # Append a single row for each model with aggregated preprocessing steps and predictions
+        results.append({
+            "Model": label,
+            "Preprocessing Steps": ", ".join(preprocessing_steps),
+            "Predictions": ", ".join(predictions)
+        })
+
+            # # Append each prediction result to the results list
+            # results.append({
+            #     "Model": label,
+            #     "Preprocessing": preprocess_label,
+            #     "Prediction (g/dL)": predictions_value
+            # })
 
     # Convert the results list to a DataFrame
     results_df = pd.DataFrame(results)
