@@ -9,8 +9,8 @@ from sklearn.preprocessing import Normalizer
 from sklearn.utils.validation import FLOAT_DTYPES
 from scipy import sparse
 
-# Set page configuration to wide mode
-st.set_page_config(layout="wide")
+# # Set page configuration to wide mode
+# st.set_page_config(layout="wide")
 
 # st.markdown("""
 # <style>
@@ -237,17 +237,16 @@ def main():
     results_df = pd.DataFrame(results)
 
     st.markdown("""
-    <style>
-    /* This CSS selector targets the table elements in Streamlit */
-    .stTable, .stDataFrame {
-        font-size: 18px;  /* Increase font size */
-        padding: 40px;    /* Add more padding */
-    }
-    </style>
+        <style>
+            .stDataFrame {
+                width: 100%;
+                max-width: 100%;
+            }
+        </style>
     """, unsafe_allow_html=True)
 
     # Display the results as a table
-    st.dataframe(results_df, height=600)
+    st.dataframe(results_df, height=400)
 
     # # Loop through each model
     # for label, model_path in model_paths_with_labels:
