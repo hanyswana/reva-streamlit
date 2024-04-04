@@ -221,6 +221,8 @@ def main():
         ("SNV", absorbance_snv_df)
     ]
 
+    st.write('Model SNV & BR')
+
     # Loop through each model
     for label, model_path in model_paths_with_labels:
         model = load_model(model_path)
@@ -233,7 +235,6 @@ def main():
             predictions_value = predictions[0][0]  # Assuming each prediction returns a single value
 
             # Print the preprocessing label and prediction
-            st.write('Model SNV & BR')
             st.markdown(f"PP: {preprocess_label} | {label}<span style='color: blue;'> - Hb: {predictions_value:.1f} g/dL", unsafe_allow_html=True)
     
 
