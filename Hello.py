@@ -241,13 +241,13 @@ def main():
     /* This CSS selector targets the table elements in Streamlit */
     .stTable, .stDataFrame {
         font-size: 20px;  /* Increase font size */
-        padding: 30px;    /* Add more padding */
+        padding: 20px;    /* Add more padding */
     }
     </style>
     """, unsafe_allow_html=True)
 
     # Display the results as a table
-    st.dataframe(results_df, height=400, width=600)
+    st.dataframe(results_df, height=400, width=700)
 
     # # Loop through each model
     # for label, model_path in model_paths_with_labels:
