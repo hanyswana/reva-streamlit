@@ -6,6 +6,7 @@ import tensorflow as tf
 import numpy as np
 from sklearn.base import TransformerMixin, BaseEstimator
 from sklearn.preprocessing import Normalizer
+from sklearn.utils.validation import FLOAT_DTYPES
 from scipy import sparse
 
 # st.markdown("""
