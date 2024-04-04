@@ -73,7 +73,7 @@ def json_data():
 
     # Extract first line of data from both API responses and convert to numeric
     df1 = pd.DataFrame(data1).iloc[:1].apply(pd.to_numeric, errors='coerce')
-    df2 = pd.DataFrame(data2).iloc[4:5].apply(pd.to_numeric, errors='coerce')
+    df2 = pd.DataFrame(data2).iloc[5:6].apply(pd.to_numeric, errors='coerce')
     wavelengths = df1.columns
     st.write('Background')
     st.write(df1)
