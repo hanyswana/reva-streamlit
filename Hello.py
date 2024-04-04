@@ -247,8 +247,8 @@ def main():
         
         for preprocess_label, df in data_frames_with_labels:
             row = df.iloc[0]  # Assuming predictions on the first row
-            predictions = predict_with_model(model, row)
-            predictions_value = predictions[0][0]  # Assuming single value predictions
+            predictions_result = predict_with_model(model, row)
+            predictions_value = predictions_result[0][0]  # Assuming single value predictions
 
             preprocessing_steps.append(preprocess_label)
             predictions.append(f"{predictions_value:.1f} g/dL")
