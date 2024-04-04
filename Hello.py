@@ -172,7 +172,7 @@ def main():
     # ]
 
     model_paths_with_labels = [
-        ('SNV + br (24-04-01)', 'snv_baseline_removed_pls_top_10_float32.parquet_best_model_2024-03-31_13-29-57'),
+        ('TF (24-04-01)', 'snv_baseline_removed_pls_top_10_float32.parquet_best_model_2024-03-31_13-29-57'),
         ('TFLite', 'tflite_model_snv_br_10.tflite'),
         ('TFLite Q', 'tflite_model_snv_br_10_quant.tflite')
     ]
@@ -233,6 +233,7 @@ def main():
             predictions_value = predictions[0][0]  # Assuming each prediction returns a single value
 
             # Print the preprocessing label and prediction
+            st.write('SNV & BR')
             st.markdown(f"{preprocess_label} | {label}<span style='color: blue;'> - Hb: {predictions_value:.1f} g/dL", unsafe_allow_html=True)
     
 
