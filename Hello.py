@@ -172,18 +172,18 @@ def main():
     # ]
 
     model_paths_with_labels = [
-        ('SNV + br - TF (24-04-01)', 'snv_baseline_removed_pls_top_10_float32.parquet_best_model_2024-03-31_13-29-57'),
-        ('TFLite', 'tflite_model_snv_br_10.tflite'),
-        ('TFLite Q', 'tflite_model_snv_br_10_quant.tflite'),
-        ('SNV + br - TF (24-04-03)', 'snv_baseline_removed_pls_top_10_float32.parquet_best_model_2024-04-03_04-18-56'),
-        ('TFLite', 'tflite_model_snv_br_10_2024-04-03_04-18-56.tflite'),
-        ('TFLite Q', 'tflite_model_snv_br_10_quant_2024-04-03_04-18-56.tflite'),
-        ('SNV + euc - TF (24-04-03)', 'snv_normalized_euclidean_pls_top_10_float32.parquet_best_model_2024-03-30_02-03-57'),
-        ('TFLite', 'tflite_model_snv_euc_10_2024-03-30_02-03-57.tflite'),
-        ('TFLite Q', 'tflite_model_snv_euc_10_quant_2024-03-30_02-03-57.tflite'),
-        ('SNV + manh - TF (24-04-03)', 'snv_normalized_manhattan_pls_top_10_float32.parquet_best_model_2024-04-01_08-57-51'),
-        ('TFLite', 'tflite_model_snv_manh_10_2024-04-01_08-57-51.tflite'),
-        ('TFLite Q', 'tflite_model_snv_manh_10_quant_2024-04-01_08-57-51.tflite')
+        ('TF (SNV + BR 24-04-01)', 'snv_baseline_removed_pls_top_10_float32.parquet_best_model_2024-03-31_13-29-57'),
+        ('TFL', 'tflite_model_snv_br_10.tflite'),
+        ('TFL Q', 'tflite_model_snv_br_10_quant.tflite'),
+        ('TF (SNV + BR 24-04-03)', 'snv_baseline_removed_pls_top_10_float32.parquet_best_model_2024-04-03_04-18-56'),
+        ('TFL', 'tflite_model_snv_br_10_2024-04-03_04-18-56.tflite'),
+        ('TFL Q', 'tflite_model_snv_br_10_quant_2024-04-03_04-18-56.tflite'),
+        ('TF (SNV + euc 24-04-03)', 'snv_normalized_euclidean_pls_top_10_float32.parquet_best_model_2024-03-30_02-03-57'),
+        ('TFL', 'tflite_model_snv_euc_10_2024-03-30_02-03-57.tflite'),
+        ('TFL Q', 'tflite_model_snv_euc_10_quant_2024-03-30_02-03-57.tflite'),
+        ('TF (SNV + manh 24-04-03)', 'snv_normalized_manhattan_pls_top_10_float32.parquet_best_model_2024-04-01_08-57-51'),
+        ('TFL', 'tflite_model_snv_manh_10_2024-04-01_08-57-51.tflite'),
+        ('TFL Q', 'tflite_model_snv_manh_10_quant_2024-04-01_08-57-51.tflite')
     ]
 
     # model_paths_with_labels = [
