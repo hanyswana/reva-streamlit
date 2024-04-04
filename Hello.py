@@ -237,12 +237,13 @@ def main():
     results_df = pd.DataFrame(results)
 
     st.markdown("""
-        <style>
-            .stDataFrame {
-                width: 100%;
-                max-width: 100%;
-            }
-        </style>
+    <style>
+    /* This CSS selector targets the table elements in Streamlit */
+    .stTable, .stDataFrame {
+        font-size: 20px;  /* Increase font size */
+        padding: 60px;    /* Add more padding */
+    }
+    </style>
     """, unsafe_allow_html=True)
 
     # Display the results as a table
