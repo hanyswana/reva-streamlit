@@ -9,6 +9,9 @@ from sklearn.preprocessing import Normalizer
 from sklearn.utils.validation import FLOAT_DTYPES
 from scipy import sparse
 
+# Set page configuration to wide mode
+st.set_page_config(layout="wide")
+
 # st.markdown("""
 # <style>
 # .custom-font {font-size: 16px; font-weight: bold;}
@@ -244,7 +247,7 @@ def main():
     """, unsafe_allow_html=True)
 
     # Display the results as a table
-    st.dataframe(results_df)
+    st.dataframe(results_df, height=600)
 
     # # Loop through each model
     # for label, model_path in model_paths_with_labels:
