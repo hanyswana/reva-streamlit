@@ -238,7 +238,7 @@ def main():
     /* This CSS selector targets the table elements in Streamlit */
     .stTable, .stDataFrame {
         font-size: 18px;  /* Increase font size */
-        padding: 15px;    /* Add more padding */
+        padding: 25px;    /* Add more padding */
     }
     </style>
     """, unsafe_allow_html=True)
