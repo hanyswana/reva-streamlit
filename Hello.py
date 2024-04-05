@@ -250,7 +250,7 @@ def main():
                     results.append({
                         "Model": model_label,
                         "Preprocessing": preprocess_label,
-                        "Data Point": f"DF{df_index+1}-Row{index+1}",
+                        "Data Point": f"Sample{df_index-1}",
                         "Prediction (g/dL)": formatted_prediction_value
                     })
 
