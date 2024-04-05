@@ -276,6 +276,7 @@ def main():
     """, unsafe_allow_html=True)
 
     # Display the results as a table
+    st.dataframe('Haemoglobin')
     st.dataframe(results_df, height=500, width=700)
 
 
