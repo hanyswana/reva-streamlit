@@ -137,7 +137,8 @@ def json_data():
     for index, row in df2.iterrows():
         absorbance_df = df1.div(row.values, axis='columns').pow(2)
 
-        st.write('Original absorbance')
+        # st.write('Original absorbance')
+        st.write('Original absorbance for row:', index + 1)
         st.write(absorbance_df)
         
         # Apply SNV
