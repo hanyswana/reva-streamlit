@@ -8,6 +8,8 @@ from sklearn.base import TransformerMixin, BaseEstimator
 from sklearn.preprocessing import Normalizer
 from sklearn.utils.validation import FLOAT_DTYPES
 from scipy import sparse
+from datetime import datetime
+
 
 # # Set page configuration to wide mode
 # st.set_page_config(layout="wide")
@@ -228,7 +230,9 @@ def main():
     """, unsafe_allow_html=True)
 
     # Display the results as a table
-    st.write('Haemoglobin')
+    current_time = datetime.now()  # Get current time
+    formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")  # Format the time string
+    st.markdown(f"## Haemoglobin (Timestamp: {formatted_time})") 
     st.dataframe(results_df, height=500, width=700)
 
 
