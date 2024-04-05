@@ -81,7 +81,8 @@ def json_data():
     st.write(df2)
 
     # Element-wise division of the dataframes & convert absorbance data to csv
-    absorbance_df = df1.div(df2.values).pow(2)
+    # absorbance_df = df1.div(df2.values).pow(2)
+    absorbance_df = df1.div(row.values, axis='columns').pow(2)
     st.write('Original absorbance')
     st.write(absorbance_df)
 
