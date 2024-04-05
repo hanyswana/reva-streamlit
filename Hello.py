@@ -80,58 +80,6 @@ def json_data():
     st.write('Spectral')
     st.write(df2)
 
-    # # Element-wise division of the dataframes & convert absorbance data to csv
-    # # absorbance_df = df1.div(df2.values).pow(2)
-    # absorbance_df = df1.div(row.values, axis='columns').pow(2)
-    # st.write('Original absorbance')
-    # st.write(absorbance_df)
-
-    # # Apply SNV to the absorbance data
-    # absorbance_snv = snv(absorbance_df.values)
-    # absorbance_snv_df = pd.DataFrame(absorbance_snv, columns=absorbance_df.columns)
-    # st.write('SNV Transformation')
-    # st.write(absorbance_snv_df)
-
-    # # Apply baseline removal to the absorbance data
-    # baseline_remover = BaselineRemover()
-    # absorbance_baseline_removed = baseline_remover.transform(absorbance_df)
-    # absorbance_baseline_removed_df = pd.DataFrame(absorbance_baseline_removed, columns=absorbance_df.columns)
-    # absorbance_snv_baseline_removed = baseline_remover.transform(absorbance_snv)
-    # absorbance_snv_baseline_removed_df = pd.DataFrame(absorbance_snv_baseline_removed, columns=absorbance_df.columns)
-    # st.write('Baseline removal')
-    # st.write(absorbance_baseline_removed_df)
-    # st.write('SNV + baseline removal')
-    # st.write(absorbance_snv_baseline_removed_df)
-
-    # # Normalize the absorbance data using Euclidean normalization
-    # normalizer_euc= Normalizer(norm='l2')  # Euclidean normalization
-    # absorbance_normalized_euc = normalizer_euc.transform(absorbance_df)
-    # absorbance_normalized_euc_df = pd.DataFrame(absorbance_normalized_euc, columns=absorbance_df.columns)
-    # absorbance_snv_normalized_euc = normalizer_euc.transform(absorbance_snv)
-    # absorbance_snv_normalized_euc_df = pd.DataFrame(absorbance_snv_normalized_euc, columns=absorbance_df.columns)
-    # st.write('Euc')
-    # st.write(absorbance_normalized_euc_df)
-    # st.write('SNV + euc')
-    # st.write(absorbance_snv_normalized_euc_df)
-
-    # # # Convert normalized DataFrame to CSV (optional step, depending on your needs)
-    # # absorbance_normalized_euc_df.to_csv('absorbance_data_normalized_euc.csv', index=False)
-
-    # # Normalize the absorbance data using Manhattan normalization
-    # normalizer_manh = Normalizer(norm='l1')  # Manhattan normalization
-    # absorbance_normalized_manh = normalizer_manh.transform(absorbance_df)
-    # absorbance_normalized_manh_df = pd.DataFrame(absorbance_normalized_manh, columns=absorbance_df.columns)
-    # absorbance_snv_normalized_manh = normalizer_manh.transform(absorbance_snv)
-    # absorbance_snv_normalized_manh_df = pd.DataFrame(absorbance_snv_normalized_manh, columns=absorbance_df.columns)
-    # st.write('Manh absorbance')
-    # st.write(absorbance_normalized_manh_df)
-    # st.write('SNV + manh')
-    # st.write(absorbance_snv_normalized_manh_df)
-
-
-    # # # First row of absorbance data
-    # # absorbance_data = absorbance_df.iloc[0]  
-
     all_processed_dfs = []  # This will hold tuples of all processed versions of each df
     
     for index, row in df2.iterrows():
@@ -326,29 +274,6 @@ def main():
     #             "Prediction (g/dL)": formatted_predictions_value
     #         })
 
-    # # Convert the results list to a DataFrame
-    # results_df = pd.DataFrame(results)
-
-    # # Loop through each model and preprocessing combination
-    # for label, model_path in model_paths_with_labels:
-    #     model = load_model(model_path)
-        
-    #     for preprocess_label, df in data_frames_with_labels:
-    #         for index, row in df.iterrows():  # Loop through each data row
-    #             predictions = predict_with_model(model, row)
-    #             predictions_value = predictions[0][0]  # Assuming single value predictions for simplicity
-    
-    #             formatted_predictions_value = f"{predictions_value:.1f}"
-    
-    #             # Append each prediction result to the results list
-    #             # Including 'Data Point' to track which row the prediction corresponds to
-    #             results.append({
-    #                 "Model": label,
-    #                 "Preprocessing": preprocess_label,
-    #                 "Data Point": index + 1,  # Adjust index to be human-readable (starting at 1)
-    #                 "Prediction (g/dL)": formatted_predictions_value
-    #             })
-    
     # # Convert the results list to a DataFrame
     # results_df = pd.DataFrame(results)
 
