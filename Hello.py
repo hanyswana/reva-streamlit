@@ -249,6 +249,14 @@ def main():
     # Assuming df1 and df2 are your dataframes obtained from API or other sources
     all_processed_dfs, wavelengths = json_data()
 
+    for preprocessing_step, dfs in zip(["SNV", "Baseline removal", "SNV + Baseline removal", "Euclidean normalization", "SNV + Euclidean normalization", "Manhattan normalization", "SNV + Manhattan normalization"], zip(*all_processed_dfs)):
+        # Concatenate all DataFrames for this preprocessing step
+        concatenated_df = pd.concat(dfs, keys=range(1, len(dfs) + 1), names=['Sample', 'Row'])
+        
+        # Print concatenated DataFrame with a header indicating the preprocessing step
+        st.write(preprocessing_step)
+        st.write(concatenated_df)
+
     results = []  # To accumulate prediction results
 
     # Example prediction loop, adapt to your prediction logic
