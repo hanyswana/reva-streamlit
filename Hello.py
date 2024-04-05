@@ -230,7 +230,9 @@ def main():
 
     # Assuming df1 and df2 are your dataframes obtained from API or other sources
     all_processed_dfs, wavelengths = json_data()
-    
+
+    results = []  # To accumulate prediction results
+
     # Example prediction loop, adapt to your prediction logic
     for model_label, model_path in model_paths_with_labels:
         model = load_model(model_path)
@@ -239,7 +241,34 @@ def main():
             for preprocess_label, df in zip(["SNV", "BR", "SNV + BR", "Euc", "SNV + Euc", "Manh", "SNV + Manh"], processed_versions):
                 for index, row in df.iterrows():
                     predictions = predict_with_model(model, row)
-                    st.write(f"Model: {model_label}, Preprocess: {preprocess_label}, Data Point: DF{df_index+1}-Row{index+1}, Prediction: {predictions}")
+                    # st.write(f"Model: {model_label}, Preprocess: {preprocess_label}, Data Point: DF{df_index+1}-Row{index+1}, Prediction: {predictions}")
+
+                    prediction_value = predictions[0][0]  # Assuming single value predictions for simplicity
+                    formatted_prediction_value = f"{prediction_value:.1f}"
+                    
+                    # Append each prediction result to the results list
+                    results.append({
+                        "Model": model_label,
+                        "Preprocessing": preprocess_label,
+                        "Data Point": f"DF{df_index+1}-Row{index+1}",
+                        "Prediction (g/dL)": formatted_prediction_value
+                    })
+
+     # Convert the results list to a DataFrame
+    results_df = pd.DataFrame(results)
+
+    st.markdown("""
+    <style>
+    /* This CSS selector targets the table elements in Streamlit */
+    .stTable, .stDataFrame {
+        font-size: 20px;  /* Increase font size */
+        padding: 20px;    /* Add more padding */
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # Display the results as a table
+    st.dataframe(results_df, height=500, width=700)
 
 
     # # Assuming json_data returns a tuple of all dataframes + wavelengths at the end
