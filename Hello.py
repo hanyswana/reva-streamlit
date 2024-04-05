@@ -80,60 +80,98 @@ def json_data():
     st.write('Spectral')
     st.write(df2)
 
-    # Element-wise division of the dataframes & convert absorbance data to csv
-    # absorbance_df = df1.div(df2.values).pow(2)
-    absorbance_df = df1.div(row.values, axis='columns').pow(2)
-    st.write('Original absorbance')
-    st.write(absorbance_df)
+    # # Element-wise division of the dataframes & convert absorbance data to csv
+    # # absorbance_df = df1.div(df2.values).pow(2)
+    # absorbance_df = df1.div(row.values, axis='columns').pow(2)
+    # st.write('Original absorbance')
+    # st.write(absorbance_df)
 
-    # Apply SNV to the absorbance data
-    absorbance_snv = snv(absorbance_df.values)
-    absorbance_snv_df = pd.DataFrame(absorbance_snv, columns=absorbance_df.columns)
-    st.write('SNV Transformation')
-    st.write(absorbance_snv_df)
+    # # Apply SNV to the absorbance data
+    # absorbance_snv = snv(absorbance_df.values)
+    # absorbance_snv_df = pd.DataFrame(absorbance_snv, columns=absorbance_df.columns)
+    # st.write('SNV Transformation')
+    # st.write(absorbance_snv_df)
 
-    # Apply baseline removal to the absorbance data
-    baseline_remover = BaselineRemover()
-    absorbance_baseline_removed = baseline_remover.transform(absorbance_df)
-    absorbance_baseline_removed_df = pd.DataFrame(absorbance_baseline_removed, columns=absorbance_df.columns)
-    absorbance_snv_baseline_removed = baseline_remover.transform(absorbance_snv)
-    absorbance_snv_baseline_removed_df = pd.DataFrame(absorbance_snv_baseline_removed, columns=absorbance_df.columns)
-    st.write('Baseline removal')
-    st.write(absorbance_baseline_removed_df)
-    st.write('SNV + baseline removal')
-    st.write(absorbance_snv_baseline_removed_df)
+    # # Apply baseline removal to the absorbance data
+    # baseline_remover = BaselineRemover()
+    # absorbance_baseline_removed = baseline_remover.transform(absorbance_df)
+    # absorbance_baseline_removed_df = pd.DataFrame(absorbance_baseline_removed, columns=absorbance_df.columns)
+    # absorbance_snv_baseline_removed = baseline_remover.transform(absorbance_snv)
+    # absorbance_snv_baseline_removed_df = pd.DataFrame(absorbance_snv_baseline_removed, columns=absorbance_df.columns)
+    # st.write('Baseline removal')
+    # st.write(absorbance_baseline_removed_df)
+    # st.write('SNV + baseline removal')
+    # st.write(absorbance_snv_baseline_removed_df)
 
-    # Normalize the absorbance data using Euclidean normalization
-    normalizer_euc= Normalizer(norm='l2')  # Euclidean normalization
-    absorbance_normalized_euc = normalizer_euc.transform(absorbance_df)
-    absorbance_normalized_euc_df = pd.DataFrame(absorbance_normalized_euc, columns=absorbance_df.columns)
-    absorbance_snv_normalized_euc = normalizer_euc.transform(absorbance_snv)
-    absorbance_snv_normalized_euc_df = pd.DataFrame(absorbance_snv_normalized_euc, columns=absorbance_df.columns)
-    st.write('Euc')
-    st.write(absorbance_normalized_euc_df)
-    st.write('SNV + euc')
-    st.write(absorbance_snv_normalized_euc_df)
+    # # Normalize the absorbance data using Euclidean normalization
+    # normalizer_euc= Normalizer(norm='l2')  # Euclidean normalization
+    # absorbance_normalized_euc = normalizer_euc.transform(absorbance_df)
+    # absorbance_normalized_euc_df = pd.DataFrame(absorbance_normalized_euc, columns=absorbance_df.columns)
+    # absorbance_snv_normalized_euc = normalizer_euc.transform(absorbance_snv)
+    # absorbance_snv_normalized_euc_df = pd.DataFrame(absorbance_snv_normalized_euc, columns=absorbance_df.columns)
+    # st.write('Euc')
+    # st.write(absorbance_normalized_euc_df)
+    # st.write('SNV + euc')
+    # st.write(absorbance_snv_normalized_euc_df)
 
-    # # Convert normalized DataFrame to CSV (optional step, depending on your needs)
-    # absorbance_normalized_euc_df.to_csv('absorbance_data_normalized_euc.csv', index=False)
+    # # # Convert normalized DataFrame to CSV (optional step, depending on your needs)
+    # # absorbance_normalized_euc_df.to_csv('absorbance_data_normalized_euc.csv', index=False)
 
-    # Normalize the absorbance data using Manhattan normalization
-    normalizer_manh = Normalizer(norm='l1')  # Manhattan normalization
-    absorbance_normalized_manh = normalizer_manh.transform(absorbance_df)
-    absorbance_normalized_manh_df = pd.DataFrame(absorbance_normalized_manh, columns=absorbance_df.columns)
-    absorbance_snv_normalized_manh = normalizer_manh.transform(absorbance_snv)
-    absorbance_snv_normalized_manh_df = pd.DataFrame(absorbance_snv_normalized_manh, columns=absorbance_df.columns)
-    st.write('Manh absorbance')
-    st.write(absorbance_normalized_manh_df)
-    st.write('SNV + manh')
-    st.write(absorbance_snv_normalized_manh_df)
+    # # Normalize the absorbance data using Manhattan normalization
+    # normalizer_manh = Normalizer(norm='l1')  # Manhattan normalization
+    # absorbance_normalized_manh = normalizer_manh.transform(absorbance_df)
+    # absorbance_normalized_manh_df = pd.DataFrame(absorbance_normalized_manh, columns=absorbance_df.columns)
+    # absorbance_snv_normalized_manh = normalizer_manh.transform(absorbance_snv)
+    # absorbance_snv_normalized_manh_df = pd.DataFrame(absorbance_snv_normalized_manh, columns=absorbance_df.columns)
+    # st.write('Manh absorbance')
+    # st.write(absorbance_normalized_manh_df)
+    # st.write('SNV + manh')
+    # st.write(absorbance_snv_normalized_manh_df)
 
 
-    # # First row of absorbance data
-    # absorbance_data = absorbance_df.iloc[0]  
- 
-    return absorbance_df, absorbance_normalized_euc_df, absorbance_snv_normalized_euc_df, absorbance_normalized_manh_df, absorbance_snv_normalized_manh_df, absorbance_baseline_removed_df, absorbance_snv_baseline_removed_df, absorbance_snv_df, wavelengths
-    # return absorbance_df, absorbance_snv_baseline_removed_df, wavelengths
+    # # # First row of absorbance data
+    # # absorbance_data = absorbance_df.iloc[0]  
+
+    all_processed_dfs = []  # This will hold tuples of all processed versions of each df
+    
+    for index, row in df2.iterrows():
+        absorbance_df = df1.div(row.values, axis='columns').pow(2)
+        
+        # Apply SNV
+        absorbance_snv = snv(absorbance_df.values)
+        absorbance_snv_df = pd.DataFrame(absorbance_snv, columns=absorbance_df.columns)
+        
+        # Apply baseline removal
+        baseline_remover = BaselineRemover()
+        absorbance_baseline_removed = baseline_remover.transform(absorbance_df.values)
+        absorbance_baseline_removed_df = pd.DataFrame(absorbance_baseline_removed, columns=absorbance_df.columns)
+        absorbance_snv_baseline_removed = baseline_remover.transform(absorbance_snv)
+        absorbance_snv_baseline_removed_df = pd.DataFrame(absorbance_snv_baseline_removed, columns=absorbance_df.columns)
+        
+        # Normalize the absorbance data using Euclidean normalization
+        normalizer_euc = Normalizer(norm='l2')
+        absorbance_normalized_euc = normalizer_euc.transform(absorbance_df)
+        absorbance_normalized_euc_df = pd.DataFrame(absorbance_normalized_euc, columns=absorbance_df.columns)
+        absorbance_snv_normalized_euc = normalizer_euc.transform(absorbance_snv)
+        absorbance_snv_normalized_euc_df = pd.DataFrame(absorbance_snv_normalized_euc, columns=absorbance_df.columns)
+        
+        # Normalize the absorbance data using Manhattan normalization
+        normalizer_manh = Normalizer(norm='l1')
+        absorbance_normalized_manh = normalizer_manh.transform(absorbance_df)
+        absorbance_normalized_manh_df = pd.DataFrame(absorbance_normalized_manh, columns=absorbance_df.columns)
+        absorbance_snv_normalized_manh = normalizer_manh.transform(absorbance_snv)
+        absorbance_snv_normalized_manh_df = pd.DataFrame(absorbance_snv_normalized_manh, columns=absorbance_df.columns)
+        
+        # Collect all processed versions for this division result
+        processed_versions = (absorbance_snv_df, absorbance_baseline_removed_df, absorbance_snv_baseline_removed_df,
+                              absorbance_normalized_euc_df, absorbance_snv_normalized_euc_df,
+                              absorbance_normalized_manh_df, absorbance_snv_normalized_manh_df)
+        
+        all_processed_dfs.append(processed_versions)
+
+    return all_processed_dfs, wavelengths
+        
+    # return absorbance_df, absorbance_normalized_euc_df, absorbance_snv_normalized_euc_df, absorbance_normalized_manh_df, absorbance_snv_normalized_manh_df, absorbance_baseline_removed_df, absorbance_snv_baseline_removed_df, absorbance_snv_df, wavelengths
 
 
 def load_model(model_dir):
@@ -190,32 +228,46 @@ def main():
         ('TFL Q', 'tflite_model_snv_manh_10_quant_2024-04-01_08-57-51.tflite')
     ]
 
+    # Assuming df1 and df2 are your dataframes obtained from API or other sources
+    all_processed_dfs, wavelengths = json_data()
+    
+    # Example prediction loop, adapt to your prediction logic
+    for model_label, model_path in model_paths_with_labels:
+        model = load_model(model_path)
+        
+        for df_index, processed_versions in enumerate(all_processed_dfs):
+            for preprocess_label, df in zip(["SNV", "BR", "SNV + BR", "Euc", "SNV + Euc", "Manh", "SNV + Manh"], processed_versions):
+                for index, row in df.iterrows():
+                    predictions = predict_with_model(model, row)
+                    print(f"Model: {model_label}, Preprocess: {preprocess_label}, Data Point: DF{df_index+1}-Row{index+1}, Prediction: {predictions}")
 
-    # Assuming json_data returns a tuple of all dataframes + wavelengths at the end
-    data = json_data()
-    if data is None:
-        st.write("Failed to fetch or process data.")
-        return
 
-    # Unpack all the DataFrames and wavelength from data
-    (absorbance_df, absorbance_normalized_euc_df, absorbance_snv_normalized_euc_df, 
-    absorbance_normalized_manh_df, absorbance_snv_normalized_manh_df, 
-    absorbance_baseline_removed_df, absorbance_snv_baseline_removed_df, 
-    absorbance_snv_df, wavelengths) = data
+    # # Assuming json_data returns a tuple of all dataframes + wavelengths at the end
+    # data = json_data()
+    # if data is None:
+    #     st.write("Failed to fetch or process data.")
+    #     return
 
-    # Dictionary to hold DataFrame references and their labels for easy access
-    data_frames_with_labels = [
-        ("Ori", absorbance_df),
-        ("Euc", absorbance_normalized_euc_df),
-        ("SNV + Euc", absorbance_snv_normalized_euc_df),
-        ("Manh", absorbance_normalized_manh_df),
-        ("SNV + Manh", absorbance_snv_normalized_manh_df),
-        ("BR", absorbance_baseline_removed_df),
-        ("SNV + BR", absorbance_snv_baseline_removed_df),
-        ("SNV", absorbance_snv_df)
-    ]
+    # # Unpack all the DataFrames and wavelength from data
+    # (absorbance_df, absorbance_normalized_euc_df, absorbance_snv_normalized_euc_df, 
+    # absorbance_normalized_manh_df, absorbance_snv_normalized_manh_df, 
+    # absorbance_baseline_removed_df, absorbance_snv_baseline_removed_df, 
+    # absorbance_snv_df, wavelengths) = data
 
-    results = []  # To accumulate prediction results
+    # # Dictionary to hold DataFrame references and their labels for easy access
+    # data_frames_with_labels = [
+    #     ("Ori", absorbance_df),
+    #     ("Euc", absorbance_normalized_euc_df),
+    #     ("SNV + Euc", absorbance_snv_normalized_euc_df),
+    #     ("Manh", absorbance_normalized_manh_df),
+    #     ("SNV + Manh", absorbance_snv_normalized_manh_df),
+    #     ("BR", absorbance_baseline_removed_df),
+    #     ("SNV + BR", absorbance_snv_baseline_removed_df),
+    #     ("SNV", absorbance_snv_df)
+    # ]
+
+    # results = []  # To accumulate prediction results
+    
 
     # # Accumulate results in a list
     # for label, model_path in model_paths_with_labels:
