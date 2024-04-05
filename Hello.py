@@ -291,41 +291,41 @@ def main():
     # # Convert the results list to a DataFrame
     # results_df = pd.DataFrame(results)
 
-    # Loop through each model and preprocessing combination
-    for label, model_path in model_paths_with_labels:
-        model = load_model(model_path)
+    # # Loop through each model and preprocessing combination
+    # for label, model_path in model_paths_with_labels:
+    #     model = load_model(model_path)
         
-        for preprocess_label, df in data_frames_with_labels:
-            for index, row in df.iterrows():  # Loop through each data row
-                predictions = predict_with_model(model, row)
-                predictions_value = predictions[0][0]  # Assuming single value predictions for simplicity
+    #     for preprocess_label, df in data_frames_with_labels:
+    #         for index, row in df.iterrows():  # Loop through each data row
+    #             predictions = predict_with_model(model, row)
+    #             predictions_value = predictions[0][0]  # Assuming single value predictions for simplicity
     
-                formatted_predictions_value = f"{predictions_value:.1f}"
+    #             formatted_predictions_value = f"{predictions_value:.1f}"
     
-                # Append each prediction result to the results list
-                # Including 'Data Point' to track which row the prediction corresponds to
-                results.append({
-                    "Model": label,
-                    "Preprocessing": preprocess_label,
-                    "Data Point": index + 1,  # Adjust index to be human-readable (starting at 1)
-                    "Prediction (g/dL)": formatted_predictions_value
-                })
+    #             # Append each prediction result to the results list
+    #             # Including 'Data Point' to track which row the prediction corresponds to
+    #             results.append({
+    #                 "Model": label,
+    #                 "Preprocessing": preprocess_label,
+    #                 "Data Point": index + 1,  # Adjust index to be human-readable (starting at 1)
+    #                 "Prediction (g/dL)": formatted_predictions_value
+    #             })
     
-    # Convert the results list to a DataFrame
-    results_df = pd.DataFrame(results)
+    # # Convert the results list to a DataFrame
+    # results_df = pd.DataFrame(results)
 
-    st.markdown("""
-    <style>
-    /* This CSS selector targets the table elements in Streamlit */
-    .stTable, .stDataFrame {
-        font-size: 20px;  /* Increase font size */
-        padding: 20px;    /* Add more padding */
-    }
-    </style>
-    """, unsafe_allow_html=True)
+    # st.markdown("""
+    # <style>
+    # /* This CSS selector targets the table elements in Streamlit */
+    # .stTable, .stDataFrame {
+    #     font-size: 20px;  /* Increase font size */
+    #     padding: 20px;    /* Add more padding */
+    # }
+    # </style>
+    # """, unsafe_allow_html=True)
 
-    # Display the results as a table
-    st.dataframe(results_df, height=500, width=700)
+    # # Display the results as a table
+    # st.dataframe(results_df, height=500, width=700)
 
     # # Loop through each model
     # for label, model_path in model_paths_with_labels:
