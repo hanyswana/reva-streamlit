@@ -144,8 +144,6 @@ def json_data():
         # Apply SNV
         absorbance_snv = snv(absorbance_df.values)
         absorbance_snv_df = pd.DataFrame(absorbance_snv, columns=absorbance_df.columns)
-        st.write('SNV')
-        st.write(absorbance_snv_df)
             
         # Apply baseline removal
         baseline_remover = BaselineRemover()
@@ -153,10 +151,6 @@ def json_data():
         absorbance_baseline_removed_df = pd.DataFrame(absorbance_baseline_removed, columns=absorbance_df.columns)
         absorbance_snv_baseline_removed = baseline_remover.transform(absorbance_snv)
         absorbance_snv_baseline_removed_df = pd.DataFrame(absorbance_snv_baseline_removed, columns=absorbance_df.columns)
-        st.write('Baseline removal')
-        st.write(absorbance_baseline_removed_df)
-        st.write('SNV + baseline removal')
-        st.write(absorbance_snv_baseline_removed_df)
         
         # Normalize the absorbance data using Euclidean normalization
         normalizer_euc = Normalizer(norm='l2')
@@ -164,10 +158,6 @@ def json_data():
         absorbance_normalized_euc_df = pd.DataFrame(absorbance_normalized_euc, columns=absorbance_df.columns)
         absorbance_snv_normalized_euc = normalizer_euc.transform(absorbance_snv)
         absorbance_snv_normalized_euc_df = pd.DataFrame(absorbance_snv_normalized_euc, columns=absorbance_df.columns)
-        st.write('Euc')
-        st.write(absorbance_normalized_euc_df)
-        st.write('SNV + euc')
-        st.write(absorbance_snv_normalized_euc_df)
         
         # Normalize the absorbance data using Manhattan normalization
         normalizer_manh = Normalizer(norm='l1')
@@ -175,10 +165,6 @@ def json_data():
         absorbance_normalized_manh_df = pd.DataFrame(absorbance_normalized_manh, columns=absorbance_df.columns)
         absorbance_snv_normalized_manh = normalizer_manh.transform(absorbance_snv)
         absorbance_snv_normalized_manh_df = pd.DataFrame(absorbance_snv_normalized_manh, columns=absorbance_df.columns)
-        st.write('Manh absorbance')
-        st.write(absorbance_normalized_manh_df)
-        st.write('SNV + manh')
-        st.write(absorbance_snv_normalized_manh_df)
         
         # Collect all processed versions for this division result
         processed_versions = (absorbance_snv_df, absorbance_baseline_removed_df, absorbance_snv_baseline_removed_df,
