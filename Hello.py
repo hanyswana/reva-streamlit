@@ -239,7 +239,7 @@ def main():
             for preprocess_label, df in zip(["SNV", "BR", "SNV + BR", "Euc", "SNV + Euc", "Manh", "SNV + Manh"], processed_versions):
                 for index, row in df.iterrows():
                     predictions = predict_with_model(model, row)
-                    print(f"Model: {model_label}, Preprocess: {preprocess_label}, Data Point: DF{df_index+1}-Row{index+1}, Prediction: {predictions}")
+                    st.write(f"Model: {model_label}, Preprocess: {preprocess_label}, Data Point: DF{df_index+1}-Row{index+1}, Prediction: {predictions}")
 
 
     # # Assuming json_data returns a tuple of all dataframes + wavelengths at the end
