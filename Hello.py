@@ -136,10 +136,6 @@ def json_data():
     
     for index, row in df2.iterrows():
         absorbance_df = df1.div(row.values, axis='columns').pow(2)
-
-        st.write('Original absorbance')
-        # st.write('Original absorbance for row:', index + 1)
-        st.write(absorbance_df)
         
         # Apply SNV
         absorbance_snv = snv(absorbance_df.values)
@@ -167,7 +163,7 @@ def json_data():
         absorbance_snv_normalized_manh_df = pd.DataFrame(absorbance_snv_normalized_manh, columns=absorbance_df.columns)
         
         # Collect all processed versions for this division result
-        processed_versions = (absorbance_snv_df, absorbance_baseline_removed_df, absorbance_snv_baseline_removed_df,
+        processed_versions = (absorbance_df, absorbance_snv_df, absorbance_baseline_removed_df, absorbance_snv_baseline_removed_df,
                               absorbance_normalized_euc_df, absorbance_snv_normalized_euc_df,
                               absorbance_normalized_manh_df, absorbance_snv_normalized_manh_df)
         
@@ -235,7 +231,7 @@ def main():
     # Assuming df1 and df2 are your dataframes obtained from API or other sources
     all_processed_dfs, wavelengths = json_data()
 
-    for preprocessing_step, dfs in zip(["SNV", "Baseline removal", "SNV + Baseline removal", "Euclidean normalization", "SNV + Euclidean normalization", "Manhattan normalization", "SNV + Manhattan normalization"], zip(*all_processed_dfs)):
+    for preprocessing_step, dfs in zip(["Original", "SNV", "Baseline removal", "SNV + Baseline removal", "Euclidean normalization", "SNV + Euclidean normalization", "Manhattan normalization", "SNV + Manhattan normalization"], zip(*all_processed_dfs)):
         # Concatenate all DataFrames for this preprocessing step
         concatenated_df = pd.concat(dfs, keys=range(1, len(dfs) + 1), names=['Sample', 'Row'])
         
@@ -250,7 +246,7 @@ def main():
         model = load_model(model_path)
         
         for df_index, processed_versions in enumerate(all_processed_dfs):
-            for preprocess_label, df in zip(["SNV", "BR", "SNV + BR", "Euc", "SNV + Euc", "Manh", "SNV + Manh"], processed_versions):
+            for preprocess_label, df in zip(["Original", "SNV", "BR", "SNV + BR", "Euc", "SNV + Euc", "Manh", "SNV + Manh"], processed_versions):
                 for index, row in df.iterrows():
                     predictions = predict_with_model(model, row)
                     # st.write(f"Model: {model_label}, Preprocess: {preprocess_label}, Data Point: DF{df_index+1}-Row{index+1}, Prediction: {predictions}")
