@@ -9,6 +9,7 @@ from sklearn.preprocessing import Normalizer
 from sklearn.utils.validation import FLOAT_DTYPES
 from scipy import sparse
 from datetime import datetime
+import pytz
 
 
 # # Set page configuration to wide mode
@@ -229,10 +230,11 @@ def main():
     </style>
     """, unsafe_allow_html=True)
 
-    # Display the results as a table
-    current_time = datetime.now()  # Get current time
-    formatted_time = current_time.strftime("%Y-%m-%d %H:%M:%S")  # Format the time string
-    st.markdown(f"## Haemoglobin (Timestamp: {formatted_time})") 
+    utc_now = datetime.now(pytz.utc)
+    singapore_time = utc_now.astimezone(pytz.timezone('Asia/Singapore'))
+    formatted_time = singapore_time.strftime("%Y-%m-%d %H:%M:%S")
+    st.markdown(f"## Haemoglobin (Timestamp: {formatted_time})")
+    
     st.dataframe(results_df, height=500, width=700)
 
 
