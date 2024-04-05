@@ -239,6 +239,8 @@ def main():
         st.write(preprocessing_step)
         st.write(concatenated_df)
 
+    st.dataframe('Haemoglobin')
+    
     results = []  # To accumulate prediction results
 
     # Example prediction loop, adapt to your prediction logic
@@ -276,7 +278,6 @@ def main():
     """, unsafe_allow_html=True)
 
     # Display the results as a table
-    st.dataframe('Haemoglobin')
     st.dataframe(results_df, height=500, width=700)
 
 
