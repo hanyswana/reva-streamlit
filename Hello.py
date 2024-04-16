@@ -163,7 +163,7 @@ def main():
     ]
 
     # Get data from server (simulated here)
-    absorbance_data, absorbance_snv_baseline_removed_data, wavelengths = json_data()
+    absorbance_df, absorbance_snv_baseline_removed_df, wavelengths = json_data()
     # absorbance_data, wavelengths = json_data()
 
     for label, model_path in model_paths_with_labels:
@@ -192,7 +192,7 @@ def main():
         # predictions_value_snv = predictions_snv[0][0]
 
         # Predict with SNV and BR transformed absorbance data
-        predictions_snv_baseline_removed = predict_with_model(model, absorbance_snv_baseline_removed_data)
+        predictions_snv_baseline_removed = predict_with_model(model, absorbance_snv_baseline_removed_df)
         predictions_value_snv_baseline_removed = predictions_snv_baseline_removed[0][0]
 
     
