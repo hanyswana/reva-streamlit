@@ -75,6 +75,9 @@ def predict_with_model(model, input_data):
         input_details = model.get_input_details()
         output_details = model.get_output_details()
         
+        input_data = input_data.astype('float32')
+        input_data = np.expand_dims(input_data, axis=0)
+        
         # Assuming input_data is already in the correct shape and type
         model.set_tensor(input_details[0]['index'], input_data)
         model.invoke()
