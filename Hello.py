@@ -95,9 +95,8 @@ def predict_with_model(model, input_data):
 def main():
 
     model_paths_with_labels = [
-        ('SNV + br (R49)', 'snv_baseline_removed_pls_top_10_float32.parquet_best_model_2024-03-31_13-29-57'),
-        ('TFLite', 'tflite_model_snv_br_10.tflite'),
-        ('TFLite Q', 'tflite_model_snv_br_10_quant.tflite')
+        ('TFLite', 'tflite_model_snv_br_10_2024-04-03_04-18-56.tflite'),
+        ('TFLite Q', 'tflite_model_snv_br_10_quant_2024-04-03_04-18-56.tflite')
     ]
     
     # Get data from server (simulated here)
