@@ -124,12 +124,25 @@ def load_model(model_dir):
     return model
 
 def predict_with_model(model, input_data):
-
-    input_array = input_data.to_numpy(dtype='float64')
-    input_array_reshaped = input_array.reshape(-1, 19)  # Adjust to match the number of features your model expects
-    input_tensor = tf.convert_to_tensor(input_array_reshaped, dtype=tf.float64)
-    predictions = model(input_tensor)
-    return predictions.numpy()  # Convert predictions to numpy array if needed
+    if isinstance(model, tf.lite.Interpreter):  # Check if model is TensorFlow Lite Interpreter
+        input_details = model.get_input_details()
+        output_details = model.get_output_details()
+        
+        input_data = input_data.astype('float32')
+        input_data = np.expand_dims(input_data, axis=0)
+        
+        # Assuming input_data is already in the correct shape and type
+        model.set_tensor(input_details[0]['index'], input_data)
+        model.invoke()
+        predictions = model.get_tensor(output_details[0]['index'])
+        return predictions  # This will be a numpy array
+    else:
+        # Existing prediction code for TensorFlow SavedModel
+        input_array = input_data.to_numpy(dtype='float32')
+        input_array_reshaped = input_array.reshape(-1, 10)  # Adjust to match the number of features your model expects
+        input_tensor = tf.convert_to_tensor(input_array_reshaped, dtype=tf.float32)
+        predictions = model(input_tensor)
+        return predictions.numpy()  # Convert predictions to numpy array if needed
 
 def main():
     # Define model paths with labels
