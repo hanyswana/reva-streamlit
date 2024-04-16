@@ -21,7 +21,7 @@ import pytz
 utc_now = datetime.now(pytz.utc)
 singapore_time = utc_now.astimezone(pytz.timezone('Asia/Singapore'))
 formatted_time = singapore_time.strftime("%Y-%m-%d %H:%M:%S")
-st.markdown(f"Timestamp: {formatted_time}")
+st.markdown(f"Time: {formatted_time}")
 
 # Custom Baseline Removal Transformer
 class BaselineRemover(TransformerMixin, BaseEstimator):
