@@ -231,7 +231,7 @@ def main():
 
     # Plotting
     plt.figure(figsize=(10, 4))
-    plt.plot(wavelengths, absorbance_data.iloc[0], marker='o', linestyle='-', color='b')
+    plt.plot(wavelengths, absorbance_df.iloc[0], marker='o', linestyle='-', color='b')
     plt.xlabel('Wavelength (nm)', fontweight='bold', fontsize=14)
     plt.ylabel('Absorbance', fontweight='bold', fontsize=14)
     plt.xticks(rotation='vertical', fontweight='bold', fontsize=12)
