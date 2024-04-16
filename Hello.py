@@ -72,8 +72,8 @@ def json_data():
     df2 = pd.DataFrame(data2).iloc[:1].apply(pd.to_numeric, errors='coerce')
     wavelengths = df1.columns
 
-    # # Element-wise division of the dataframes & convert absorbance data to csv
-    # absorbance_df = df1.div(df2.values).pow(2)
+    # Element-wise division of the dataframes & convert absorbance data to csv
+    absorbance_df = df1.div(df2.values).pow(2)
     # st.write('Original absorbance')
     # st.write(absorbance_df)
 
