@@ -83,7 +83,7 @@ def predict_with_model(model, input_data):
     else:
         # Existing prediction code for TensorFlow SavedModel
         input_array = input_data.to_numpy(dtype='float64')
-        input_array_reshaped = input_array.reshape(-1, 19)  # Adjust to match the number of features your model expects
+        input_array_reshaped = input_array.reshape(-1, 10)  # Adjust to match the number of features your model expects
         input_tensor = tf.convert_to_tensor(input_array_reshaped, dtype=tf.float64)
         predictions = model(input_tensor)
         return predictions.numpy()  # Convert predictions to numpy array if needed
