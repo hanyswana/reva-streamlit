@@ -205,7 +205,7 @@ def main():
         </style> """, unsafe_allow_html=True)
     
         # Add condition for prediction value
-        if predictions_value_original > 25:
+        if predictions_value_snv_baseline_removed > 25:
             # display_value = f'<span class="high-value">High value : ({predictions_value_original:.1f} g/dL)</span>'
             # display_value2 = f'<span class="high-value">High value : ({predictions_value_normalized_euc:.1f} g/dL)</span>'
             # display_value3 = f'<span class="high-value">High value : ({predictions_value_normalized_manh:.1f} g/dL)</span>'
