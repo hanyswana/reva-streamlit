@@ -8,6 +8,8 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils.validation import FLOAT_DTYPES
 from scipy import sparse
 import numpy as np
+from datetime import datetime
+import pytz
 
 # st.markdown("""
 # <style>
@@ -15,6 +17,11 @@ import numpy as np
 # </style> """, unsafe_allow_html=True)
 
 # st.markdown('<p class="custom-font">Absorbance data :</p>', unsafe_allow_html=True)
+
+utc_now = datetime.now(pytz.utc)
+singapore_time = utc_now.astimezone(pytz.timezone('Asia/Singapore'))
+formatted_time = singapore_time.strftime("%Y-%m-%d %H:%M:%S")
+st.markdown(f"## Haemoglobin (Timestamp: {formatted_time})")
 
 # Custom Baseline Removal Transformer
 class BaselineRemover(TransformerMixin, BaseEstimator):
