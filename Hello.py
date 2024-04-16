@@ -120,8 +120,15 @@ def json_data():
     # return absorbance_df, wavelengths
 
 def load_model(model_dir):
-    model = tf.saved_model.load(model_dir)
-    return model
+    if model_dir.endswith('.tflite'):  # Check if model is a TensorFlow Lite model
+        # Load TensorFlow Lite model
+        interpreter = tf.lite.Interpreter(model_path=model_dir)
+        interpreter.allocate_tensors()
+        return interpreter
+    else:
+        # Load TensorFlow SavedModel
+        model = tf.saved_model.load(model_dir)
+        return model
 
 def predict_with_model(model, input_data):
     if isinstance(model, tf.lite.Interpreter):  # Check if model is TensorFlow Lite Interpreter
