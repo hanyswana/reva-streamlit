@@ -70,12 +70,14 @@ def json_data():
     # Extract first line of data from both API responses and convert to numeric
     df1 = pd.DataFrame(data1).iloc[:1].apply(pd.to_numeric, errors='coerce')
     df2 = pd.DataFrame(data2).iloc[:1].apply(pd.to_numeric, errors='coerce')
+    st.write(df1)
+    st.write(df2)
     wavelengths = df1.columns
 
     # Element-wise division of the dataframes & convert absorbance data to csv
     absorbance_df = df1.div(df2.values).pow(2)
-    # st.write('Original absorbance')
-    # st.write(absorbance_df)
+    st.write('Original absorbance')
+    st.write(absorbance_df)
 
     # Apply SNV to the absorbance data after baseline removal
     absorbance_snv = snv(absorbance_df.values)
@@ -112,6 +114,8 @@ def json_data():
     
     absorbance_snv_baseline_removed = baseline_remover.transform(absorbance_snv)
     absorbance_snv_baseline_removed_df = pd.DataFrame(absorbance_snv_baseline_removed, columns=absorbance_df.columns)
+    st.write('SNV + BR')
+    st.write(absorbance_snv_baseline_removed_df)
 
     # First row of absorbance data
     absorbance_data = absorbance_df.iloc[0]  
