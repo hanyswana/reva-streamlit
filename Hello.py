@@ -211,15 +211,15 @@ def main():
         # .high-value {color: red;}
         </style> """, unsafe_allow_html=True)
 
-            if predictions_value_snv_baseline_removed > 15:
-                display_text = 'Above 15 g/dL'
-            elif predictions_value_snv_baseline_removed < 10.9:
-                display_text = 'Below 11 g/dL'
-            else:
-                display_text = f'{predictions_value_snv_baseline_removed:.1f} g/dL'
+        if predictions_value_snv_baseline_removed > 15:
+            display_text = 'Above 15 g/dL'
+        elif predictions_value_snv_baseline_removed < 10.9:
+            display_text = 'Below 11 g/dL'
+        else:
+            display_text = f'{predictions_value_snv_baseline_removed:.1f} g/dL'
             
-            # Format the display value with consistent styling
-            display_value6 = f'<span class="value">{display_text}</span>'
+        # Format the display value with consistent styling
+        display_value6 = f'<span class="value">{display_text}</span>'
                 
         # # Add condition for prediction value
         # if predictions_value_snv_baseline_removed > 25:
