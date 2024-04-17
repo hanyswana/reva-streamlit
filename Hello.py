@@ -241,7 +241,7 @@ def main():
         # st.markdown(f'<span class="label">Haemoglobin ({label}) Normalized Manhattan:</span><br>{display_value3}</p>', unsafe_allow_html=True)
         # st.markdown(f'<span class="label">Haemoglobin ({label}) Baseline removal:</span><br>{display_value4}</p>', unsafe_allow_html=True)
         # st.markdown(f'<span class="label">Haemoglobin ({label}) SNV:</span><br>{display_value5}</p>', unsafe_allow_html=True)
-        st.markdown(f'<span class="label">Haemoglobin ({label}) SNV & BR:</span><br>{display_value6}</p>', unsafe_allow_html=True)
+        st.markdown(f'<span class="label">Haemoglobin ({label}):</span><br>{display_value6}</p>', unsafe_allow_html=True)
 
 
     # Plotting
