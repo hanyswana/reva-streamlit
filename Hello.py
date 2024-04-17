@@ -210,22 +210,30 @@ def main():
         .value {font-size: 40px; font-weight: bold; color: blue;}
         .high-value {color: red;}
         </style> """, unsafe_allow_html=True)
-    
-        # Add condition for prediction value
-        if predictions_value_snv_baseline_removed > 25:
-            # display_value = f'<span class="high-value">High value : ({predictions_value_original:.1f} g/dL)</span>'
-            # display_value2 = f'<span class="high-value">High value : ({predictions_value_normalized_euc:.1f} g/dL)</span>'
-            # display_value3 = f'<span class="high-value">High value : ({predictions_value_normalized_manh:.1f} g/dL)</span>'
-            # display_value4 = f'<span class="high-value">High value : ({predictions_value_baseline_removed:.1f} g/dL)</span>'
-            # display_value5 = f'<span class="high-value">High value : ({predictions_value_snv:.1f} g/dL)</span>'
-            display_value6 = f'<span class="high-value">High value : ({predictions_value_snv_baseline_removed:.1f} g/dL)</span>'
+
+        # Define conditions for different display messages based on the prediction value
+        if predictions_value_snv_baseline_removed > 15:
+            display_value6 = f'<span class="high-value">Above 15 g/dL</span>'
+        elif predictions_value_snv_baseline_removed < 10.9:
+            display_value6 = f'<span class="low-value">Below 11 g/dL</span>'
         else:
-            # display_value = f'<span class="value">{predictions_value_original:.1f} g/dL</span>'
-            # display_value2 = f'<span class="value">{predictions_value_normalized_euc:.1f} g/dL</span>'
-            # display_value3 = f'<span class="value">{predictions_value_normalized_manh:.1f} g/dL</span>'
-            # display_value4 = f'<span class="value">{predictions_value_baseline_removed:.1f} g/dL</span>'
-            # display_value5 = f'<span class="value">{predictions_value_snv:.1f} g/dL</span>'
             display_value6 = f'<span class="value">{predictions_value_snv_baseline_removed:.1f} g/dL</span>'
+    
+        # # Add condition for prediction value
+        # if predictions_value_snv_baseline_removed > 25:
+        #     # display_value = f'<span class="high-value">High value : ({predictions_value_original:.1f} g/dL)</span>'
+        #     # display_value2 = f'<span class="high-value">High value : ({predictions_value_normalized_euc:.1f} g/dL)</span>'
+        #     # display_value3 = f'<span class="high-value">High value : ({predictions_value_normalized_manh:.1f} g/dL)</span>'
+        #     # display_value4 = f'<span class="high-value">High value : ({predictions_value_baseline_removed:.1f} g/dL)</span>'
+        #     # display_value5 = f'<span class="high-value">High value : ({predictions_value_snv:.1f} g/dL)</span>'
+        #     display_value6 = f'<span class="high-value">High value : ({predictions_value_snv_baseline_removed:.1f} g/dL)</span>'
+        # else:
+        #     # display_value = f'<span class="value">{predictions_value_original:.1f} g/dL</span>'
+        #     # display_value2 = f'<span class="value">{predictions_value_normalized_euc:.1f} g/dL</span>'
+        #     # display_value3 = f'<span class="value">{predictions_value_normalized_manh:.1f} g/dL</span>'
+        #     # display_value4 = f'<span class="value">{predictions_value_baseline_removed:.1f} g/dL</span>'
+        #     # display_value5 = f'<span class="value">{predictions_value_snv:.1f} g/dL</span>'
+        #     display_value6 = f'<span class="value">{predictions_value_snv_baseline_removed:.1f} g/dL</span>'
         
         # # Display label and prediction value
         # st.markdown(f'<span class="label">Haemoglobin :</span><br>{display_value}</p>', unsafe_allow_html=True)
