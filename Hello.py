@@ -83,6 +83,7 @@ def json_data():
 
     # Element-wise division of the dataframes & convert absorbance data to csv
     absorbance_df = df1.div(df2.values).pow(2)
+    st.write(absorbance_df)
 
     # Selected wavelengths based on user requirement
     # wavelengths = ['415nm', '445nm', '480nm', '515nm', '555nm', '585nm', '590nm', '610nm', '630nm', '730nm']
