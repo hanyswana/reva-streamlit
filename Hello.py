@@ -11,13 +11,6 @@ import numpy as np
 from datetime import datetime
 import pytz
 
-# st.markdown("""
-# <style>
-# .custom-font {font-size: 16px; font-weight: bold;}
-# </style> """, unsafe_allow_html=True)
-
-# st.markdown('<p class="custom-font">Absorbance data :</p>', unsafe_allow_html=True)
-
 utc_now = datetime.now(pytz.utc)
 singapore_time = utc_now.astimezone(pytz.timezone('Asia/Singapore'))
 formatted_time = singapore_time.strftime("%Y-%m-%d %H:%M:%S")
@@ -77,18 +70,9 @@ def json_data():
     # Extract first line of data from both API responses and convert to numeric
     df1 = pd.DataFrame(data1).iloc[:1].apply(pd.to_numeric, errors='coerce')
     df2 = pd.DataFrame(data2).iloc[:1].apply(pd.to_numeric, errors='coerce')
-    # st.write(df1)
-    # st.write(df2)
     wavelengths = df1.columns
-
-    # Element-wise division of the dataframes & convert absorbance data to csv
     absorbance_df = df1.div(df2.values).pow(2)
     st.write(absorbance_df)
-
-    # Selected wavelengths based on user requirement
-    # wavelengths = ['415nm', '445nm', '480nm', '515nm', '555nm', '585nm', '590nm', '610nm', '630nm', '730nm']
-    # absorbance_df = absorbance_df[wavelengths]
-    # st.write(absorbance_df)
 
     # Apply SNV to the absorbance data after baseline removal
     absorbance_snv = snv(absorbance_df.values)
@@ -100,45 +84,31 @@ def json_data():
     # normalizer = Normalizer(norm='l2')  # Euclidean normalization
     # absorbance_normalized_euc = normalizer.transform(absorbance_df)
     # absorbance_normalized_euc_df = pd.DataFrame(absorbance_normalized_euc, columns=absorbance_df.columns)
-    # st.write('Euclidean absorbance')
-    # st.write(absorbance_normalized_euc_df)
-
-    # # Convert normalized DataFrame to CSV (optional step, depending on your needs)
-    # absorbance_normalized_euc_df.to_csv('absorbance_data_normalized_euc.csv', index=False)
 
     # # Normalize the absorbance data using Manhattan normalization
     # normalizer = Normalizer(norm='l1')  # Manhattan normalization
     # absorbance_normalized_manh = normalizer.transform(absorbance_df)
     # absorbance_normalized_manh_df = pd.DataFrame(absorbance_normalized_manh, columns=absorbance_df.columns)
-    # st.write('Manhattan absorbance')
-    # st.write(absorbance_normalized_manh_df)
-
-    # # Convert normalized DataFrame to CSV (optional step, depending on your needs)
-    # absorbance_normalized_manh_df.to_csv('absorbance_data_normalized_manh.csv', index=False)
 
     # Apply baseline removal to the absorbance data
     baseline_remover = BaselineRemover()
     absorbance_baseline_removed = baseline_remover.transform(absorbance_df)
     absorbance_baseline_removed_df = pd.DataFrame(absorbance_baseline_removed, columns=absorbance_df.columns)
-    # st.write('Baseline removal')
-    # st.write(absorbance_baseline_removed_df)
     
     absorbance_snv_baseline_removed = baseline_remover.transform(absorbance_snv)
     absorbance_snv_baseline_removed_df = pd.DataFrame(absorbance_snv_baseline_removed, columns=absorbance_df.columns)
     # st.write('SNV + BR')
-    # st.write(absorbance_snv_baseline_removed_df)
 
     # First row of absorbance data
     absorbance_data = absorbance_df.iloc[0]  
  
     return absorbance_df, absorbance_snv_baseline_removed_df, wavelengths
-    # return absorbance_df, wavelengths
 
 def select_for_prediction(absorbance_data, selected_wavelengths):
     return absorbance_data[selected_wavelengths]
     
 def load_model(model_dir):
-    if model_dir.endswith('.tflite'):  # Check if model is a TensorFlow Lite model
+    if model_dir.endswith('.tflite'):
         # Load TensorFlow Lite model
         interpreter = tf.lite.Interpreter(model_path=model_dir)
         interpreter.allocate_tensors()
@@ -198,9 +168,7 @@ def main():
         # ('TFL-q', 'tflite_model_snv_br_10_quant_2024-04-03_04-18-56.tflite')
     ]
 
-    # Get data from server (simulated here)
     absorbance_df, absorbance_snv_baseline_removed_df, wavelengths = json_data()
-    # absorbance_data, wavelengths = json_data()
 
     for label, model_path in model_paths_with_labels:
 
@@ -208,7 +176,6 @@ def main():
         prediction_data = select_for_prediction(absorbance_snv_baseline_removed_df, selected_wavelengths)
         
         model = load_model(model_path)
-        # st.write(model)
         
         # # Predict with original absorbance data
         # predictions_original = predict_with_model(model, absorbance_df)
