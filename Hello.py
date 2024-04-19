@@ -83,8 +83,6 @@ def json_data():
 
     # Element-wise division of the dataframes & convert absorbance data to csv
     absorbance_df_19 = df1.div(df2.values).pow(2)
-    # st.write('Original absorbance')
-    st.write(absorbance_df)
 
     # Selected indices based on user requirement
     selected_columns = [1, 2, 3, 4, 5, 7, 8, 9, 10, 14]
