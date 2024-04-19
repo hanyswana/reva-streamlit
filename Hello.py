@@ -84,20 +84,9 @@ def json_data():
     # Element-wise division of the dataframes & convert absorbance data to csv
     absorbance_df = df1.div(df2.values).pow(2)
 
-    st.write("Dataframe Columns:", df1.columns.tolist())  # Debug: Print columns
-
-    # selected_columns = [0, 1, 2, 3, 4, 6, 7, 8, 9, 13]
-    selected_columns = ['415nm', '445nm', '480nm', '515nm', '555nm', '585nm', '590nm', '610nm', '630nm', '730nm']
-    selected_columns = [str(col) for col in selected_columns]  # Convert to string if necessary
-    absorbance_df = absorbance_df[selected_columns]
-    wavelengths = wavelengths[selected_columns]
-
-    # # Selected indices based on user requirement
-    # selected_columns = ['415nm', '445nm', '480nm', '515nm', '555nm', '585nm', '590nm', '610nm', '630nm', '730nm']
-    # selected_columns = [str(col) for col in selected_columns]  # Ensure column labels are strings if needed
-    # absorbance_df = absorbance_df[selected_columns]
-    # wavelengths = wavelengths[selected_columns]
-    # st.write(absorbance_df)
+    # Selected wavelengths based on user requirement
+    wavelengths = ['415nm', '445nm', '480nm', '515nm', '555nm', '585nm', '590nm', '610nm', '630nm', '730nm']
+    absorbance_df = absorbance_df[wavelengths]
 
     # Apply SNV to the absorbance data after baseline removal
     absorbance_snv = snv(absorbance_df.values)
