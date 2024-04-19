@@ -141,26 +141,47 @@ def load_model(model_dir):
         model = tf.saved_model.load(model_dir)
         return model
 
+# def predict_with_model(model, input_data):
+#     if isinstance(model, tf.lite.Interpreter):  # Check if model is TensorFlow Lite Interpreter
+#         input_details = model.get_input_details()
+#         output_details = model.get_output_details()
+        
+#         input_data = input_data.astype('float32')
+#         input_data = np.expand_dims(input_data, axis=0)
+        
+#         # Assuming input_data is already in the correct shape and type
+#         model.set_tensor(input_details[0]['index'], input_data)
+#         model.invoke()
+#         predictions = model.get_tensor(output_details[0]['index'])
+#         return predictions  # This will be a numpy array
+#     else:
+#         # Existing prediction code for TensorFlow SavedModel
+#         input_array = input_data.to_numpy(dtype='float32')
+#         input_array_reshaped = input_array.reshape(-1, 10)  # Adjust to match the number of features your model expects
+#         input_tensor = tf.convert_to_tensor(input_array_reshaped, dtype=tf.float32)
+#         predictions = model(input_tensor)
+#         return predictions.numpy()  # Convert predictions to numpy array if needed
+
 def predict_with_model(model, input_data):
     if isinstance(model, tf.lite.Interpreter):  # Check if model is TensorFlow Lite Interpreter
         input_details = model.get_input_details()
         output_details = model.get_output_details()
         
-        input_data = input_data.astype('float32')
-        input_data = np.expand_dims(input_data, axis=0)
+        # Ensure input data is 2D: [batch_size, num_features]
+        input_data = input_data.values.astype('float32')  # Convert DataFrame to numpy and ensure dtype
+        if input_data.ndim == 1:
+            input_data = input_data.reshape(1, -1)  # Reshape if single row input
         
-        # Assuming input_data is already in the correct shape and type
         model.set_tensor(input_details[0]['index'], input_data)
         model.invoke()
         predictions = model.get_tensor(output_details[0]['index'])
         return predictions  # This will be a numpy array
     else:
-        # Existing prediction code for TensorFlow SavedModel
-        input_array = input_data.to_numpy(dtype='float32')
-        input_array_reshaped = input_array.reshape(-1, 10)  # Adjust to match the number of features your model expects
-        input_tensor = tf.convert_to_tensor(input_array_reshaped, dtype=tf.float32)
+        # Assuming TensorFlow SavedModel prediction logic
+        input_data = input_data.values.astype('float32').reshape(-1, 10)  # Adjust based on your model's expected input
+        input_tensor = tf.convert_to_tensor(input_data, dtype=tf.float32)
         predictions = model(input_tensor)
-        return predictions.numpy()  # Convert predictions to numpy array if needed
+        return predictions.numpy()
 
 def main():
     # Define model paths with labels
