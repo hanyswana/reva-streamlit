@@ -97,7 +97,7 @@ def json_data():
     
     absorbance_snv_baseline_removed = baseline_remover.transform(absorbance_snv)
     absorbance_snv_baseline_removed_df = pd.DataFrame(absorbance_snv_baseline_removed, columns=absorbance_df.columns)
-    st.write(absorbance_snv_baseline_removed_df)
+    # st.write(absorbance_snv_baseline_removed_df)
 
     # First row of absorbance data
     absorbance_data = absorbance_df.iloc[0]  
