@@ -79,15 +79,15 @@ def json_data():
     df2 = pd.DataFrame(data2).iloc[:1].apply(pd.to_numeric, errors='coerce')
     # st.write(df1)
     # st.write(df2)
-    # wavelengths = df1.columns
+    wavelengths = df1.columns
 
     # Element-wise division of the dataframes & convert absorbance data to csv
     absorbance_df = df1.div(df2.values).pow(2)
 
     # Selected wavelengths based on user requirement
-    wavelengths = ['415nm', '445nm', '480nm', '515nm', '555nm', '585nm', '590nm', '610nm', '630nm', '730nm']
-    absorbance_df = absorbance_df[wavelengths]
-    st.write(absorbance_df)
+    # wavelengths = ['415nm', '445nm', '480nm', '515nm', '555nm', '585nm', '590nm', '610nm', '630nm', '730nm']
+    # absorbance_df = absorbance_df[wavelengths]
+    # st.write(absorbance_df)
 
     # Apply SNV to the absorbance data after baseline removal
     absorbance_snv = snv(absorbance_df.values)
@@ -133,6 +133,9 @@ def json_data():
     return absorbance_df, absorbance_snv_baseline_removed_df, wavelengths
     # return absorbance_df, wavelengths
 
+def select_for_prediction(absorbance_data, selected_wavelengths):
+    return absorbance_data[selected_wavelengths]
+    
 def load_model(model_dir):
     if model_dir.endswith('.tflite'):  # Check if model is a TensorFlow Lite model
         # Load TensorFlow Lite model
@@ -199,7 +202,10 @@ def main():
     # absorbance_data, wavelengths = json_data()
 
     for label, model_path in model_paths_with_labels:
-        # Load the model
+
+        selected_wavelengths = ['415nm', '445nm', '480nm', '515nm', '555nm', '585nm', '590nm', '610nm', '630nm', '730nm']
+        prediction_data = select_for_prediction(preprocess_data, selected_wavelengths)
+        
         model = load_model(model_path)
         # st.write(model)
         
@@ -224,7 +230,8 @@ def main():
         # predictions_value_snv = predictions_snv[0][0]
 
         # Predict with SNV and BR transformed absorbance data
-        predictions_snv_baseline_removed = predict_with_model(model, absorbance_snv_baseline_removed_df)
+        # predictions_snv_baseline_removed = predict_with_model(model, absorbance_snv_baseline_removed_df)
+        predictions_snv_baseline_removed = predict_with_model(model, prediction_data)
         predictions_value_snv_baseline_removed = predictions_snv_baseline_removed[0][0]
 
     
