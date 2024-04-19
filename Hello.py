@@ -79,18 +79,18 @@ def json_data():
     df2 = pd.DataFrame(data2).iloc[:1].apply(pd.to_numeric, errors='coerce')
     # st.write(df1)
     # st.write(df2)
-    wavelengths = df1.columns
+    wavelengths_19 = df1.columns
 
     # Element-wise division of the dataframes & convert absorbance data to csv
-    absorbance_df = df1.div(df2.values).pow(2)
+    absorbance_df_19 = df1.div(df2.values).pow(2)
     # st.write('Original absorbance')
     st.write(absorbance_df)
 
     # Selected indices based on user requirement
     selected_columns = [1, 2, 3, 4, 5, 7, 8, 9, 10, 14]
     selected_columns = [str(col) for col in selected_columns]  # Ensure column labels are strings if needed
-    absorbance_df = absorbance_df[selected_columns]
-    wavelengths = wavelengths[selected_columns]
+    absorbance_df = absorbance_df_19[selected_columns]
+    wavelengths = wavelengths_19[selected_columns]
 
     # Apply SNV to the absorbance data after baseline removal
     absorbance_snv = snv(absorbance_df.values)
