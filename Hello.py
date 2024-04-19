@@ -90,6 +90,7 @@ def json_data():
     selected_columns = ['415nm', '445nm', '480nm', '515nm', '555nm', '585nm', '590nm', '610nm', '630nm', '730nm']
     selected_columns = [str(col) for col in selected_columns]  # Convert to string if necessary
     absorbance_df = absorbance_df[selected_columns]
+    wavelengths = wavelengths[selected_columns]
 
     # # Selected indices based on user requirement
     # selected_columns = ['415nm', '445nm', '480nm', '515nm', '555nm', '585nm', '590nm', '610nm', '630nm', '730nm']
