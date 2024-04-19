@@ -174,7 +174,7 @@ def main():
 
         selected_wavelengths = ['415nm', '445nm', '480nm', '515nm', '555nm', '585nm', '590nm', '610nm', '630nm', '730nm']
         prediction_data = select_for_prediction(absorbance_snv_baseline_removed_df, selected_wavelengths)
-        st.write(prediction_data)
+        # st.write(prediction_data)
         
         model = load_model(model_path)
         
