@@ -86,7 +86,7 @@ def json_data():
 
     st.write("Dataframe Columns:", df1.columns.tolist())  # Debug: Print columns
 
-    # selected_columns = [1, 2, 3, 4, 5, 7, 8, 9, 10, 14]
+    # selected_columns = [0, 1, 2, 3, 4, 6, 7, 8, 9, 13]
     selected_columns = ['415nm', '445nm', '480nm', '515nm', '555nm', '585nm', '590nm', '610nm', '630nm', '730nm']
     selected_columns = [str(col) for col in selected_columns]  # Convert to string if necessary
     absorbance_df = absorbance_df[selected_columns]
