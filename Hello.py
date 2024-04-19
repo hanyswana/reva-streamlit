@@ -85,7 +85,7 @@ def json_data():
     absorbance_df_19 = df1.div(df2.values).pow(2)
 
     # Selected indices based on user requirement
-    selected_columns = [1, 2, 3, 4, 5, 7, 8, 9, 10, 14]
+    selected_columns = ['_415nm', '_445nm', '_480nm', '_515nm', '_555nm', '_585nm', '_590nm', '_610nm', '_630nm', '_730nm']
     selected_columns = [str(col) for col in selected_columns]  # Ensure column labels are strings if needed
     absorbance_df = absorbance_df_19[selected_columns]
     wavelengths = wavelengths_19[selected_columns]
