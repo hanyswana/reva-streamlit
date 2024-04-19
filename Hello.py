@@ -87,6 +87,7 @@ def json_data():
     # Selected wavelengths based on user requirement
     wavelengths = ['415nm', '445nm', '480nm', '515nm', '555nm', '585nm', '590nm', '610nm', '630nm', '730nm']
     absorbance_df = absorbance_df[wavelengths]
+    st.write(absorbance_df)
 
     # Apply SNV to the absorbance data after baseline removal
     absorbance_snv = snv(absorbance_df.values)
