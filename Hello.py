@@ -91,6 +91,7 @@ def json_data():
     selected_columns = [str(col) for col in selected_columns]  # Ensure column labels are strings if needed
     absorbance_df = absorbance_df_19[selected_columns]
     wavelengths = wavelengths_19[selected_columns]
+    st.write(absorbance_df)
 
     # Apply SNV to the absorbance data after baseline removal
     absorbance_snv = snv(absorbance_df.values)
