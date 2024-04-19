@@ -86,6 +86,12 @@ def json_data():
     # st.write('Original absorbance')
     st.write(absorbance_df)
 
+    # Selected indices based on user requirement
+    selected_columns = [1, 2, 3, 4, 5, 7, 8, 9, 10, 14]
+    selected_columns = [str(col) for col in selected_columns]  # Ensure column labels are strings if needed
+    absorbance_df = absorbance_df[selected_columns]
+    wavelengths = wavelengths[selected_columns]
+
     # Apply SNV to the absorbance data after baseline removal
     absorbance_snv = snv(absorbance_df.values)
     absorbance_snv_df = pd.DataFrame(absorbance_snv, columns=absorbance_df.columns)
