@@ -71,7 +71,7 @@ def json_data():
     df1 = pd.DataFrame(data1).iloc[:1].apply(pd.to_numeric, errors='coerce')
     df2 = pd.DataFrame(data2).iloc[:1].apply(pd.to_numeric, errors='coerce')
     wavelengths = df1.columns
-    absorbance_df = df1.div(df2.values).pow(2)
+    absorbance_df = df2.div(df1.values).pow(2)
     st.write(absorbance_df)
 
     # Apply SNV to the absorbance data after baseline removal
