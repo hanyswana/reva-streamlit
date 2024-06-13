@@ -201,7 +201,7 @@ def main():
         # Predict with SNV and BR transformed absorbance data
         # predictions_snv_baseline_removed = predict_with_model(model, absorbance_snv_baseline_removed_df)
         predictions_snv_baseline_removed = predict_with_model(model, prediction_data)
-        predictions_value_snv_baseline_removed = predictions_snv_baseline_removed[0][0]
+        predictions_value_snv_baseline_removed = predictions_snv_baseline_removed[0][0] - 1
 
     
         st.markdown("""
