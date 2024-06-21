@@ -1,9 +1,9 @@
 altair
-numpy
+numpy==1.23.5
 pandas
 pydeck
 streamlit
 scikit-learn
 flask
 matplotlib
-tensorflow
+tensorflow==2.14.0
