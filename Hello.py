@@ -198,7 +198,7 @@ def main():
     
     for label, model_path in model_paths_with_labels:
 
-        selected_wavelengths = ['_415nm', '_445nm', '_515nm', '_555nm', '_560nm', '_610nm', '_680nm', '_730nm', '_900nm', '_940nm'] # for API (SNV + BR / SNV + euc + BR) - new
+        selected_wavelengths = ['415nm', '445nm', '515nm', '555nm', '560nm', '610nm', '680nm', '730nm', '900nm', '940nm'] # for API (SNV + BR / SNV + euc + BR) - new
         # selected_wavelengths = ['_445nm', '_515nm', '_555nm', '_560nm', '_585nm', '_610nm', '_680nm', '_730nm', '_900nm', '_940nm'] # for API (SNV + manh + BR) - new
         prediction_data = select_for_prediction(absorbance_all_pp_df, selected_wavelengths)
         # st.write('10 selected preprocessed data :')
