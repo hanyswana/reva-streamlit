@@ -1,22 +1,24 @@
 import pandas as pd
 import streamlit as st
-import requests
+import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
-from sklearn.preprocessing import Normalizer
+import requests, pytz, pickle, joblib, torch
+from scipy import sparse
+from datetime import datetime
+from sklearn.preprocessing import Normalizer, PolynomialFeatures
 from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils.validation import FLOAT_DTYPES
-from scipy import sparse
-import numpy as np
-from datetime import datetime
-import pytz
+from sklearn.pipeline import make_pipeline
+from sklearn.linear_model import LinearRegression
+
 
 utc_now = datetime.now(pytz.utc)
 singapore_time = utc_now.astimezone(pytz.timezone('Asia/Singapore'))
 formatted_time = singapore_time.strftime("%Y-%m-%d %H:%M:%S")
 st.markdown(f"Time: {formatted_time}")
 
-# Custom Baseline Removal Transformer
+
 class BaselineRemover(TransformerMixin, BaseEstimator):
     def __init__(self, *, copy=True):
         self.copy = copy
@@ -38,15 +40,34 @@ class BaselineRemover(TransformerMixin, BaseEstimator):
     def _more_tags(self):
         return {'allow_nan': True}
 
+
 def snv(input_data):
-    # Mean centering and scaling by standard deviation for each spectrum
     mean_corrected = input_data - np.mean(input_data, axis=1, keepdims=True)
     snv_transformed = mean_corrected / np.std(mean_corrected, axis=1, keepdims=True)
     return snv_transformed
-        
+
+
+def pds_transform(input_data, pds_model):
+    F, a = pds_model
+    transformed_data = input_data.dot(F) + a
+    return transformed_data
+
+
+def custom_transform(input_data, pds_models):
+    transformed_data = np.zeros_like(input_data)
+
+    for start, end, model in pds_models:
+        slave_segment = input_data[:, start:end]
+        transformed_segment = model.predict(slave_segment)
+        transformed_data[:, start:end] = transformed_segment
+
+    return transformed_data
+
+
 def json_data():
+    # API --------------------------------------------------------------------------------------------------------------------
     # First API call
-    api_url1 = "https://x8ki-letl-twmt.n7.xano.io/api:U4wk_Gn6/BackgroundReading"
+    api_url1 = "https://x8ki-letl-twmt.n7.xano.io/api:5r4pCOor/bgdata_hb"
     payload1 = {}
     response1 = requests.get(api_url1, params=payload1)
 
@@ -57,7 +78,7 @@ def json_data():
         return None
 
     # Second API call
-    api_url2 = "https://x8ki-letl-twmt.n7.xano.io/api:DKaWNKM4/spectral_data"
+    api_url2 = "https://x8ki-letl-twmt.n7.xano.io/api:UpqVw9TY/spectraldata_hb"
     payload2 = {}
     response2 = requests.get(api_url2, params=payload2)
 
@@ -71,139 +92,133 @@ def json_data():
     df1 = pd.DataFrame(data1).iloc[:1].apply(pd.to_numeric, errors='coerce')
     df2 = pd.DataFrame(data2).iloc[:1].apply(pd.to_numeric, errors='coerce')
     wavelengths = df1.columns
-    absorbance_df = df1.div(df2.values).pow(2)
+    absorbance_df = df2.div(df1.values).pow(0.5)
     # st.write(absorbance_df)
 
-    # Apply SNV to the absorbance data after baseline removal
+
+    # PREPROCESS ------------------------------------------------------------------------------------------------------------------
+    # 1. SNV
     absorbance_snv = snv(absorbance_df.values)
     absorbance_snv_df = pd.DataFrame(absorbance_snv, columns=absorbance_df.columns)
-    # st.write('SNV Transformation')
-    # st.write(absorbance_snv_df)
     
-    # # Normalize the absorbance data using Euclidean normalization
+    # # 2. Euclidean normalization
     # normalizer = Normalizer(norm='l2')  # Euclidean normalization
-    # absorbance_normalized_euc = normalizer.transform(absorbance_df)
+    # absorbance_normalized_euc = normalizer.transform(absorbance_snv_df)
     # absorbance_normalized_euc_df = pd.DataFrame(absorbance_normalized_euc, columns=absorbance_df.columns)
 
-    # # Normalize the absorbance data using Manhattan normalization
+    # # 3. Manhattan normalization
     # normalizer = Normalizer(norm='l1')  # Manhattan normalization
-    # absorbance_normalized_manh = normalizer.transform(absorbance_df)
+    # absorbance_normalized_manh = normalizer.transform(absorbance_snv_df)
     # absorbance_normalized_manh_df = pd.DataFrame(absorbance_normalized_manh, columns=absorbance_df.columns)
 
-    # Apply baseline removal to the absorbance data
+    # 4. Baseline removal
     baseline_remover = BaselineRemover()
-    absorbance_baseline_removed = baseline_remover.transform(absorbance_df)
+    absorbance_baseline_removed = baseline_remover.transform(absorbance_snv_df)
     absorbance_baseline_removed_df = pd.DataFrame(absorbance_baseline_removed, columns=absorbance_df.columns)
-    
-    absorbance_snv_baseline_removed = baseline_remover.transform(absorbance_snv)
-    absorbance_snv_baseline_removed_df = pd.DataFrame(absorbance_snv_baseline_removed, columns=absorbance_df.columns)
-    # st.write(absorbance_snv_baseline_removed_df)
 
-    # First row of absorbance data
-    absorbance_data = absorbance_df.iloc[0]  
+    # pds_model = joblib.load('pds_model_U11_snv_baseline.joblib')
+    # with open('pds_model_U6_snv_baseline.pkl', 'rb') as f:
+    #     pds_model = pickle.load(f)
+
+    # absorbance_transformed = pds_transform(absorbance_baseline_removed_df.values, pds_model)
+    # absorbance_transformed_df = pd.DataFrame(absorbance_transformed, columns=absorbance_df.columns)
+    # absorbance_all_pp_df = absorbance_transformed_df
+
+    absorbance_all_pp_df = absorbance_baseline_removed_df
+    # st.write('19 preprocessed data :')
+    # st.write(absorbance_all_pp_df)
+
+    reference_file_path = 'Lablink_134_SNV_Baseline.csv'
+    reference_df = pd.read_csv(reference_file_path, usecols=range(3, 22))
+    reference_df = reference_df.apply(pd.to_numeric, errors='coerce')
+    
+    golden_values = reference_df.mean().values
+    Min = reference_df.min().values
+    Max = reference_df.max().values
  
-    return absorbance_df, absorbance_snv_baseline_removed_df, wavelengths
+    return absorbance_df, absorbance_all_pp_df, wavelengths, golden_values, Min, Max
+    
+
+def create_csv(golden_values, Min, Max, wavelengths):
+    data = {
+        'Wavelength': wavelengths,
+        'Golden Values': golden_values,
+        'Min': Min,
+        'Max': Max
+    }
+    df = pd.DataFrame(data).T
+    df.to_csv('golden_values_min_max.csv', index=False)
+    # st.write(df)
+    
 
 def select_for_prediction(absorbance_df, selected_wavelengths):
     return absorbance_df[selected_wavelengths]
-    
+
+
 def load_model(model_dir):
     if model_dir.endswith('.tflite'):
-        # Load TensorFlow Lite model
         interpreter = tf.lite.Interpreter(model_path=model_dir)
         interpreter.allocate_tensors()
         return interpreter
     else:
-        # Load TensorFlow SavedModel
         model = tf.saved_model.load(model_dir)
         return model
 
-# def predict_with_model(model, input_data):
-#     if isinstance(model, tf.lite.Interpreter):  # Check if model is TensorFlow Lite Interpreter
-#         input_details = model.get_input_details()
-#         output_details = model.get_output_details()
-        
-#         input_data = input_data.astype('float32')
-#         input_data = np.expand_dims(input_data, axis=0)
-        
-#         # Assuming input_data is already in the correct shape and type
-#         model.set_tensor(input_details[0]['index'], input_data)
-#         model.invoke()
-#         predictions = model.get_tensor(output_details[0]['index'])
-#         return predictions  # This will be a numpy array
-#     else:
-#         # Existing prediction code for TensorFlow SavedModel
-#         input_array = input_data.to_numpy(dtype='float32')
-#         input_array_reshaped = input_array.reshape(-1, 10)  # Adjust to match the number of features your model expects
-#         input_tensor = tf.convert_to_tensor(input_array_reshaped, dtype=tf.float32)
-#         predictions = model(input_tensor)
-#         return predictions.numpy()  # Convert predictions to numpy array if needed
 
 def predict_with_model(model, input_data):
-    if isinstance(model, tf.lite.Interpreter):  # Check if model is TensorFlow Lite Interpreter
+    if isinstance(model, tf.lite.Interpreter):
         input_details = model.get_input_details()
         output_details = model.get_output_details()
         
         # Ensure input data is 2D: [batch_size, num_features]
-        input_data = input_data.values.astype('float32')  # Convert DataFrame to numpy and ensure dtype
+        input_data = input_data.values.astype('float32')
         if input_data.ndim == 1:
             input_data = input_data.reshape(1, -1)  # Reshape if single row input
         
         model.set_tensor(input_details[0]['index'], input_data)
         model.invoke()
         predictions = model.get_tensor(output_details[0]['index'])
-        return predictions  # This will be a numpy array
+        return predictions
     else:
-        # Assuming TensorFlow SavedModel prediction logic
-        input_data = input_data.values.astype('float32').reshape(-1, 10)  # Adjust based on your model's expected input
+        input_data = input_data.values.astype('float32').reshape(-1, 10)
         input_tensor = tf.convert_to_tensor(input_data, dtype=tf.float32)
         predictions = model(input_tensor)
         return predictions.numpy()
 
+
 def main():
-    # Define model paths with labels
+
     model_paths_with_labels = [
-        # ('TF', 'snv_baseline_removed_pls_top_10_float32.parquet_best_model_2024-04-03_04-18-56'),
-        ('TFL', 'tflite_model_snv_br_10_2024-04-03_04-18-56.tflite')
-        # ('TFL-q', 'tflite_model_snv_br_10_quant_2024-04-03_04-18-56.tflite')
+        ('SNV + BR (R45)', 'Lablink_134_SNV_Baseline_pls_top_10.parquet_best_model_2024-05-09_20-22-34_R45_77%')
     ]
+    
+    absorbance_df, absorbance_all_pp_df, wavelengths, golden_values, Min, Max = json_data()
 
-    absorbance_df, absorbance_snv_baseline_removed_df, wavelengths = json_data()
-
+    create_csv(golden_values, Min, Max, wavelengths)
+    
     for label, model_path in model_paths_with_labels:
 
-        selected_wavelengths = ['415nm', '445nm', '480nm', '515nm', '555nm', '585nm', '590nm', '610nm', '630nm', '730nm']
-        prediction_data = select_for_prediction(absorbance_snv_baseline_removed_df, selected_wavelengths)
+        selected_wavelengths = ['_415nm', '_445nm', '_515nm', '_555nm', '_560nm', '_610nm', '_680nm', '_730nm', '_900nm', '_940nm'] # for API (SNV + BR / SNV + euc + BR) - new
+        # selected_wavelengths = ['_445nm', '_515nm', '_555nm', '_560nm', '_585nm', '_610nm', '_680nm', '_730nm', '_900nm', '_940nm'] # for API (SNV + manh + BR) - new
+        prediction_data = select_for_prediction(absorbance_all_pp_df, selected_wavelengths)
+        # st.write('10 selected preprocessed data :')
         # st.write(prediction_data)
         
         model = load_model(model_path)
-        
-        # # Predict with original absorbance data
-        # predictions_original = predict_with_model(model, absorbance_df)
-        # predictions_value_original = predictions_original[0][0]
-        
-        # # Predict with Euclidean normalized absorbance data
-        # predictions_normalized_euc = predict_with_model(model, absorbance_normalized_euc_data)
-        # predictions_value_normalized_euc = predictions_normalized_euc[0][0]
+        predictions = predict_with_model(model, prediction_data)
+        predictions_value = predictions[0][0]
 
-        # # Predict with Manhattan normalized absorbance data
-        # predictions_normalized_manh = predict_with_model(model, absorbance_normalized_manh_data)
-        # predictions_value_normalized_manh = predictions_normalized_manh[0][0]
+        correlation = np.corrcoef(absorbance_all_pp_df.iloc[0], golden_values)[0, 1]
 
-        # # Predict with baseline removed absorbance data
-        # predictions_baseline_removed = predict_with_model(model, absorbance_baseline_removed_data)
-        # predictions_value_baseline_removed = predictions_baseline_removed[0][0]
+        Min = np.array(Min, dtype=float)
+        Max = np.array(Max, dtype=float)
+        absorbance_values = (absorbance_all_pp_df.values)
 
-        # # Predict with SNV transformed absorbance data
-        # predictions_snv = predict_with_model(model, absorbance_snv_data)
-        # predictions_value_snv = predictions_snv[0][0]
+        out_of_range = (absorbance_values < Min) | (absorbance_values > Max)
+        count_out_of_range = np.sum(out_of_range)
+        total_values = absorbance_values.size
+        in_range_percentage = 100 - ((count_out_of_range / total_values) * 100)
 
-        # Predict with SNV and BR transformed absorbance data
-        # predictions_snv_baseline_removed = predict_with_model(model, absorbance_snv_baseline_removed_df)
-        predictions_snv_baseline_removed = predict_with_model(model, prediction_data)
-        predictions_value_snv_baseline_removed = predictions_snv_baseline_removed[0][0] - 1
-
-    
         st.markdown("""
         <style>
         .label {font-size: 20px; font-weight: bold; color: black;}
@@ -211,51 +226,34 @@ def main():
         # .high-value {color: red;}
         </style> """, unsafe_allow_html=True)
 
-        if predictions_value_snv_baseline_removed > 15:
-            display_text = 'Above 15 g/dL'
-        elif predictions_value_snv_baseline_removed < 5.9:
-            display_text = 'Below 6 g/dL'
+        if predictions_value > 100:
+            display_text = 'Above 100 g/dL'
+        elif predictions_value < 0:
+            display_text = 'Below 0 g/dL'
         else:
-            display_text = f'{predictions_value_snv_baseline_removed:.1f} g/dL'
+            display_text = f'{predictions_value:.1f} g/dL'
             
-        # Format the display value with consistent styling
-        display_value6 = f'<span class="value">{display_text}</span>'
-                
-        # # Add condition for prediction value
-        # if predictions_value_snv_baseline_removed > 25:
-        #     # display_value = f'<span class="high-value">High value : ({predictions_value_original:.1f} g/dL)</span>'
-        #     # display_value2 = f'<span class="high-value">High value : ({predictions_value_normalized_euc:.1f} g/dL)</span>'
-        #     # display_value3 = f'<span class="high-value">High value : ({predictions_value_normalized_manh:.1f} g/dL)</span>'
-        #     # display_value4 = f'<span class="high-value">High value : ({predictions_value_baseline_removed:.1f} g/dL)</span>'
-        #     # display_value5 = f'<span class="high-value">High value : ({predictions_value_snv:.1f} g/dL)</span>'
-        #     display_value6 = f'<span class="high-value">High value : ({predictions_value_snv_baseline_removed:.1f} g/dL)</span>'
-        # else:
-        #     # display_value = f'<span class="value">{predictions_value_original:.1f} g/dL</span>'
-        #     # display_value2 = f'<span class="value">{predictions_value_normalized_euc:.1f} g/dL</span>'
-        #     # display_value3 = f'<span class="value">{predictions_value_normalized_manh:.1f} g/dL</span>'
-        #     # display_value4 = f'<span class="value">{predictions_value_baseline_removed:.1f} g/dL</span>'
-        #     # display_value5 = f'<span class="value">{predictions_value_snv:.1f} g/dL</span>'
-        #     display_value6 = f'<span class="value">{predictions_value_snv_baseline_removed:.1f} g/dL</span>'
-        
-        # # Display label and prediction value
-        # st.markdown(f'<span class="label">Haemoglobin :</span><br>{display_value}</p>', unsafe_allow_html=True)
-        # st.markdown(f'<span class="label">Haemoglobin ({label}) Normalized Euclidean:</span><br>{display_value2}</p>', unsafe_allow_html=True)
-        # st.markdown(f'<span class="label">Haemoglobin ({label}) Normalized Manhattan:</span><br>{display_value3}</p>', unsafe_allow_html=True)
-        # st.markdown(f'<span class="label">Haemoglobin ({label}) Baseline removal:</span><br>{display_value4}</p>', unsafe_allow_html=True)
-        # st.markdown(f'<span class="label">Haemoglobin ({label}) SNV:</span><br>{display_value5}</p>', unsafe_allow_html=True)
-        st.markdown(f'<span class="label">Haemoglobin ({label}):</span><br>{display_value6}</p>', unsafe_allow_html=True)
+        display_value = f'<span class="value">{display_text}</span>'
 
+        st.markdown(f'<span class="label">Haemoglobin ({label}):</span><br>{display_value}</p>', unsafe_allow_html=True)
+        st.markdown(f'<span class="label">Similarity to training data:</span><br><span class="value">{in_range_percentage:.0f} %</span>', unsafe_allow_html=True)
+        st.markdown(f'<span class="label">Correlation:</span><br><span class="value">{correlation:.2f}</span>', unsafe_allow_html=True)
 
-    # Plotting
     plt.figure(figsize=(10, 4))
-    plt.plot(wavelengths, absorbance_df.iloc[0], marker='o', linestyle='-', color='b')
+    plt.plot(wavelengths, absorbance_all_pp_df.iloc[0], marker='o', linestyle='-', color='b', label='Sample')
+    # plt.plot(wavelengths, absorbance_df.iloc[0], marker='o', linestyle='--', color='b', label='Raw sample')
+    plt.plot(wavelengths, Min, linestyle='--', color='r', label='Min')
+    plt.plot(wavelengths, Max, linestyle='--', color='y', label='Max')
+    plt.title('Absorbance', fontweight='bold', fontsize=20)
     plt.xlabel('Wavelength (nm)', fontweight='bold', fontsize=14)
     plt.ylabel('Absorbance', fontweight='bold', fontsize=14)
     plt.xticks(rotation='vertical', fontweight='bold', fontsize=12)
     plt.yticks(fontweight='bold', fontsize=12)
     plt.tight_layout()
+    plt.legend()
     plt.show()
     st.pyplot(plt)
-    
+
+
 if __name__ == "__main__":
     main()
