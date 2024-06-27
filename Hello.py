@@ -67,7 +67,7 @@ def custom_transform(input_data, pds_models):
 def json_data():
     # API --------------------------------------------------------------------------------------------------------------------
     # First API call
-    api_url1 = "https://x8ki-letl-twmt.n7.xano.io/api:5r4pCOor/bgdata_hb"
+    api_url1 = "https://x8ki-letl-twmt.n7.xano.io/api:U4wk_Gn6/BackgroundReading"
     payload1 = {}
     response1 = requests.get(api_url1, params=payload1)
 
@@ -78,7 +78,7 @@ def json_data():
         return None
 
     # Second API call
-    api_url2 = "https://x8ki-letl-twmt.n7.xano.io/api:UpqVw9TY/spectraldata_hb"
+    api_url2 = "https://x8ki-letl-twmt.n7.xano.io/api:DKaWNKM4/spectral_data"
     payload2 = {}
     response2 = requests.get(api_url2, params=payload2)
 
