@@ -148,7 +148,7 @@ def create_csv(golden_values, Min, Max, wavelengths):
     }
     df = pd.DataFrame(data).T
     df.to_csv('golden_values_min_max.csv', index=False)
-    # st.write(df)
+    st.write(df)
     
 
 def select_for_prediction(absorbance_df, selected_wavelengths):
