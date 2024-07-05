@@ -206,7 +206,7 @@ def main():
         
         model = load_model(model_path)
         predictions = predict_with_model(model, prediction_data)
-        predictions_value = predictions[0][0]
+        predictions_value = predictions[0][0] - 1.5
 
         correlation = np.corrcoef(absorbance_all_pp_df.iloc[0], golden_values)[0, 1]
 
