@@ -128,7 +128,7 @@ def json_data():
     # st.write('19 preprocessed data :')
     # st.write(absorbance_all_pp_df)
 
-    reference_file_path = 'Lablink_134_SNV_Baseline.csv'
+    reference_file_path = 'incorrect-data/Lablink_134_SNV_Baseline.csv'
     reference_df = pd.read_csv(reference_file_path, usecols=range(3, 22))
     reference_df = reference_df.apply(pd.to_numeric, errors='coerce')
     
