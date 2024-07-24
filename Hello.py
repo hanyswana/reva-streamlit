@@ -111,10 +111,10 @@ def json_data():
     # absorbance_normalized_manh = normalizer.transform(absorbance_snv_df)
     # absorbance_normalized_manh_df = pd.DataFrame(absorbance_normalized_manh, columns=absorbance_df.columns)
 
-    # 4. Baseline removal
-    baseline_remover = BaselineRemover()
-    absorbance_baseline_removed = baseline_remover.transform(absorbance_snv_df)
-    absorbance_baseline_removed_df = pd.DataFrame(absorbance_baseline_removed, columns=absorbance_df.columns)
+    # # 4. Baseline removal
+    # baseline_remover = BaselineRemover()
+    # absorbance_baseline_removed = baseline_remover.transform(absorbance_snv_df)
+    # absorbance_baseline_removed_df = pd.DataFrame(absorbance_baseline_removed, columns=absorbance_df.columns)
 
     # pds_model = joblib.load('pds_model_U11_snv_baseline.joblib')
     # with open('pds_model_U6_snv_baseline.pkl', 'rb') as f:
@@ -124,11 +124,11 @@ def json_data():
     # absorbance_transformed_df = pd.DataFrame(absorbance_transformed, columns=absorbance_df.columns)
     # absorbance_all_pp_df = absorbance_transformed_df
 
-    absorbance_all_pp_df = absorbance_baseline_removed_df
+    absorbance_all_pp_df = absorbance_snv_df
     # st.write('19 preprocessed data :')
     # st.write(absorbance_all_pp_df)
 
-    reference_file_path = 'incorrect-data/Lablink_134_SNV_Baseline.csv'
+    reference_file_path = 'correct-data/corrected-lablink-128-hb_SNV.csv'
     reference_df = pd.read_csv(reference_file_path, usecols=range(3, 22))
     reference_df = reference_df.apply(pd.to_numeric, errors='coerce')
     
@@ -189,7 +189,7 @@ def predict_with_model(model, input_data):
 def main():
 
     model_paths_with_labels = [
-        ('SNV + BR (R45)', 'incorrect-model-lablink/Lablink_134_SNV_Baseline_pls_top_10.parquet_best_model_2024-05-09_20-22-34_R45_77%')
+        ('SNV (R59)', 'correct-lablink-model/corrected-lablink-128-hb_SNV_top_10.parquet_best_model_2024-07-12_14-12-24_R59_88%')
     ]
     
     absorbance_df, absorbance_all_pp_df, wavelengths, golden_values, Min, Max = json_data()
@@ -198,8 +198,9 @@ def main():
     
     for label, model_path in model_paths_with_labels:
 
-        selected_wavelengths = ['415nm', '445nm', '515nm', '555nm', '560nm', '610nm', '680nm', '730nm', '900nm', '940nm'] # for API (SNV + BR / SNV + euc + BR) - new
-        # selected_wavelengths = ['_445nm', '_515nm', '_555nm', '_560nm', '_585nm', '_610nm', '_680nm', '_730nm', '_900nm', '_940nm'] # for API (SNV + manh + BR) - new
+        selected_wavelengths = ['415nm', '515nm', '555nm', '560nm', '585nm', '590nm',  '610nm', '680nm', '730nm', '900nm'] # for API (SNV) - new
+        # selected_wavelengths = ['415nm', '445nm', '515nm', '555nm', '560nm', '610nm', '680nm', '730nm', '900nm', '940nm'] # for API (SNV + BR / SNV + euc + BR) - old
+        # selected_wavelengths = ['_445nm', '_515nm', '_555nm', '_560nm', '_585nm', '_610nm', '_680nm', '_730nm', '_900nm', '_940nm'] # for API (SNV + manh + BR) - old
         prediction_data = select_for_prediction(absorbance_all_pp_df, selected_wavelengths)
         # st.write('10 selected preprocessed data :')
         # st.write(prediction_data)
