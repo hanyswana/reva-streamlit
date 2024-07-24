@@ -3,7 +3,7 @@ import streamlit as st
 import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
-import requests, pytz
+import requests, pytz, pickle, joblib, torch, os, json, tempfile, zipfile, onnxruntime as ort
 from scipy import sparse
 from datetime import datetime
 from sklearn.preprocessing import Normalizer, PolynomialFeatures
@@ -11,6 +11,8 @@ from sklearn.base import BaseEstimator, TransformerMixin
 from sklearn.utils.validation import FLOAT_DTYPES
 from sklearn.pipeline import make_pipeline
 from sklearn.linear_model import LinearRegression
+from pytorch_tabnet.tab_model import TabNetRegressor 
+
 
 
 utc_now = datetime.now(pytz.utc)
