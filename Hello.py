@@ -208,7 +208,7 @@ def predict_with_model(model, input_data):
 def main():
 
     model_paths_with_labels = [
-        ('SNV (R59)', 'correct-lablink-model/corrected-lablink-128-hb_SNV_top_10.parquet_best_model_2024-07-12_14-12-24_R59_88%')
+        ('SNV (R59)', 'correct-model-lablink/corrected-lablink-128-hb_SNV_top_10.parquet_best_model_2024-07-12_14-12-24_R59_88%')
     ]
     
     absorbance_df, absorbance_all_pp_df, wavelengths, golden_values, Min, Max = json_data()
