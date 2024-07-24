@@ -7,3 +7,6 @@ scikit-learn
 flask
 matplotlib
 tensorflow==2.14.0
+torch
+pytorch-tabnet==4.1.0
+onnxruntime
